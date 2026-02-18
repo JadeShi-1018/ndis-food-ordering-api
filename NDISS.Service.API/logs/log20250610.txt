@@ -1,0 +1,78 @@
+2025-06-10 17:11:15.888 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-10 17:11:15.974 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-10 17:11:15.974 +09:30 [INF] Hosting environment: Development
+2025-06-10 17:11:15.975 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API
+2025-06-10 17:11:16.617 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger - null null
+2025-06-10 17:11:16.843 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger - 301 0 null 245.6873ms
+2025-06-10 17:11:16.850 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-10 17:11:16.929 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 79.3231ms
+2025-06-10 17:11:16.943 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - null null
+2025-06-10 17:11:16.944 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - null null
+2025-06-10 17:11:16.947 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - null null
+2025-06-10 17:11:16.947 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-10 17:11:16.955 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 8.0038ms
+2025-06-10 17:11:16.991 +09:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-10 17:11:16.992 +09:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-06-10 17:11:16.994 +09:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-06-10 17:11:16.995 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - 200 152034 text/css 51.5743ms
+2025-06-10 17:11:16.995 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 48.2411ms
+2025-06-10 17:11:16.996 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 51.5351ms
+2025-06-10 17:11:17.081 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-10 17:11:17.184 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 103.38ms
+2025-06-10 17:11:17.409 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-10 17:11:17.417 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 9.1572ms
+2025-06-10 17:11:17.554 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-06-10 17:11:17.556 +09:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-10 17:11:17.557 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 3.4975ms
+2025-06-10 18:14:32.659 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-10 18:14:32.751 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-10 18:14:32.752 +09:30 [INF] Hosting environment: Development
+2025-06-10 18:14:32.753 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API
+2025-06-10 18:14:33.632 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-10 18:14:33.850 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 226.1929ms
+2025-06-10 18:14:33.870 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-10 18:14:33.875 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16518 application/javascript; charset=utf-8 5.8545ms
+2025-06-10 18:14:34.011 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-10 18:14:34.251 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 239.8147ms
+2025-06-10 18:14:34.404 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-10 18:14:34.414 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 10.1743ms
+2025-06-10 18:15:01.264 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType - null null
+2025-06-10 18:15:01.273 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAllServiceType (NDISS.Service.API)'
+2025-06-10 18:15:01.290 +09:30 [INF] Route matched with {action = "GetAllServiceType", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllServiceType() on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-10 18:15:02.301 +09:30 [INF] Executed DbCommand (38ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+2025-06-10 18:15:02.364 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.ServiceTypeDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-10 18:15:02.372 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetAllServiceType (NDISS.Service.API) in 1079.2201ms
+2025-06-10 18:15:02.374 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAllServiceType (NDISS.Service.API)'
+2025-06-10 18:15:02.381 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 1120.7192ms
+2025-06-10 18:17:02.445 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-10 18:17:02.551 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-10 18:17:02.552 +09:30 [INF] Hosting environment: Development
+2025-06-10 18:17:02.553 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API
+2025-06-10 18:27:36.706 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-10 18:27:36.799 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-10 18:27:36.800 +09:30 [INF] Hosting environment: Development
+2025-06-10 18:27:36.800 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API
+2025-06-10 18:27:37.467 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger - null null
+2025-06-10 18:27:37.603 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger - 301 0 null 142.7319ms
+2025-06-10 18:27:37.607 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-10 18:27:37.670 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 63.8827ms
+2025-06-10 18:27:37.683 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - null null
+2025-06-10 18:27:37.683 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - null null
+2025-06-10 18:27:37.685 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - null null
+2025-06-10 18:27:37.723 +09:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-10 18:27:37.723 +09:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-06-10 18:27:37.723 +09:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-06-10 18:27:37.725 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - 200 152034 text/css 41.5287ms
+2025-06-10 18:27:37.725 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 41.4707ms
+2025-06-10 18:27:37.726 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 40.9143ms
+2025-06-10 18:27:37.947 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-10 18:27:37.951 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16518 application/javascript; charset=utf-8 3.7514ms
+2025-06-10 18:27:37.969 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-10 18:27:37.990 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 20.8303ms
+2025-06-10 18:27:39.451 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-10 18:27:39.456 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 4.9061ms
+2025-06-10 18:27:39.568 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-06-10 18:27:39.570 +09:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-10 18:27:39.571 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 2.7402ms

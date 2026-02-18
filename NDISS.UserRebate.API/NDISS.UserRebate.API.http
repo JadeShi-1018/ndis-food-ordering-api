@@ -1,0 +1,6 @@
+@NDISS.UserRebate.API_HostAddress = http://localhost:5001
+
+GET {{NDISS.UserRebate.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

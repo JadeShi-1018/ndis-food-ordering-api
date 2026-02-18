@@ -1,0 +1,27 @@
+2025-06-20 10:29:58.306 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-20 10:29:58.369 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-20 10:29:58.370 +10:00 [INF] Hosting environment: Development
+2025-06-20 10:29:58.371 +10:00 [INF] Content root path: C:\Users\User\source\repos\NDIS-AU-API\NDIS-AU-API\NDISS.Service.API
+2025-06-20 10:29:58.764 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-20 10:29:58.889 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 130.2147ms
+2025-06-20 10:29:58.896 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-20 10:29:58.899 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-20 10:29:58.900 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 4.3025ms
+2025-06-20 10:29:58.927 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 28.6472ms
+2025-06-20 10:29:58.994 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-20 10:29:58.999 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 5.2838ms
+2025-06-20 10:29:59.000 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-06-20 10:29:59.008 +10:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-20 10:29:59.009 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 9.3365ms
+2025-06-20 10:30:59.780 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-20 10:30:59.843 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-20 10:30:59.849 +10:00 [INF] Hosting environment: Development
+2025-06-20 10:30:59.853 +10:00 [INF] Content root path: C:\Users\User\source\repos\NDIS-AU-API\NDIS-AU-API\NDISS.Service.API
+2025-06-20 10:31:00.263 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-20 10:31:00.370 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 111.3124ms
+2025-06-20 10:31:00.376 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-20 10:31:00.380 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 4.3632ms
+2025-06-20 10:31:00.380 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-20 10:31:00.401 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 20.9786ms
+2025-06-20 10:31:00.465 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-20 10:31:00.472 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 7.4721ms

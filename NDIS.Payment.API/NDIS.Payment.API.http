@@ -1,0 +1,6 @@
+@NDIS.Payment.API_HostAddress = http://localhost:5139
+
+GET {{NDIS.Payment.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

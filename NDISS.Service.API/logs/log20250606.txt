@@ -1,0 +1,651 @@
+2025-06-06 13:02:46.409 +09:30 [INF] Executed DbCommand (121ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NDISSService];
+2025-06-06 13:02:46.506 +09:30 [INF] Executed DbCommand (74ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NDISSService] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-06-06 13:02:46.518 +09:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:02:46.554 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2025-06-06 13:02:46.556 +09:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:02:46.564 +09:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:02:46.571 +09:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-06 13:02:46.579 +09:30 [INF] Applying migration '20250606033236_InitialCreate'.
+2025-06-06 13:02:46.604 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Periods] (
+    [PeriodId] nvarchar(450) NOT NULL,
+    [PeriodName] nvarchar(max) NOT NULL,
+    [DeliveryTime] datetime2 NOT NULL,
+    CONSTRAINT [PK_Periods] PRIMARY KEY ([PeriodId])
+);
+2025-06-06 13:02:46.607 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ServiceTypes] (
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    [ServiceTypeName] nvarchar(max) NOT NULL,
+    [ServiceDescription] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_ServiceTypes] PRIMARY KEY ([ServiceTypeId])
+);
+2025-06-06 13:02:46.610 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeekDays] (
+    [WeekDayId] nvarchar(450) NOT NULL,
+    [WeekDayName] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_WeekDays] PRIMARY KEY ([WeekDayId])
+);
+2025-06-06 13:02:46.613 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServices] (
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    [ProviderId] nvarchar(max) NOT NULL,
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServices] PRIMARY KEY ([ProviderServiceId]),
+    CONSTRAINT [FK_ProviderServices_ServiceTypes_ServiceTypeId] FOREIGN KEY ([ServiceTypeId]) REFERENCES [ServiceTypes] ([ServiceTypeId]) ON DELETE CASCADE
+);
+2025-06-06 13:02:46.617 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Categories] (
+    [CategoryId] nvarchar(450) NOT NULL,
+    [CategoryName] nvarchar(max) NOT NULL,
+    [CategoryDescription] nvarchar(max) NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Categories] PRIMARY KEY ([CategoryId]),
+    CONSTRAINT [FK_Categories_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:02:46.620 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Items] (
+    [ItemId] nvarchar(450) NOT NULL,
+    [ItemName] nvarchar(max) NOT NULL,
+    [ItemDescription] nvarchar(max) NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Items] PRIMARY KEY ([ItemId]),
+    CONSTRAINT [FK_Items_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:02:46.622 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServiceLocations] (
+    [ProviderServiceLocationId] nvarchar(450) NOT NULL,
+    [ProviderServiceLocationAddress] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationCity] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationState] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationPostcode] int NOT NULL,
+    [ProviderServiceLocationLat] real NOT NULL,
+    [ProviderServiceLocationLong] real NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServiceLocations] PRIMARY KEY ([ProviderServiceLocationId]),
+    CONSTRAINT [FK_ProviderServiceLocations_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:02:46.626 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Menus] (
+    [MenuId] nvarchar(450) NOT NULL,
+    [PeriodId] nvarchar(450) NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Menus] PRIMARY KEY ([MenuId]),
+    CONSTRAINT [FK_Menus_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Menus_Periods_PeriodId] FOREIGN KEY ([PeriodId]) REFERENCES [Periods] ([PeriodId]) ON DELETE CASCADE
+);
+2025-06-06 13:02:46.629 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeeklyPlans] (
+    [WeeklyPlanId] nvarchar(450) NOT NULL,
+    [PlanName] nvarchar(max) NOT NULL,
+    [PlanDescription] nvarchar(max) NOT NULL,
+    [PlanPrice] real NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_WeeklyPlans] PRIMARY KEY ([WeeklyPlanId]),
+    CONSTRAINT [FK_WeeklyPlans_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE
+);
+2025-06-06 13:02:46.641 +09:30 [ERR] Failed executing DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MenuItems] (
+    [MenuItemId] nvarchar(450) NOT NULL,
+    [MenuId] nvarchar(450) NOT NULL,
+    [ItemId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_MenuItems] PRIMARY KEY ([MenuItemId]),
+    CONSTRAINT [FK_MenuItems_Items_ItemId] FOREIGN KEY ([ItemId]) REFERENCES [Items] ([ItemId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_MenuItems_Menus_MenuId] FOREIGN KEY ([MenuId]) REFERENCES [Menus] ([MenuId]) ON DELETE CASCADE
+);
+2025-06-06 13:07:30.333 +09:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:07:30.365 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:07:30.377 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-06 13:07:50.206 +09:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:07:50.237 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:07:50.240 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:07:50.242 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:07:50.252 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-06 13:07:50.259 +09:30 [INF] Applying migration '20250606033741_FixCascadeConflict'.
+2025-06-06 13:07:50.290 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Periods] (
+    [PeriodId] nvarchar(450) NOT NULL,
+    [PeriodName] nvarchar(max) NOT NULL,
+    [DeliveryTime] datetime2 NOT NULL,
+    CONSTRAINT [PK_Periods] PRIMARY KEY ([PeriodId])
+);
+2025-06-06 13:07:50.293 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ServiceTypes] (
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    [ServiceTypeName] nvarchar(max) NOT NULL,
+    [ServiceDescription] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_ServiceTypes] PRIMARY KEY ([ServiceTypeId])
+);
+2025-06-06 13:07:50.296 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeekDays] (
+    [WeekDayId] nvarchar(450) NOT NULL,
+    [WeekDayName] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_WeekDays] PRIMARY KEY ([WeekDayId])
+);
+2025-06-06 13:07:50.299 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServices] (
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    [ProviderId] nvarchar(max) NOT NULL,
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServices] PRIMARY KEY ([ProviderServiceId]),
+    CONSTRAINT [FK_ProviderServices_ServiceTypes_ServiceTypeId] FOREIGN KEY ([ServiceTypeId]) REFERENCES [ServiceTypes] ([ServiceTypeId]) ON DELETE CASCADE
+);
+2025-06-06 13:07:50.302 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Categories] (
+    [CategoryId] nvarchar(450) NOT NULL,
+    [CategoryName] nvarchar(max) NOT NULL,
+    [CategoryDescription] nvarchar(max) NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Categories] PRIMARY KEY ([CategoryId]),
+    CONSTRAINT [FK_Categories_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:07:50.305 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Items] (
+    [ItemId] nvarchar(450) NOT NULL,
+    [ItemName] nvarchar(max) NOT NULL,
+    [ItemDescription] nvarchar(max) NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Items] PRIMARY KEY ([ItemId]),
+    CONSTRAINT [FK_Items_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:07:50.308 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServiceLocations] (
+    [ProviderServiceLocationId] nvarchar(450) NOT NULL,
+    [ProviderServiceLocationAddress] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationCity] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationState] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationPostcode] int NOT NULL,
+    [ProviderServiceLocationLat] real NOT NULL,
+    [ProviderServiceLocationLong] real NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServiceLocations] PRIMARY KEY ([ProviderServiceLocationId]),
+    CONSTRAINT [FK_ProviderServiceLocations_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:07:50.311 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Menus] (
+    [MenuId] nvarchar(450) NOT NULL,
+    [PeriodId] nvarchar(450) NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Menus] PRIMARY KEY ([MenuId]),
+    CONSTRAINT [FK_Menus_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Menus_Periods_PeriodId] FOREIGN KEY ([PeriodId]) REFERENCES [Periods] ([PeriodId]) ON DELETE CASCADE
+);
+2025-06-06 13:07:50.314 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeeklyPlans] (
+    [WeeklyPlanId] nvarchar(450) NOT NULL,
+    [PlanName] nvarchar(max) NOT NULL,
+    [PlanDescription] nvarchar(max) NOT NULL,
+    [PlanPrice] real NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_WeeklyPlans] PRIMARY KEY ([WeeklyPlanId]),
+    CONSTRAINT [FK_WeeklyPlans_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE
+);
+2025-06-06 13:07:50.318 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MenuItems] (
+    [MenuItemId] nvarchar(450) NOT NULL,
+    [MenuId] nvarchar(450) NOT NULL,
+    [ItemId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_MenuItems] PRIMARY KEY ([MenuItemId]),
+    CONSTRAINT [FK_MenuItems_Items_ItemId] FOREIGN KEY ([ItemId]) REFERENCES [Items] ([ItemId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_MenuItems_Menus_MenuId] FOREIGN KEY ([MenuId]) REFERENCES [Menus] ([MenuId]) ON DELETE NO ACTION
+);
+2025-06-06 13:07:50.330 +09:30 [ERR] Failed executing DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [SinglePlans] (
+    [SinglePlanId] nvarchar(450) NOT NULL,
+    [MenuId] nvarchar(450) NOT NULL,
+    [WeeklyPlanId] nvarchar(450) NOT NULL,
+    [WeekDayId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_SinglePlans] PRIMARY KEY ([SinglePlanId]),
+    CONSTRAINT [FK_SinglePlans_Menus_MenuId] FOREIGN KEY ([MenuId]) REFERENCES [Menus] ([MenuId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SinglePlans_WeekDays_WeekDayId] FOREIGN KEY ([WeekDayId]) REFERENCES [WeekDays] ([WeekDayId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SinglePlans_WeeklyPlans_WeeklyPlanId] FOREIGN KEY ([WeeklyPlanId]) REFERENCES [WeeklyPlans] ([WeeklyPlanId]) ON DELETE CASCADE
+);
+2025-06-06 13:11:53.225 +09:30 [WRN] The foreign key property 'SinglePlan.WeekDayId1' was created in shadow state because a conflicting property with the simple name 'WeekDayId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-06-06 13:11:53.324 +09:30 [WRN] The foreign key property 'SinglePlan.WeekDayId1' was created in shadow state because a conflicting property with the simple name 'WeekDayId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-06-06 13:11:53.658 +09:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:11:53.671 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:11:53.682 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-06 13:12:03.663 +09:30 [WRN] The foreign key property 'SinglePlan.WeekDayId1' was created in shadow state because a conflicting property with the simple name 'WeekDayId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-06-06 13:12:03.757 +09:30 [WRN] The foreign key property 'SinglePlan.WeekDayId1' was created in shadow state because a conflicting property with the simple name 'WeekDayId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-06-06 13:12:11.926 +09:30 [WRN] The foreign key property 'SinglePlan.WeekDayId1' was created in shadow state because a conflicting property with the simple name 'WeekDayId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+2025-06-06 13:12:12.165 +09:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:12:12.179 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:12:12.182 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:12:12.183 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:12:12.192 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-06 13:12:12.200 +09:30 [INF] Applying migration '20250606034203_FixSinglePlanCascade'.
+2025-06-06 13:12:12.233 +09:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Periods] (
+    [PeriodId] nvarchar(450) NOT NULL,
+    [PeriodName] nvarchar(max) NOT NULL,
+    [DeliveryTime] datetime2 NOT NULL,
+    CONSTRAINT [PK_Periods] PRIMARY KEY ([PeriodId])
+);
+2025-06-06 13:12:12.236 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ServiceTypes] (
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    [ServiceTypeName] nvarchar(max) NOT NULL,
+    [ServiceDescription] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_ServiceTypes] PRIMARY KEY ([ServiceTypeId])
+);
+2025-06-06 13:12:12.239 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeekDays] (
+    [WeekDayId] nvarchar(450) NOT NULL,
+    [WeekDayName] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_WeekDays] PRIMARY KEY ([WeekDayId])
+);
+2025-06-06 13:12:12.242 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServices] (
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    [ProviderId] nvarchar(max) NOT NULL,
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServices] PRIMARY KEY ([ProviderServiceId]),
+    CONSTRAINT [FK_ProviderServices_ServiceTypes_ServiceTypeId] FOREIGN KEY ([ServiceTypeId]) REFERENCES [ServiceTypes] ([ServiceTypeId]) ON DELETE CASCADE
+);
+2025-06-06 13:12:12.245 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Categories] (
+    [CategoryId] nvarchar(450) NOT NULL,
+    [CategoryName] nvarchar(max) NOT NULL,
+    [CategoryDescription] nvarchar(max) NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Categories] PRIMARY KEY ([CategoryId]),
+    CONSTRAINT [FK_Categories_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:12:12.248 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Items] (
+    [ItemId] nvarchar(450) NOT NULL,
+    [ItemName] nvarchar(max) NOT NULL,
+    [ItemDescription] nvarchar(max) NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Items] PRIMARY KEY ([ItemId]),
+    CONSTRAINT [FK_Items_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:12:12.251 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServiceLocations] (
+    [ProviderServiceLocationId] nvarchar(450) NOT NULL,
+    [ProviderServiceLocationAddress] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationCity] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationState] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationPostcode] int NOT NULL,
+    [ProviderServiceLocationLat] real NOT NULL,
+    [ProviderServiceLocationLong] real NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServiceLocations] PRIMARY KEY ([ProviderServiceLocationId]),
+    CONSTRAINT [FK_ProviderServiceLocations_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-06 13:12:12.255 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Menus] (
+    [MenuId] nvarchar(450) NOT NULL,
+    [PeriodId] nvarchar(450) NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Menus] PRIMARY KEY ([MenuId]),
+    CONSTRAINT [FK_Menus_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Menus_Periods_PeriodId] FOREIGN KEY ([PeriodId]) REFERENCES [Periods] ([PeriodId]) ON DELETE CASCADE
+);
+2025-06-06 13:12:12.257 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeeklyPlans] (
+    [WeeklyPlanId] nvarchar(450) NOT NULL,
+    [PlanName] nvarchar(max) NOT NULL,
+    [PlanDescription] nvarchar(max) NOT NULL,
+    [PlanPrice] real NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_WeeklyPlans] PRIMARY KEY ([WeeklyPlanId]),
+    CONSTRAINT [FK_WeeklyPlans_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE
+);
+2025-06-06 13:12:12.260 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MenuItems] (
+    [MenuItemId] nvarchar(450) NOT NULL,
+    [MenuId] nvarchar(450) NOT NULL,
+    [ItemId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_MenuItems] PRIMARY KEY ([MenuItemId]),
+    CONSTRAINT [FK_MenuItems_Items_ItemId] FOREIGN KEY ([ItemId]) REFERENCES [Items] ([ItemId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_MenuItems_Menus_MenuId] FOREIGN KEY ([MenuId]) REFERENCES [Menus] ([MenuId]) ON DELETE NO ACTION
+);
+2025-06-06 13:12:12.264 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [SinglePlans] (
+    [SinglePlanId] nvarchar(450) NOT NULL,
+    [MenuId] nvarchar(450) NOT NULL,
+    [WeeklyPlanId] nvarchar(450) NOT NULL,
+    [WeekDayId] nvarchar(450) NOT NULL,
+    [WeekDayId1] nvarchar(450) NULL,
+    CONSTRAINT [PK_SinglePlans] PRIMARY KEY ([SinglePlanId]),
+    CONSTRAINT [FK_SinglePlans_Menus_MenuId] FOREIGN KEY ([MenuId]) REFERENCES [Menus] ([MenuId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SinglePlans_WeekDays_WeekDayId] FOREIGN KEY ([WeekDayId]) REFERENCES [WeekDays] ([WeekDayId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SinglePlans_WeekDays_WeekDayId1] FOREIGN KEY ([WeekDayId1]) REFERENCES [WeekDays] ([WeekDayId]),
+    CONSTRAINT [FK_SinglePlans_WeeklyPlans_WeeklyPlanId] FOREIGN KEY ([WeeklyPlanId]) REFERENCES [WeeklyPlans] ([WeeklyPlanId]) ON DELETE NO ACTION
+);
+2025-06-06 13:12:12.267 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Categories_ProviderServiceId] ON [Categories] ([ProviderServiceId]);
+2025-06-06 13:12:12.269 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Items_ProviderServiceId] ON [Items] ([ProviderServiceId]);
+2025-06-06 13:12:12.271 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MenuItems_ItemId] ON [MenuItems] ([ItemId]);
+2025-06-06 13:12:12.274 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MenuItems_MenuId] ON [MenuItems] ([MenuId]);
+2025-06-06 13:12:12.276 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Menus_CategoryId] ON [Menus] ([CategoryId]);
+2025-06-06 13:12:12.278 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Menus_PeriodId] ON [Menus] ([PeriodId]);
+2025-06-06 13:12:12.280 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ProviderServiceLocations_ProviderServiceId] ON [ProviderServiceLocations] ([ProviderServiceId]);
+2025-06-06 13:12:12.283 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ProviderServices_ServiceTypeId] ON [ProviderServices] ([ServiceTypeId]);
+2025-06-06 13:12:12.285 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SinglePlans_MenuId] ON [SinglePlans] ([MenuId]);
+2025-06-06 13:12:12.288 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SinglePlans_WeekDayId] ON [SinglePlans] ([WeekDayId]);
+2025-06-06 13:12:12.290 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SinglePlans_WeekDayId1] ON [SinglePlans] ([WeekDayId1]);
+2025-06-06 13:12:12.293 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SinglePlans_WeeklyPlanId] ON [SinglePlans] ([WeeklyPlanId]);
+2025-06-06 13:12:12.295 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WeeklyPlans_CategoryId] ON [WeeklyPlans] ([CategoryId]);
+2025-06-06 13:12:12.298 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250606034203_FixSinglePlanCascade', N'8.0.5');
+2025-06-06 13:14:13.468 +09:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:14:13.499 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:14:13.510 +09:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-06 13:14:45.405 +09:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:14:45.437 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:14:45.439 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-06 13:14:45.440 +09:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-06 13:14:45.449 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-06 13:14:45.458 +09:30 [INF] Applying migration '20250606034435_RemoveWeekDayShadowFix'.
+2025-06-06 13:14:45.481 +09:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [SinglePlans] DROP CONSTRAINT [FK_SinglePlans_WeekDays_WeekDayId1];
+2025-06-06 13:14:45.483 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP INDEX [IX_SinglePlans_WeekDayId1] ON [SinglePlans];
+2025-06-06 13:14:45.531 +09:30 [INF] Executed DbCommand (47ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @var0 sysname;
+SELECT @var0 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[SinglePlans]') AND [c].[name] = N'WeekDayId1');
+IF @var0 IS NOT NULL EXEC(N'ALTER TABLE [SinglePlans] DROP CONSTRAINT [' + @var0 + '];');
+ALTER TABLE [SinglePlans] DROP COLUMN [WeekDayId1];
+2025-06-06 13:14:45.534 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250606034435_RemoveWeekDayShadowFix', N'8.0.5');
+2025-06-06 15:46:36.496 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-06 15:46:36.683 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-06 15:46:36.684 +09:30 [INF] Hosting environment: Development
+2025-06-06 15:46:36.685 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API\NDISS.Service.API
+2025-06-06 15:46:38.887 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger - null null
+2025-06-06 15:46:39.104 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger - 301 0 null 228.1544ms
+2025-06-06 15:46:39.108 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-06 15:46:39.165 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 57.116ms
+2025-06-06 15:46:39.183 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - null null
+2025-06-06 15:46:39.185 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - null null
+2025-06-06 15:46:39.187 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-06 15:46:39.186 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - null null
+2025-06-06 15:46:39.198 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 10.4501ms
+2025-06-06 15:46:39.228 +09:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-06 15:46:39.228 +09:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-06-06 15:46:39.228 +09:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-06-06 15:46:39.230 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - 200 152034 text/css 46.6036ms
+2025-06-06 15:46:39.230 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 45.1334ms
+2025-06-06 15:46:39.230 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 44.1609ms
+2025-06-06 15:46:39.328 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-06 15:46:39.928 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 599.4311ms
+2025-06-06 15:46:40.292 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-06 15:46:40.297 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 4.8285ms
+2025-06-06 15:46:40.307 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-06-06 15:46:40.309 +09:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-06 15:46:40.310 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 3.5954ms
+2025-06-06 15:46:54.180 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType - null null
+2025-06-06 15:46:54.187 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:46:54.210 +09:30 [INF] Route matched with {action = "GetAll", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:46:55.208 +09:30 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+2025-06-06 15:46:55.238 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.ServiceTypeDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:46:55.246 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API) in 1031.4931ms
+2025-06-06 15:46:55.247 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:46:55.252 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 1071.9885ms
+2025-06-06 15:47:19.792 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ServiceType - application/json 63
+2025-06-06 15:47:19.794 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Create (NDISS.Service.API)'
+2025-06-06 15:47:19.802 +09:30 [INF] Route matched with {action = "Create", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(NDISS.Service.API.DTOs.ServiceTypeCreateDto) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:47:19.954 +09:30 [INF] Executed DbCommand (20ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ServiceTypes] ([ServiceTypeId], [ServiceDescription], [ServiceTypeName])
+VALUES (@p0, @p1, @p2);
+2025-06-06 15:47:19.962 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:47:19.964 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.Create (NDISS.Service.API) in 160.6174ms
+2025-06-06 15:47:19.965 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Create (NDISS.Service.API)'
+2025-06-06 15:47:19.966 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 173.4607ms
+2025-06-06 15:47:38.107 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType - null null
+2025-06-06 15:47:38.109 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:47:38.110 +09:30 [INF] Route matched with {action = "GetAll", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:47:38.119 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+2025-06-06 15:47:38.128 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.ServiceTypeDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:47:38.130 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API) in 18.1275ms
+2025-06-06 15:47:38.132 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:47:38.133 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 26.0448ms
+2025-06-06 15:49:16.182 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-06 15:49:16.257 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-06 15:49:16.258 +09:30 [INF] Hosting environment: Development
+2025-06-06 15:49:16.258 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API\NDISS.Service.API
+2025-06-06 15:49:18.156 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger - null null
+2025-06-06 15:49:18.265 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger - 301 0 null 117.1537ms
+2025-06-06 15:49:18.269 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-06 15:49:18.322 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 53.8866ms
+2025-06-06 15:49:18.338 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - null null
+2025-06-06 15:49:18.340 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - null null
+2025-06-06 15:49:18.339 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - null null
+2025-06-06 15:49:18.340 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-06 15:49:18.350 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 9.7357ms
+2025-06-06 15:49:18.374 +09:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-06-06 15:49:18.374 +09:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-06-06 15:49:18.374 +09:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-06 15:49:18.376 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 36.4348ms
+2025-06-06 15:49:18.376 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 36.5984ms
+2025-06-06 15:49:18.377 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - 200 152034 text/css 39.2881ms
+2025-06-06 15:49:18.473 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-06 15:49:18.501 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 28.5115ms
+2025-06-06 15:49:19.111 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-06 15:49:19.113 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-06-06 15:49:19.116 +09:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-06 15:49:19.117 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 4.7509ms
+2025-06-06 15:49:19.119 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 7.2739ms
+2025-06-06 15:49:23.706 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType - null null
+2025-06-06 15:49:23.713 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:49:23.730 +09:30 [INF] Route matched with {action = "GetAll", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:49:24.661 +09:30 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+2025-06-06 15:49:24.726 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.ServiceTypeDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:49:24.736 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API) in 1001.4162ms
+2025-06-06 15:49:24.738 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:49:24.745 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 1039.661ms
+2025-06-06 15:49:39.990 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ServiceType - application/json 65
+2025-06-06 15:49:39.992 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Create (NDISS.Service.API)'
+2025-06-06 15:49:40.001 +09:30 [INF] Route matched with {action = "Create", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(NDISS.Service.API.DTOs.ServiceTypeCreateDto) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:49:40.134 +09:30 [INF] Executed DbCommand (23ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ServiceTypes] ([ServiceTypeId], [ServiceDescription], [ServiceTypeName])
+VALUES (@p0, @p1, @p2);
+2025-06-06 15:49:40.145 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:49:40.147 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.Create (NDISS.Service.API) in 144.9115ms
+2025-06-06 15:49:40.149 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Create (NDISS.Service.API)'
+2025-06-06 15:49:40.150 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 160.2425ms
+2025-06-06 15:50:40.402 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType - null null
+2025-06-06 15:50:40.405 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:50:40.406 +09:30 [INF] Route matched with {action = "GetAll", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:50:40.417 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+2025-06-06 15:50:40.425 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.ServiceTypeDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:50:40.427 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API) in 18.6804ms
+2025-06-06 15:50:40.428 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:50:40.429 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 27.2046ms
+2025-06-06 15:50:46.934 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - null null
+2025-06-06 15:50:46.936 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetById (NDISS.Service.API)'
+2025-06-06 15:50:46.939 +09:30 [INF] Route matched with {action = "GetById", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.String) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:50:47.025 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+WHERE [s].[ServiceTypeId] = @__p_0
+2025-06-06 15:50:47.028 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.ServiceTypeDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-06 15:50:47.030 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetById (NDISS.Service.API) in 89.5285ms
+2025-06-06 15:50:47.031 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetById (NDISS.Service.API)'
+2025-06-06 15:50:47.032 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - 200 null application/json; charset=utf-8 99.0295ms
+2025-06-06 15:51:22.497 +09:30 [INF] Request starting HTTP/1.1 PUT http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - application/json 94
+2025-06-06 15:51:22.502 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Update (NDISS.Service.API)'
+2025-06-06 15:51:22.504 +09:30 [INF] Route matched with {action = "Update", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.String, NDISS.Service.API.DTOs.ServiceTypeUpdateDto) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:51:22.511 +09:30 [INF] Executing BadRequestObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:51:22.512 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.Update (NDISS.Service.API) in 6.0315ms
+2025-06-06 15:51:22.512 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Update (NDISS.Service.API)'
+2025-06-06 15:51:22.513 +09:30 [INF] Request finished HTTP/1.1 PUT http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - 400 null application/json; charset=utf-8 16.7137ms
+2025-06-06 15:51:34.065 +09:30 [INF] Request starting HTTP/1.1 PUT http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - application/json 124
+2025-06-06 15:51:34.068 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Update (NDISS.Service.API)'
+2025-06-06 15:51:34.069 +09:30 [INF] Route matched with {action = "Update", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.String, NDISS.Service.API.DTOs.ServiceTypeUpdateDto) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:51:34.079 +09:30 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+WHERE [s].[ServiceTypeId] = @__p_0
+2025-06-06 15:51:34.093 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[@p2='?' (Size = 450), @p0='?' (Size = 4000), @p1='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [ServiceTypes] SET [ServiceDescription] = @p0, [ServiceTypeName] = @p1
+OUTPUT 1
+WHERE [ServiceTypeId] = @p2;
+2025-06-06 15:51:34.098 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:51:34.099 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.Update (NDISS.Service.API) in 28.5066ms
+2025-06-06 15:51:34.100 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Update (NDISS.Service.API)'
+2025-06-06 15:51:34.101 +09:30 [INF] Request finished HTTP/1.1 PUT http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - 200 null application/json; charset=utf-8 36.2492ms
+2025-06-06 15:51:43.007 +09:30 [INF] Request starting HTTP/1.1 DELETE http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - null null
+2025-06-06 15:51:43.009 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Delete (NDISS.Service.API)'
+2025-06-06 15:51:43.013 +09:30 [INF] Route matched with {action = "Delete", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(System.String) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:51:43.018 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+WHERE [s].[ServiceTypeId] = @__p_0
+2025-06-06 15:51:43.049 +09:30 [INF] Executed DbCommand (19ms) [Parameters=[@p0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+DELETE FROM [ServiceTypes]
+OUTPUT 1
+WHERE [ServiceTypeId] = @p0;
+2025-06-06 15:51:43.053 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:51:43.054 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.Delete (NDISS.Service.API) in 39.8296ms
+2025-06-06 15:51:43.055 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.Delete (NDISS.Service.API)'
+2025-06-06 15:51:43.056 +09:30 [INF] Request finished HTTP/1.1 DELETE http://localhost:5041/api/ServiceType/5cedb7da-d8f7-442b-929a-25e14873b86f - 200 null application/json; charset=utf-8 48.6732ms
+2025-06-06 15:53:56.811 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-06 15:53:56.880 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-06 15:53:56.881 +09:30 [INF] Hosting environment: Development
+2025-06-06 15:53:56.881 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API\NDISS.Service.API
+2025-06-06 15:54:03.351 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger - null null
+2025-06-06 15:54:03.542 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger - 301 0 null 196.9583ms
+2025-06-06 15:54:03.546 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-06 15:54:03.595 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 49.6068ms
+2025-06-06 15:54:03.610 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - null null
+2025-06-06 15:54:03.612 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - null null
+2025-06-06 15:54:03.610 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - null null
+2025-06-06 15:54:03.613 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-06 15:54:03.625 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 12.7143ms
+2025-06-06 15:54:03.652 +09:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-06-06 15:54:03.652 +09:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-06 15:54:03.652 +09:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-06-06 15:54:03.654 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - 200 152034 text/css 44.0943ms
+2025-06-06 15:54:03.654 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 42.1803ms
+2025-06-06 15:54:03.654 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 44.4624ms
+2025-06-06 15:54:03.738 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-06 15:54:03.768 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 30.1137ms
+2025-06-06 15:54:04.009 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-06 15:54:04.016 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 7.4731ms
+2025-06-06 15:54:04.164 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-06-06 15:54:04.167 +09:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-06 15:54:04.168 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 4.0338ms
+2025-06-06 15:54:18.262 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType - null null
+2025-06-06 15:54:18.269 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:54:18.286 +09:30 [INF] Route matched with {action = "GetAll", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-06 15:54:19.243 +09:30 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+2025-06-06 15:54:19.303 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.ServiceTypeDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-06 15:54:19.311 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API) in 1020.9879ms
+2025-06-06 15:54:19.313 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAll (NDISS.Service.API)'
+2025-06-06 15:54:19.318 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 1056.28ms
+2025-06-06 16:05:22.298 +09:30 [INF] Now listening on: http://localhost:5041
+2025-06-06 16:05:22.368 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-06 16:05:22.369 +09:30 [INF] Hosting environment: Development
+2025-06-06 16:05:22.369 +09:30 [INF] Content root path: F:\NDIS-AU-API\NDISS.Service.API\NDISS.Service.API
+2025-06-06 16:05:28.322 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger - null null
+2025-06-06 16:05:28.475 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger - 301 0 null 163.2231ms
+2025-06-06 16:05:28.479 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-06 16:05:28.525 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 46.4572ms
+2025-06-06 16:05:28.544 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - null null
+2025-06-06 16:05:28.547 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - null null
+2025-06-06 16:05:28.549 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-06 16:05:28.548 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - null null
+2025-06-06 16:05:28.557 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 8.3539ms
+2025-06-06 16:05:28.593 +09:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-06-06 16:05:28.593 +09:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-06 16:05:28.593 +09:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-06-06 16:05:28.595 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - 200 152034 text/css 50.5004ms
+2025-06-06 16:05:28.595 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 47.9227ms
+2025-06-06 16:05:28.595 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 47.2084ms
+2025-06-06 16:05:28.667 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-06 16:05:28.696 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 29.3052ms
+2025-06-06 16:05:28.920 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-06 16:05:28.928 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 8.8508ms
+2025-06-06 16:05:29.064 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-06-06 16:05:29.066 +09:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-06 16:05:29.068 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 3.9734ms

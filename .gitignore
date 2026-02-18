@@ -1,0 +1,18 @@
+# .NET
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.swp
+
+# NuGet
+packages/
+*.nupkg
+
+# Build
+appsettings.Development.json
+appsettings.Local.json
+.env
+secrets.json

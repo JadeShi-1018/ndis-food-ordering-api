@@ -1,0 +1,501 @@
+2025-07-03 15:29:00.441 +09:30 [INF] Now listening on: http://localhost:5041
+2025-07-03 15:29:00.535 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-03 15:29:00.536 +09:30 [INF] Hosting environment: Development
+2025-07-03 15:29:00.537 +09:30 [INF] Content root path: E:\C#\NDIS-AU-API\NDISS.Service.API
+2025-07-03 15:29:01.147 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger - null null
+2025-07-03 15:29:01.409 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger - 301 0 null 268.9848ms
+2025-07-03 15:29:01.414 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-07-03 15:29:01.452 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 38.4684ms
+2025-07-03 15:29:01.467 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - null null
+2025-07-03 15:29:01.472 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - null null
+2025-07-03 15:29:01.467 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - null null
+2025-07-03 15:29:01.470 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-03 15:29:01.489 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 18.6877ms
+2025-07-03 15:29:01.523 +09:30 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-07-03 15:29:01.523 +09:30 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-07-03 15:29:01.523 +09:30 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-07-03 15:29:01.525 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 57.8614ms
+2025-07-03 15:29:01.525 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui.css - 200 152034 text/css 58.3347ms
+2025-07-03 15:29:01.526 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 55.8443ms
+2025-07-03 15:29:01.600 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-07-03 15:29:01.658 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 58.0709ms
+2025-07-03 15:29:01.858 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-07-03 15:29:01.872 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 14.5787ms
+2025-07-03 15:29:01.983 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - null null
+2025-07-03 15:29:01.986 +09:30 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-07-03 15:29:01.988 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/favicon-32x32.png - 200 628 image/png 4.5105ms
+2025-07-03 16:29:30.744 +09:30 [INF] Now listening on: http://localhost:5041
+2025-07-03 16:29:30.811 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-03 16:29:30.812 +09:30 [INF] Hosting environment: Development
+2025-07-03 16:29:30.812 +09:30 [INF] Content root path: E:\C#\NDIS-AU-API\NDISS.Service.API
+2025-07-03 16:29:30.924 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-07-03 16:29:31.045 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 124.6661ms
+2025-07-03 16:29:31.061 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-03 16:29:31.066 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 4.646ms
+2025-07-03 16:29:31.188 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-07-03 16:29:31.218 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 29.8414ms
+2025-07-03 16:29:31.452 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-07-03 16:29:31.462 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 9.8933ms
+2025-07-03 16:29:42.749 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/SinglePlan - application/json 77
+2025-07-03 16:29:42.759 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:29:42.760 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:29:42.764 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:29:42.790 +09:30 [INF] Route matched with {action = "CreateSinglePlan", controller = "SinglePlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateSinglePlan(NDISS.Service.API.DTOs.SinglePlan.SinglePlanCreateDto) on controller NDISS.Service.API.Controllers.SinglePlanController (NDISS.Service.API).
+2025-07-03 16:29:45.243 +09:30 [INF] Executed DbCommand (57ms) [Parameters=[@__dto_WeeklyPlanId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [WeeklyPlans] AS [w]
+        WHERE [w].[WeeklyPlanId] = @__dto_WeeklyPlanId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-07-03 16:29:45.311 +09:30 [ERR] Failed to add SinglePlan.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: WeeklyPlan string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 43
+2025-07-03 16:29:45.372 +09:30 [INF] Executed action NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API) in 2578.5438ms
+2025-07-03 16:29:45.375 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:29:45.438 +09:30 [ERR] Unhandled exception occurred.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: WeeklyPlan string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 43
+   at NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Controllers\SinglePlanController.cs:line 27
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in E:\C#\NDIS-AU-API\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-07-03 16:29:45.451 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/SinglePlan - 500 null application/json 2701.7434ms
+2025-07-03 16:30:06.206 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ServiceType - application/json 67
+2025-07-03 16:30:06.214 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:30:06.215 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:30:06.216 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.CreateServiceType (NDISS.Service.API)'
+2025-07-03 16:30:06.221 +09:30 [INF] Route matched with {action = "CreateServiceType", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateServiceType(NDISS.Service.API.DTOs.ServiceType.ServiceTypeCreateDto) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-07-03 16:30:06.386 +09:30 [INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ServiceTypes] ([ServiceTypeId], [ServiceDescription], [ServiceTypeName])
+VALUES (@p0, @p1, @p2);
+2025-07-03 16:30:06.398 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.ServiceType.ServiceTypeResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 16:30:06.402 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.CreateServiceType (NDISS.Service.API) in 178.386ms
+2025-07-03 16:30:06.403 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.CreateServiceType (NDISS.Service.API)'
+2025-07-03 16:30:06.404 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 198.026ms
+2025-07-03 16:31:35.926 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService - application/json 82
+2025-07-03 16:31:35.928 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:31:35.928 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:31:35.929 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-07-03 16:31:35.932 +09:30 [INF] Route matched with {action = "CreateProviderService", controller = "ProviderService"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateProviderService(NDISS.Service.API.DTOs.ProviderService.ProviderServiceCreateDto) on controller NDISS.Service.API.Controllers.ProviderServiceController (NDISS.Service.API).
+2025-07-03 16:31:35.977 +09:30 [INF] Executed DbCommand (8ms) [Parameters=[@__dto_ServiceTypeId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]
+        WHERE [s].[ServiceTypeId] = @__dto_ServiceTypeId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-07-03 16:31:35.992 +09:30 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ProviderServices] ([ProviderServiceId], [ProviderId], [ServiceTypeId])
+VALUES (@p0, @p1, @p2);
+2025-07-03 16:31:36.018 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[@__providerService_ServiceTypeId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+WHERE [s].[ServiceTypeId] = @__providerService_ServiceTypeId_0
+2025-07-03 16:31:36.036 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.ProviderService.ProviderServiceResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 16:31:36.038 +09:30 [INF] Executed action NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API) in 105.8926ms
+2025-07-03 16:31:36.039 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-07-03 16:31:36.040 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService - 200 null application/json; charset=utf-8 115.2589ms
+2025-07-03 16:31:57.699 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService/03e78c83-fc14-4a65-9400-faaf200685d8/Categories - application/json 63
+2025-07-03 16:31:57.700 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:31:57.701 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:31:57.702 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.CategoryController.CreateCategory (NDISS.Service.API)'
+2025-07-03 16:31:57.708 +09:30 [INF] Route matched with {action = "CreateCategory", controller = "Category"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateCategory(System.String, NDISS.Service.API.DTOs.Category.CategoryCreateDto) on controller NDISS.Service.API.Controllers.CategoryController (NDISS.Service.API).
+2025-07-03 16:31:57.721 +09:30 [INF] Executed DbCommand (4ms) [Parameters=[@__providerServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__providerServiceId_0
+2025-07-03 16:31:57.741 +09:30 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Categories] ([CategoryId], [CategoryDescription], [CategoryName], [ProviderServiceId])
+VALUES (@p0, @p1, @p2, @p3);
+2025-07-03 16:31:57.743 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.Category.CategoryResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 16:31:57.745 +09:30 [INF] Executed action NDISS.Service.API.Controllers.CategoryController.CreateCategory (NDISS.Service.API) in 35.3899ms
+2025-07-03 16:31:57.746 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.CategoryController.CreateCategory (NDISS.Service.API)'
+2025-07-03 16:31:57.746 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService/03e78c83-fc14-4a65-9400-faaf200685d8/Categories - 200 null application/json; charset=utf-8 48.9199ms
+2025-07-03 16:32:35.125 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/WeeklyPlan - application/json 131
+2025-07-03 16:32:35.131 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:32:35.132 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:32:35.133 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.CreateWeeklyPlan (NDISS.Service.API)'
+2025-07-03 16:32:35.135 +09:30 [INF] Route matched with {action = "CreateWeeklyPlan", controller = "WeeklyPlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateWeeklyPlan(NDISS.Service.API.DTOs.WeeklyPlan.WeeklyPlanCreateDto) on controller NDISS.Service.API.Controllers.WeeklyPlanController (NDISS.Service.API).
+2025-07-03 16:32:35.151 +09:30 [INF] Executed DbCommand (5ms) [Parameters=[@__dto_CategoryId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Categories] AS [c]
+        WHERE [c].[CategoryId] = @__dto_CategoryId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-07-03 16:32:35.169 +09:30 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 450), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (DbType = Single)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [WeeklyPlans] ([WeeklyPlanId], [CategoryId], [PlanDescription], [PlanName], [PlanPrice])
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-07-03 16:32:35.174 +09:30 [INF] Executed DbCommand (1ms) [Parameters=[@__weeklyPlan_CategoryId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[CategoryId], [c].[CategoryDescription], [c].[CategoryName], [c].[ProviderServiceId]
+FROM [Categories] AS [c]
+WHERE [c].[CategoryId] = @__weeklyPlan_CategoryId_0
+2025-07-03 16:32:35.178 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.WeeklyPlan.WeeklyPlanResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 16:32:35.182 +09:30 [INF] Executed action NDISS.Service.API.Controllers.WeeklyPlanController.CreateWeeklyPlan (NDISS.Service.API) in 45.7085ms
+2025-07-03 16:32:35.183 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.CreateWeeklyPlan (NDISS.Service.API)'
+2025-07-03 16:32:35.183 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/WeeklyPlan - 200 null application/json; charset=utf-8 57.9133ms
+2025-07-03 16:32:49.249 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/SinglePlan - application/json 107
+2025-07-03 16:32:49.251 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:32:49.252 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:32:49.252 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:32:49.253 +09:30 [INF] Route matched with {action = "CreateSinglePlan", controller = "SinglePlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateSinglePlan(NDISS.Service.API.DTOs.SinglePlan.SinglePlanCreateDto) on controller NDISS.Service.API.Controllers.SinglePlanController (NDISS.Service.API).
+2025-07-03 16:32:49.269 +09:30 [INF] Executed DbCommand (6ms) [Parameters=[@__dto_WeeklyPlanId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [WeeklyPlans] AS [w]
+        WHERE [w].[WeeklyPlanId] = @__dto_WeeklyPlanId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-07-03 16:32:49.289 +09:30 [ERR] Failed executing DbCommand (11ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 450), @p2='?' (Size = 450), @p3='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [SinglePlans] ([SinglePlanId], [MenuId], [WeekDayId], [WeeklyPlanId])
+VALUES (@p0, @p1, @p2, @p3);
+2025-07-03 16:32:49.299 +09:30 [ERR] An exception occurred in the database while saving changes for context type 'NDISS.Service.API.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): INSERT 语句与 FOREIGN KEY 约束"FK_SinglePlans_Menus_MenuId"冲突。该冲突发生于数据库"NDISSService"，表"dbo.Menus", column 'MenuId'。
+语句已终止。
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:919fadf6-d638-4613-8a61-22560487d642
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): INSERT 语句与 FOREIGN KEY 约束"FK_SinglePlans_Menus_MenuId"冲突。该冲突发生于数据库"NDISSService"，表"dbo.Menus", column 'MenuId'。
+语句已终止。
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:919fadf6-d638-4613-8a61-22560487d642
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-07-03 16:32:49.374 +09:30 [ERR] Failed to add SinglePlan.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): INSERT 语句与 FOREIGN KEY 约束"FK_SinglePlans_Menus_MenuId"冲突。该冲突发生于数据库"NDISSService"，表"dbo.Menus", column 'MenuId'。
+语句已终止。
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:919fadf6-d638-4613-8a61-22560487d642
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in E:\C#\NDIS-AU-API\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 55
+2025-07-03 16:32:49.416 +09:30 [INF] Executed action NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API) in 161.9618ms
+2025-07-03 16:32:49.417 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:32:49.449 +09:30 [ERR] Unhandled exception occurred.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): INSERT 语句与 FOREIGN KEY 约束"FK_SinglePlans_Menus_MenuId"冲突。该冲突发生于数据库"NDISSService"，表"dbo.Menus", column 'MenuId'。
+语句已终止。
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:919fadf6-d638-4613-8a61-22560487d642
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in E:\C#\NDIS-AU-API\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 55
+   at NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Controllers\SinglePlanController.cs:line 27
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in E:\C#\NDIS-AU-API\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-07-03 16:32:49.456 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/SinglePlan - 500 null application/json 206.3452ms
+2025-07-03 16:35:39.779 +09:30 [INF] Now listening on: http://localhost:5041
+2025-07-03 16:35:39.848 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-03 16:35:39.849 +09:30 [INF] Hosting environment: Development
+2025-07-03 16:35:39.849 +09:30 [INF] Content root path: E:\C#\NDIS-AU-API\NDISS.Service.API
+2025-07-03 16:35:40.827 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-07-03 16:35:40.954 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 132.4135ms
+2025-07-03 16:35:40.972 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-03 16:35:40.977 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 5.5265ms
+2025-07-03 16:35:41.095 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-07-03 16:35:41.122 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 27.3971ms
+2025-07-03 16:35:41.312 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-07-03 16:35:41.322 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 10.337ms
+2025-07-03 16:35:56.060 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/SinglePlan - application/json 77
+2025-07-03 16:35:56.071 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:35:56.073 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:35:56.076 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:35:56.100 +09:30 [INF] Route matched with {action = "CreateSinglePlan", controller = "SinglePlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateSinglePlan(NDISS.Service.API.DTOs.SinglePlan.SinglePlanCreateDto) on controller NDISS.Service.API.Controllers.SinglePlanController (NDISS.Service.API).
+2025-07-03 16:35:57.124 +09:30 [INF] Executed DbCommand (39ms) [Parameters=[@__dto_MenuId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]
+        WHERE [m].[MenuId] = @__dto_MenuId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-07-03 16:35:57.174 +09:30 [ERR] Failed to add SinglePlan.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: Menu string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 38
+2025-07-03 16:35:57.255 +09:30 [INF] Executed action NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API) in 1151.083ms
+2025-07-03 16:35:57.257 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:35:57.291 +09:30 [ERR] Unhandled exception occurred.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: Menu string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 38
+   at NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Controllers\SinglePlanController.cs:line 27
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in E:\C#\NDIS-AU-API\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-07-03 16:35:57.303 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/SinglePlan - 500 null application/json 1242.8605ms
+2025-07-03 16:36:21.484 +09:30 [INF] Now listening on: http://localhost:5041
+2025-07-03 16:36:21.555 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-03 16:36:21.556 +09:30 [INF] Hosting environment: Development
+2025-07-03 16:36:21.557 +09:30 [INF] Content root path: E:\C#\NDIS-AU-API\NDISS.Service.API
+2025-07-03 16:36:22.199 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-07-03 16:36:22.318 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 124.5641ms
+2025-07-03 16:36:22.337 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-03 16:36:22.341 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 5.1358ms
+2025-07-03 16:36:22.461 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-07-03 16:36:22.487 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 26.5181ms
+2025-07-03 16:36:22.668 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-07-03 16:36:22.678 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 10.2268ms
+2025-07-03 16:36:27.730 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/SinglePlan - application/json 77
+2025-07-03 16:36:27.737 +09:30 [INF] CORS policy execution failed.
+2025-07-03 16:36:27.737 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 16:36:27.740 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:36:27.756 +09:30 [INF] Route matched with {action = "CreateSinglePlan", controller = "SinglePlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateSinglePlan(NDISS.Service.API.DTOs.SinglePlan.SinglePlanCreateDto) on controller NDISS.Service.API.Controllers.SinglePlanController (NDISS.Service.API).
+2025-07-03 16:36:28.940 +09:30 [INF] Executed DbCommand (41ms) [Parameters=[@__dto_MenuId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]
+        WHERE [m].[MenuId] = @__dto_MenuId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-07-03 16:36:29.018 +09:30 [ERR] Failed to add SinglePlan.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: Menu string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 38
+2025-07-03 16:36:29.099 +09:30 [INF] Executed action NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API) in 1337.4437ms
+2025-07-03 16:36:29.101 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 16:36:29.155 +09:30 [ERR] Unhandled exception occurred.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: Menu string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 38
+   at NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Controllers\SinglePlanController.cs:line 27
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in E:\C#\NDIS-AU-API\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-07-03 16:36:29.173 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/SinglePlan - 500 null application/json 1443.1515ms
+2025-07-03 17:19:35.021 +09:30 [INF] Now listening on: http://localhost:5041
+2025-07-03 17:19:35.086 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-03 17:19:35.087 +09:30 [INF] Hosting environment: Development
+2025-07-03 17:19:35.088 +09:30 [INF] Content root path: E:\C#\NDIS-AU-API\NDISS.Service.API
+2025-07-03 17:19:35.302 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-07-03 17:19:35.418 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 120.6179ms
+2025-07-03 17:19:35.447 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-03 17:19:35.451 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 6.0932ms
+2025-07-03 17:19:35.564 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-07-03 17:19:35.585 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 20.7313ms
+2025-07-03 17:19:35.773 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-07-03 17:19:35.782 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 9.5213ms
+2025-07-03 17:19:43.699 +09:30 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/SinglePlan - application/json 77
+2025-07-03 17:19:43.721 +09:30 [INF] CORS policy execution failed.
+2025-07-03 17:19:43.722 +09:30 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-07-03 17:19:43.726 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 17:19:43.750 +09:30 [INF] Route matched with {action = "CreateSinglePlan", controller = "SinglePlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateSinglePlan(NDISS.Service.API.DTOs.SinglePlan.SinglePlanCreateDto) on controller NDISS.Service.API.Controllers.SinglePlanController (NDISS.Service.API).
+2025-07-03 17:19:44.889 +09:30 [INF] Executed DbCommand (37ms) [Parameters=[@__dto_MenuId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]
+        WHERE [m].[MenuId] = @__dto_MenuId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-07-03 17:19:44.948 +09:30 [ERR] Failed to add SinglePlan.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: Menu string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 38
+2025-07-03 17:19:45.010 +09:30 [INF] Executed action NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API) in 1253.1647ms
+2025-07-03 17:19:45.012 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan (NDISS.Service.API)'
+2025-07-03 17:19:45.051 +09:30 [ERR] Unhandled exception occurred.
+NDIS.Shared.Common.Extensions.ResourceNotFoundException: Menu string not found.
+   at NDISS.Service.API.Services.SinglePlanService.AddSinglePlanAsync(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Services\SinglePlanService.cs:line 38
+   at NDISS.Service.API.Controllers.SinglePlanController.CreateSinglePlan(SinglePlanCreateDto dto) in E:\C#\NDIS-AU-API\NDISS.Service.API\Controllers\SinglePlanController.cs:line 27
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDIS.Shared.Common.Middlewares.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in E:\C#\NDIS-AU-API\NDIS.ClassLibrary\Common\Middlewares\GlobalExceptionMiddleware.cs:line 31
+2025-07-03 17:19:45.063 +09:30 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/SinglePlan - 404 null application/json 1364.6932ms
+2025-07-03 17:22:25.385 +09:30 [INF] Now listening on: http://localhost:5041
+2025-07-03 17:22:25.451 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-03 17:22:25.452 +09:30 [INF] Hosting environment: Development
+2025-07-03 17:22:25.453 +09:30 [INF] Content root path: E:\C#\NDIS-AU-API\NDISS.Service.API
+2025-07-03 17:22:25.687 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-07-03 17:22:25.797 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 115.2533ms
+2025-07-03 17:22:25.940 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-07-03 17:22:25.940 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-03 17:22:25.945 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 6.1352ms
+2025-07-03 17:22:25.965 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 26.5167ms
+2025-07-03 17:22:26.166 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-07-03 17:22:26.176 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 10.0914ms
+2025-07-03 20:32:19.088 +09:30 [INF] Now listening on: http://localhost:5041
+2025-07-03 20:32:19.209 +09:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-03 20:32:19.211 +09:30 [INF] Hosting environment: Development
+2025-07-03 20:32:19.212 +09:30 [INF] Content root path: E:\C#\NDIS-AU-API\NDISS.Service.API
+2025-07-03 20:32:19.948 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-07-03 20:32:20.149 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 210.9121ms
+2025-07-03 20:32:20.177 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-03 20:32:20.185 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 16519 application/javascript; charset=utf-8 8.8368ms
+2025-07-03 20:32:20.376 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-07-03 20:32:20.434 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 58.0748ms
+2025-07-03 20:32:20.700 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-07-03 20:32:20.716 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 16.4409ms
+2025-07-03 20:32:28.138 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/WeeklyPlan - null null
+2025-07-03 20:32:28.177 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.GetAllWeeklyPlans (NDISS.Service.API)'
+2025-07-03 20:32:28.207 +09:30 [INF] Route matched with {action = "GetAllWeeklyPlans", controller = "WeeklyPlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllWeeklyPlans() on controller NDISS.Service.API.Controllers.WeeklyPlanController (NDISS.Service.API).
+2025-07-03 20:32:30.138 +09:30 [INF] Executed DbCommand (56ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [w].[WeeklyPlanId], [w].[CategoryId], [w].[PlanDescription], [w].[PlanName], [w].[PlanPrice], [c].[CategoryId], [c].[CategoryDescription], [c].[CategoryName], [c].[ProviderServiceId]
+FROM [WeeklyPlans] AS [w]
+INNER JOIN [Categories] AS [c] ON [w].[CategoryId] = [c].[CategoryId]
+2025-07-03 20:32:30.296 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.WeeklyPlan.WeeklyPlanResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-03 20:32:30.320 +09:30 [INF] Executed action NDISS.Service.API.Controllers.WeeklyPlanController.GetAllWeeklyPlans (NDISS.Service.API) in 2105.303ms
+2025-07-03 20:32:30.323 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.GetAllWeeklyPlans (NDISS.Service.API)'
+2025-07-03 20:32:30.333 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/WeeklyPlan - 200 null application/json; charset=utf-8 2195.9073ms
+2025-07-03 20:32:46.477 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/WeeklyPlan/82c82ec7-77bd-4c58-92c2-4cd0ca93cc4 - null null
+2025-07-03 20:32:46.485 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.GetWeeklyPlanById (NDISS.Service.API)'
+2025-07-03 20:32:46.499 +09:30 [INF] Route matched with {action = "GetWeeklyPlanById", controller = "WeeklyPlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetWeeklyPlanById(System.String) on controller NDISS.Service.API.Controllers.WeeklyPlanController (NDISS.Service.API).
+2025-07-03 20:32:46.666 +09:30 [INF] Executed DbCommand (30ms) [Parameters=[@__id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [w].[WeeklyPlanId], [w].[CategoryId], [w].[PlanDescription], [w].[PlanName], [w].[PlanPrice], [c].[CategoryId], [c].[CategoryDescription], [c].[CategoryName], [c].[ProviderServiceId]
+FROM [WeeklyPlans] AS [w]
+INNER JOIN [Categories] AS [c] ON [w].[CategoryId] = [c].[CategoryId]
+WHERE [w].[WeeklyPlanId] = @__id_0
+2025-07-03 20:32:46.672 +09:30 [WRN] WeeklyPlan not found: 82c82ec7-77bd-4c58-92c2-4cd0ca93cc4
+2025-07-03 20:32:46.676 +09:30 [INF] Executing NotFoundObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-03 20:32:46.680 +09:30 [INF] Executed action NDISS.Service.API.Controllers.WeeklyPlanController.GetWeeklyPlanById (NDISS.Service.API) in 178.4515ms
+2025-07-03 20:32:46.682 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.GetWeeklyPlanById (NDISS.Service.API)'
+2025-07-03 20:32:46.684 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/WeeklyPlan/82c82ec7-77bd-4c58-92c2-4cd0ca93cc4 - 404 null application/json; charset=utf-8 206.5355ms
+2025-07-03 20:32:51.299 +09:30 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/WeeklyPlan/82c82ec7-77bd-4c58-92c2-4cd0ca93cc4f - null null
+2025-07-03 20:32:51.303 +09:30 [INF] Executing endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.GetWeeklyPlanById (NDISS.Service.API)'
+2025-07-03 20:32:51.305 +09:30 [INF] Route matched with {action = "GetWeeklyPlanById", controller = "WeeklyPlan"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetWeeklyPlanById(System.String) on controller NDISS.Service.API.Controllers.WeeklyPlanController (NDISS.Service.API).
+2025-07-03 20:32:51.330 +09:30 [INF] Executed DbCommand (2ms) [Parameters=[@__id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [w].[WeeklyPlanId], [w].[CategoryId], [w].[PlanDescription], [w].[PlanName], [w].[PlanPrice], [c].[CategoryId], [c].[CategoryDescription], [c].[CategoryName], [c].[ProviderServiceId]
+FROM [WeeklyPlans] AS [w]
+INNER JOIN [Categories] AS [c] ON [w].[CategoryId] = [c].[CategoryId]
+WHERE [w].[WeeklyPlanId] = @__id_0
+2025-07-03 20:32:51.337 +09:30 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.WeeklyPlan.WeeklyPlanResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 20:32:51.340 +09:30 [INF] Executed action NDISS.Service.API.Controllers.WeeklyPlanController.GetWeeklyPlanById (NDISS.Service.API) in 33.3494ms
+2025-07-03 20:32:51.342 +09:30 [INF] Executed endpoint 'NDISS.Service.API.Controllers.WeeklyPlanController.GetWeeklyPlanById (NDISS.Service.API)'
+2025-07-03 20:32:51.343 +09:30 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/WeeklyPlan/82c82ec7-77bd-4c58-92c2-4cd0ca93cc4f - 200 null application/json; charset=utf-8 44.4077ms

@@ -1,0 +1,6 @@
+@NDISS.NotificationService.API_HostAddress = http://localhost:5208
+
+GET {{NDISS.NotificationService.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

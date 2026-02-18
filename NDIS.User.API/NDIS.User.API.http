@@ -1,0 +1,6 @@
+@NDIS.User.API_HostAddress = http://localhost:5192
+
+GET {{NDIS.User.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

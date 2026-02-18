@@ -1,0 +1,1100 @@
+2025-06-24 01:40:16.732 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-24 01:40:16.811 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-24 01:40:16.812 +10:00 [INF] Hosting environment: Development
+2025-06-24 01:40:16.813 +10:00 [INF] Content root path: C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API
+2025-06-24 02:27:29.060 +10:00 [INF] Executed DbCommand (60ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-24 02:27:29.135 +10:00 [INF] Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-24 02:27:29.151 +10:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-24 02:27:29.240 +10:00 [INF] Executed DbCommand (54ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2025-06-24 02:27:29.242 +10:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-06-24 02:27:29.245 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-06-24 02:27:29.252 +10:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-06-24 02:27:29.262 +10:00 [INF] Applying migration '20250623162025_InitialCreate'.
+2025-06-24 02:27:29.360 +10:00 [INF] Executed DbCommand (38ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Periods] (
+    [PeriodId] nvarchar(450) NOT NULL,
+    [PeriodName] nvarchar(max) NOT NULL,
+    [DeliveryTime] datetime2 NOT NULL,
+    CONSTRAINT [PK_Periods] PRIMARY KEY ([PeriodId])
+);
+2025-06-24 02:27:29.363 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ServiceTypes] (
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    [ServiceTypeName] nvarchar(max) NOT NULL,
+    [ServiceDescription] nvarchar(max) NULL,
+    CONSTRAINT [PK_ServiceTypes] PRIMARY KEY ([ServiceTypeId])
+);
+2025-06-24 02:27:29.368 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeekDays] (
+    [WeekDayId] nvarchar(450) NOT NULL,
+    [WeekDayName] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_WeekDays] PRIMARY KEY ([WeekDayId])
+);
+2025-06-24 02:27:29.434 +10:00 [INF] Executed DbCommand (62ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServices] (
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    [ProviderId] nvarchar(max) NOT NULL,
+    [ServiceTypeId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServices] PRIMARY KEY ([ProviderServiceId]),
+    CONSTRAINT [FK_ProviderServices_ServiceTypes_ServiceTypeId] FOREIGN KEY ([ServiceTypeId]) REFERENCES [ServiceTypes] ([ServiceTypeId]) ON DELETE CASCADE
+);
+2025-06-24 02:27:29.439 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Categories] (
+    [CategoryId] nvarchar(450) NOT NULL,
+    [CategoryName] nvarchar(max) NOT NULL,
+    [CategoryDescription] nvarchar(max) NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Categories] PRIMARY KEY ([CategoryId]),
+    CONSTRAINT [FK_Categories_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-24 02:27:29.443 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Items] (
+    [ItemId] nvarchar(450) NOT NULL,
+    [ItemName] nvarchar(max) NOT NULL,
+    [ItemDescription] nvarchar(max) NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Items] PRIMARY KEY ([ItemId]),
+    CONSTRAINT [FK_Items_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-24 02:27:29.460 +10:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ProviderServiceLocations] (
+    [ProviderServiceLocationId] nvarchar(450) NOT NULL,
+    [ProviderServiceLocationAddress] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationCity] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationState] nvarchar(max) NOT NULL,
+    [ProviderServiceLocationPostcode] int NOT NULL,
+    [ProviderServiceLocationLat] real NOT NULL,
+    [ProviderServiceLocationLong] real NOT NULL,
+    [ProviderServiceId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_ProviderServiceLocations] PRIMARY KEY ([ProviderServiceLocationId]),
+    CONSTRAINT [FK_ProviderServiceLocations_ProviderServices_ProviderServiceId] FOREIGN KEY ([ProviderServiceId]) REFERENCES [ProviderServices] ([ProviderServiceId]) ON DELETE CASCADE
+);
+2025-06-24 02:27:29.493 +10:00 [INF] Executed DbCommand (31ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Menus] (
+    [MenuId] nvarchar(450) NOT NULL,
+    [PeriodId] nvarchar(450) NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_Menus] PRIMARY KEY ([MenuId]),
+    CONSTRAINT [FK_Menus_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Menus_Periods_PeriodId] FOREIGN KEY ([PeriodId]) REFERENCES [Periods] ([PeriodId]) ON DELETE CASCADE
+);
+2025-06-24 02:27:29.496 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WeeklyPlans] (
+    [WeeklyPlanId] nvarchar(450) NOT NULL,
+    [PlanName] nvarchar(max) NOT NULL,
+    [PlanDescription] nvarchar(max) NULL,
+    [PlanPrice] real NOT NULL,
+    [CategoryId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_WeeklyPlans] PRIMARY KEY ([WeeklyPlanId]),
+    CONSTRAINT [FK_WeeklyPlans_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([CategoryId]) ON DELETE CASCADE
+);
+2025-06-24 02:27:29.500 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [MenuItems] (
+    [MenuItemId] nvarchar(450) NOT NULL,
+    [MenuId] nvarchar(450) NOT NULL,
+    [ItemId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_MenuItems] PRIMARY KEY ([MenuItemId]),
+    CONSTRAINT [FK_MenuItems_Items_ItemId] FOREIGN KEY ([ItemId]) REFERENCES [Items] ([ItemId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_MenuItems_Menus_MenuId] FOREIGN KEY ([MenuId]) REFERENCES [Menus] ([MenuId]) ON DELETE NO ACTION
+);
+2025-06-24 02:27:29.504 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [SinglePlans] (
+    [SinglePlanId] nvarchar(450) NOT NULL,
+    [MenuId] nvarchar(450) NOT NULL,
+    [WeeklyPlanId] nvarchar(450) NOT NULL,
+    [WeekDayId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_SinglePlans] PRIMARY KEY ([SinglePlanId]),
+    CONSTRAINT [FK_SinglePlans_Menus_MenuId] FOREIGN KEY ([MenuId]) REFERENCES [Menus] ([MenuId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SinglePlans_WeekDays_WeekDayId] FOREIGN KEY ([WeekDayId]) REFERENCES [WeekDays] ([WeekDayId]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SinglePlans_WeeklyPlans_WeeklyPlanId] FOREIGN KEY ([WeeklyPlanId]) REFERENCES [WeeklyPlans] ([WeeklyPlanId]) ON DELETE NO ACTION
+);
+2025-06-24 02:27:29.508 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Categories_ProviderServiceId] ON [Categories] ([ProviderServiceId]);
+2025-06-24 02:27:29.510 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Items_ProviderServiceId] ON [Items] ([ProviderServiceId]);
+2025-06-24 02:27:29.512 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MenuItems_ItemId] ON [MenuItems] ([ItemId]);
+2025-06-24 02:27:29.514 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_MenuItems_MenuId] ON [MenuItems] ([MenuId]);
+2025-06-24 02:27:29.516 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Menus_CategoryId] ON [Menus] ([CategoryId]);
+2025-06-24 02:27:29.517 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Menus_PeriodId] ON [Menus] ([PeriodId]);
+2025-06-24 02:27:29.519 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ProviderServiceLocations_ProviderServiceId] ON [ProviderServiceLocations] ([ProviderServiceId]);
+2025-06-24 02:27:29.521 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ProviderServices_ServiceTypeId] ON [ProviderServices] ([ServiceTypeId]);
+2025-06-24 02:27:29.523 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SinglePlans_MenuId] ON [SinglePlans] ([MenuId]);
+2025-06-24 02:27:29.525 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SinglePlans_WeekDayId] ON [SinglePlans] ([WeekDayId]);
+2025-06-24 02:27:29.527 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SinglePlans_WeeklyPlanId] ON [SinglePlans] ([WeeklyPlanId]);
+2025-06-24 02:27:29.529 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WeeklyPlans_CategoryId] ON [WeeklyPlans] ([CategoryId]);
+2025-06-24 02:27:29.531 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250623162025_InitialCreate', N'8.0.5');
+2025-06-24 02:27:55.640 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-24 02:27:55.728 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-24 02:27:55.729 +10:00 [INF] Hosting environment: Development
+2025-06-24 02:27:55.729 +10:00 [INF] Content root path: C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API
+2025-06-24 02:27:56.434 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-24 02:27:56.617 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 190.3434ms
+2025-06-24 02:27:56.624 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-24 02:27:56.624 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-24 02:27:56.627 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 13786 application/javascript; charset=utf-8 3.4865ms
+2025-06-24 02:27:56.659 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 34.9968ms
+2025-06-24 02:27:56.760 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-24 02:27:56.770 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 10.0611ms
+2025-06-24 02:38:06.367 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 87
+2025-06-24 02:38:06.438 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 02:38:06.458 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 02:38:08.186 +10:00 [INF] Executed DbCommand (84ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 02:38:08.351 +10:00 [ERR] Invalid ProviderServiceId: item1
+System.Collections.Generic.KeyNotFoundException: ProviderServiceId with name 'item1' no exists.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 28
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 42
+   at NDISServiceAPI.Services.ItemService.ItemService.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 22
+   at NDISServiceAPI.Controllers.ItemController.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 28
+2025-06-24 02:38:08.399 +10:00 [INF] Executing BadRequestObjectResult, writing value of type 'System.String'.
+2025-06-24 02:38:08.402 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 1941.5191ms
+2025-06-24 02:38:08.403 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 02:38:08.407 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 400 null text/plain; charset=utf-8 2039.9528ms
+2025-06-24 02:38:26.960 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService - application/json 53
+2025-06-24 02:38:26.963 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 02:38:26.970 +10:00 [INF] Route matched with {action = "CreateProviderService", controller = "ProviderService"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateProviderService(NDISS.Service.API.DTOs.ProviderServiceCreateDto) on controller NDISS.Service.API.Controllers.ProviderServiceController (NDISS.Service.API).
+2025-06-24 02:38:27.116 +10:00 [ERR] Failed executing DbCommand (14ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ProviderServices] ([ProviderServiceId], [ProviderId], [ServiceTypeId])
+VALUES (@p0, @p1, @p2);
+2025-06-24 02:38:27.168 +10:00 [ERR] An exception occurred in the database while saving changes for context type 'NDISS.Service.API.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-06-24 02:38:27.243 +10:00 [ERR] Error occurred while adding new ProviderService.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 31
+2025-06-24 02:38:27.407 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API) in 434.4166ms
+2025-06-24 02:38:27.416 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 02:38:27.489 +10:00 [ERR] Unhandled exception occurred.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 31
+   at NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ProviderServiceController.cs:line 26
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-06-24 02:38:27.500 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService - 500 null application/json 539.9551ms
+2025-06-24 02:38:33.676 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 84
+2025-06-24 02:38:33.682 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 02:38:33.684 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 02:38:33.749 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 02:38:33.873 +10:00 [ERR] Invalid ProviderServiceId: p1
+System.Collections.Generic.KeyNotFoundException: ProviderServiceId with name 'p1' no exists.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 28
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 42
+   at NDISServiceAPI.Services.ItemService.ItemService.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 22
+   at NDISServiceAPI.Controllers.ItemController.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 28
+2025-06-24 02:38:33.876 +10:00 [INF] Executing BadRequestObjectResult, writing value of type 'System.String'.
+2025-06-24 02:38:33.877 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 190.2899ms
+2025-06-24 02:38:33.879 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 02:38:33.882 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 400 null text/plain; charset=utf-8 206.0624ms
+2025-06-24 02:38:42.455 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService - application/json 49
+2025-06-24 02:38:42.459 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 02:38:42.460 +10:00 [INF] Route matched with {action = "CreateProviderService", controller = "ProviderService"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateProviderService(NDISS.Service.API.DTOs.ProviderServiceCreateDto) on controller NDISS.Service.API.Controllers.ProviderServiceController (NDISS.Service.API).
+2025-06-24 02:38:42.465 +10:00 [ERR] Failed executing DbCommand (2ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ProviderServices] ([ProviderServiceId], [ProviderId], [ServiceTypeId])
+VALUES (@p0, @p1, @p2);
+2025-06-24 02:38:42.468 +10:00 [ERR] An exception occurred in the database while saving changes for context type 'NDISS.Service.API.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-06-24 02:38:42.620 +10:00 [ERR] Error occurred while adding new ProviderService.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 31
+2025-06-24 02:38:42.768 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API) in 307.0444ms
+2025-06-24 02:38:42.779 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 02:38:42.845 +10:00 [ERR] Unhandled exception occurred.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 31
+   at NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ProviderServiceController.cs:line 26
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-06-24 02:38:42.934 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService - 500 null application/json 478.9808ms
+2025-06-24 02:38:47.336 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService - application/json 49
+2025-06-24 02:38:47.342 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 02:38:47.343 +10:00 [INF] Route matched with {action = "CreateProviderService", controller = "ProviderService"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateProviderService(NDISS.Service.API.DTOs.ProviderServiceCreateDto) on controller NDISS.Service.API.Controllers.ProviderServiceController (NDISS.Service.API).
+2025-06-24 02:38:47.353 +10:00 [ERR] Failed executing DbCommand (3ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ProviderServices] ([ProviderServiceId], [ProviderId], [ServiceTypeId])
+VALUES (@p0, @p1, @p2);
+2025-06-24 02:38:47.358 +10:00 [ERR] An exception occurred in the database while saving changes for context type 'NDISS.Service.API.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-06-24 02:38:47.428 +10:00 [ERR] Error occurred while adding new ProviderService.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 31
+2025-06-24 02:38:47.574 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API) in 228.4763ms
+2025-06-24 02:38:47.583 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 02:38:47.649 +10:00 [ERR] Unhandled exception occurred.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_ProviderServices_ServiceTypes_ServiceTypeId". The conflict occurred in database "NDISSService", table "dbo.ServiceTypes", column 'ServiceTypeId'.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:a9303a3d-e841-43f6-9035-e9554b6732a1
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GenericRepository`1.SaveAsync() in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\GenericRepository.cs:line 48
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 31
+   at NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ProviderServiceController.cs:line 26
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-06-24 02:38:47.683 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService - 500 null application/json 347.676ms
+2025-06-24 02:38:56.097 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 02:38:56.103 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 02:38:56.113 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 02:38:56.142 +10:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 02:38:56.159 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NDISServiceAPI.DTO.Item.ItemResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 02:38:56.164 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 46.1241ms
+2025-06-24 02:38:56.168 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 02:38:56.170 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 73.5136ms
+2025-06-24 03:01:09.212 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-24 03:01:09.302 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-24 03:01:09.303 +10:00 [INF] Hosting environment: Development
+2025-06-24 03:01:09.303 +10:00 [INF] Content root path: C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API
+2025-06-24 03:01:09.887 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-24 03:01:10.044 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 165.017ms
+2025-06-24 03:01:10.055 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-24 03:01:10.055 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-24 03:01:10.060 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 13786 application/javascript; charset=utf-8 5.6504ms
+2025-06-24 03:01:10.091 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 36.2727ms
+2025-06-24 03:01:10.181 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-24 03:01:10.195 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 14.12ms
+2025-06-24 03:01:24.755 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService - application/json 49
+2025-06-24 03:01:24.768 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:01:24.769 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:01:24.773 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 03:01:24.800 +10:00 [INF] Route matched with {action = "CreateProviderService", controller = "ProviderService"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateProviderService(NDISS.Service.API.DTOs.ProviderService.ProviderServiceCreateDto) on controller NDISS.Service.API.Controllers.ProviderServiceController (NDISS.Service.API).
+2025-06-24 03:01:26.113 +10:00 [INF] Executed DbCommand (42ms) [Parameters=[@__dto_ServiceTypeId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]
+        WHERE [s].[ServiceTypeId] = @__dto_ServiceTypeId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-06-24 03:01:26.198 +10:00 [ERR] Error occurred while adding new ProviderService.
+System.Collections.Generic.KeyNotFoundException: ServiceType s1 not found.
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 35
+2025-06-24 03:01:26.273 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API) in 1467.5489ms
+2025-06-24 03:01:26.274 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 03:01:26.345 +10:00 [ERR] Unhandled exception occurred.
+System.Collections.Generic.KeyNotFoundException: ServiceType s1 not found.
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 35
+   at NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ProviderServiceController.cs:line 26
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-06-24 03:01:26.385 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService - 500 null application/json 1629.4871ms
+2025-06-24 03:01:53.983 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 90
+2025-06-24 03:01:53.994 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:01:53.995 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:01:53.999 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:01:54.005 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:01:54.169 +10:00 [INF] Executed DbCommand (5ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:01:54.313 +10:00 [ERR] Invalid ProviderServiceId: string
+System.Collections.Generic.KeyNotFoundException: ProviderServiceId with name 'string' no exists.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 28
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 42
+   at NDISServiceAPI.Services.ItemService.ItemService.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 22
+   at NDISServiceAPI.Controllers.ItemController.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 28
+2025-06-24 03:01:54.339 +10:00 [INF] Executing BadRequestObjectResult, writing value of type 'System.String'.
+2025-06-24 03:01:54.342 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 334.3114ms
+2025-06-24 03:01:54.350 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:01:54.373 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 400 null text/plain; charset=utf-8 390.288ms
+2025-06-24 03:17:17.226 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-24 03:17:17.307 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-24 03:17:17.308 +10:00 [INF] Hosting environment: Development
+2025-06-24 03:17:17.308 +10:00 [INF] Content root path: C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API
+2025-06-24 03:17:17.824 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-24 03:17:17.974 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 154.1154ms
+2025-06-24 03:17:17.981 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-24 03:17:17.981 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-24 03:17:17.990 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 13786 application/javascript; charset=utf-8 9.2071ms
+2025-06-24 03:17:18.015 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 34.981ms
+2025-06-24 03:17:18.052 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-24 03:17:18.063 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 10.9981ms
+2025-06-24 03:17:35.653 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 90
+2025-06-24 03:17:35.661 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:17:35.662 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:17:35.664 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:17:35.680 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:17:36.568 +10:00 [INF] Executed DbCommand (34ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:17:36.652 +10:00 [ERR] Invalid ProviderServiceId: string
+System.Collections.Generic.KeyNotFoundException: ProviderServiceId with name 'string' no exists.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 28
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 41
+   at NDISServiceAPI.Services.ItemService.ItemService.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 22
+   at NDISServiceAPI.Controllers.ItemController.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 28
+2025-06-24 03:17:36.678 +10:00 [INF] Executing BadRequestObjectResult, writing value of type 'System.String'.
+2025-06-24 03:17:36.681 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 998.5844ms
+2025-06-24 03:17:36.682 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:17:36.686 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 400 null text/plain; charset=utf-8 1032.5346ms
+2025-06-24 03:18:08.850 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ServiceType - application/json 65
+2025-06-24 03:18:08.854 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:18:08.855 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:18:08.855 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.CreateServiceType (NDISS.Service.API)'
+2025-06-24 03:18:08.860 +10:00 [INF] Route matched with {action = "CreateServiceType", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateServiceType(NDISS.Service.API.DTOs.ServiceType.ServiceTypeCreateDto) on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-24 03:18:08.954 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ServiceTypes] ([ServiceTypeId], [ServiceDescription], [ServiceTypeName])
+VALUES (@p0, @p1, @p2);
+2025-06-24 03:18:08.964 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.ServiceType.ServiceTypeResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 03:18:08.968 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.CreateServiceType (NDISS.Service.API) in 107.1696ms
+2025-06-24 03:18:08.969 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.CreateServiceType (NDISS.Service.API)'
+2025-06-24 03:18:08.969 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 119.6043ms
+2025-06-24 03:18:32.674 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService - application/json 59
+2025-06-24 03:18:32.679 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:18:32.679 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:18:32.680 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 03:18:32.683 +10:00 [INF] Route matched with {action = "CreateProviderService", controller = "ProviderService"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateProviderService(NDISS.Service.API.DTOs.ProviderService.ProviderServiceCreateDto) on controller NDISS.Service.API.Controllers.ProviderServiceController (NDISS.Service.API).
+2025-06-24 03:18:32.758 +10:00 [INF] Executed DbCommand (24ms) [Parameters=[@__dto_ServiceTypeId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]
+        WHERE [s].[ServiceTypeId] = @__dto_ServiceTypeId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-06-24 03:18:32.781 +10:00 [ERR] Error occurred while adding new ProviderService.
+System.Collections.Generic.KeyNotFoundException: ServiceType type1 not found.
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 35
+2025-06-24 03:18:32.807 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API) in 123.1699ms
+2025-06-24 03:18:32.809 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 03:18:32.839 +10:00 [ERR] Unhandled exception occurred.
+System.Collections.Generic.KeyNotFoundException: ServiceType type1 not found.
+   at NDISS.Service.API.Services.ProviderServiceService.AddProviderServiceAsync(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ProviderServiceService.cs:line 35
+   at NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService(ProviderServiceCreateDto dto) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ProviderServiceController.cs:line 26
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at NDISS.Service.API.Middleware.GlobalExceptionHandlerMiddleware.Invoke(HttpContext context) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Middlewares\GlobalExceptionHandler.cs:line 25
+2025-06-24 03:18:32.845 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService - 500 null application/json 173.3917ms
+2025-06-24 03:18:58.165 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/ServiceType - null null
+2025-06-24 03:18:58.177 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAllServiceTypes (NDISS.Service.API)'
+2025-06-24 03:18:58.179 +10:00 [INF] Route matched with {action = "GetAllServiceTypes", controller = "ServiceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllServiceTypes() on controller NDISS.Service.API.Controllers.ServiceTypeController (NDISS.Service.API).
+2025-06-24 03:18:58.197 +10:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+2025-06-24 03:18:58.205 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISS.Service.API.DTOs.ServiceType.ServiceTypeResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-24 03:18:58.207 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ServiceTypeController.GetAllServiceTypes (NDISS.Service.API) in 27.1663ms
+2025-06-24 03:18:58.208 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ServiceTypeController.GetAllServiceTypes (NDISS.Service.API)'
+2025-06-24 03:18:58.209 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/ServiceType - 200 null application/json; charset=utf-8 43.694ms
+2025-06-24 03:19:11.081 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/ProviderService - application/json 90
+2025-06-24 03:19:11.082 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:19:11.083 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:19:11.083 +10:00 [INF] Executing endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 03:19:11.084 +10:00 [INF] Route matched with {action = "CreateProviderService", controller = "ProviderService"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateProviderService(NDISS.Service.API.DTOs.ProviderService.ProviderServiceCreateDto) on controller NDISS.Service.API.Controllers.ProviderServiceController (NDISS.Service.API).
+2025-06-24 03:19:11.091 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[@__dto_ServiceTypeId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]
+        WHERE [s].[ServiceTypeId] = @__dto_ServiceTypeId_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-06-24 03:19:11.106 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [ProviderServices] ([ProviderServiceId], [ProviderId], [ServiceTypeId])
+VALUES (@p0, @p1, @p2);
+2025-06-24 03:19:11.111 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__providerService_ServiceTypeId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[ServiceTypeId], [s].[ServiceDescription], [s].[ServiceTypeName]
+FROM [ServiceTypes] AS [s]
+WHERE [s].[ServiceTypeId] = @__providerService_ServiceTypeId_0
+2025-06-24 03:19:11.124 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[NDISS.Service.API.DTOs.ProviderService.ProviderServiceResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 03:19:11.127 +10:00 [INF] Executed action NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API) in 41.5861ms
+2025-06-24 03:19:11.128 +10:00 [INF] Executed endpoint 'NDISS.Service.API.Controllers.ProviderServiceController.CreateProviderService (NDISS.Service.API)'
+2025-06-24 03:19:11.129 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/ProviderService - 200 null application/json; charset=utf-8 47.9976ms
+2025-06-24 03:19:30.998 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 90
+2025-06-24 03:19:31.001 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:19:31.002 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:19:31.003 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:19:31.004 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:19:31.021 +10:00 [INF] Executed DbCommand (4ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:19:31.081 +10:00 [ERR] Invalid ProviderServiceId: string
+System.Collections.Generic.KeyNotFoundException: ProviderServiceId with name 'string' no exists.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 28
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.AddItem(Item request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 41
+   at NDISServiceAPI.Services.ItemService.ItemService.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 22
+   at NDISServiceAPI.Controllers.ItemController.AddItem(CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 28
+2025-06-24 03:19:31.082 +10:00 [INF] Executing BadRequestObjectResult, writing value of type 'System.String'.
+2025-06-24 03:19:31.083 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 76.7749ms
+2025-06-24 03:19:31.084 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:19:31.085 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 400 null text/plain; charset=utf-8 86.6789ms
+2025-06-24 03:19:38.748 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 119
+2025-06-24 03:19:38.750 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:19:38.750 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:19:38.751 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:19:38.751 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:19:38.767 +10:00 [INF] Executed DbCommand (7ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:19:38.781 +10:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2025-06-24 03:19:38.788 +10:00 [INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Items] ([ItemId], [ItemDescription], [ItemName], [ProviderServiceId])
+VALUES (@p0, @p1, @p2, @p3);
+2025-06-24 03:19:38.792 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2025-06-24 03:19:38.793 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 40.4385ms
+2025-06-24 03:19:38.793 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:19:38.794 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 200 null text/plain; charset=utf-8 45.9623ms
+2025-06-24 03:19:43.190 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 03:19:43.194 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:19:43.198 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:19:43.211 +10:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 03:19:43.215 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NDISServiceAPI.DTO.Item.ItemResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 03:19:43.217 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 14.6823ms
+2025-06-24 03:19:43.218 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:19:43.218 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 28.9198ms
+2025-06-24 03:19:55.809 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetById/950c4eef-35d3-4172-a7f5-c91d5d596686 - null null
+2025-06-24 03:19:55.811 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetById (NDISS.Service.API)'
+2025-06-24 03:19:55.815 +10:00 [INF] Route matched with {action = "GetById", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.String) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:19:55.824 +10:00 [INF] Executed DbCommand (3ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:19:55.828 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDISServiceAPI.DTO.Item.ItemResponseDto'.
+2025-06-24 03:19:55.829 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetById (NDISS.Service.API) in 12.2354ms
+2025-06-24 03:19:55.829 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetById (NDISS.Service.API)'
+2025-06-24 03:19:55.830 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetById/950c4eef-35d3-4172-a7f5-c91d5d596686 - 200 null application/json; charset=utf-8 20.798ms
+2025-06-24 03:29:12.509 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-24 03:29:12.612 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-24 03:29:12.613 +10:00 [INF] Hosting environment: Development
+2025-06-24 03:29:12.613 +10:00 [INF] Content root path: C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API
+2025-06-24 03:29:13.176 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-24 03:29:13.325 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 156.3418ms
+2025-06-24 03:29:13.335 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-24 03:29:13.335 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-24 03:29:13.339 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 13786 application/javascript; charset=utf-8 5.221ms
+2025-06-24 03:29:13.373 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 38.4601ms
+2025-06-24 03:29:13.395 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-24 03:29:13.406 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 10.178ms
+2025-06-24 03:29:29.402 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 03:29:29.412 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:29:29.425 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:29:30.249 +10:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 03:29:30.300 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NDISServiceAPI.DTO.Item.ItemResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 03:29:30.306 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 878.5938ms
+2025-06-24 03:29:30.307 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:29:30.312 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 910.6231ms
+2025-06-24 03:29:44.089 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 119
+2025-06-24 03:29:44.096 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:29:44.097 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:29:44.098 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:29:44.104 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:29:44.230 +10:00 [INF] Executed DbCommand (16ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:29:44.297 +10:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2025-06-24 03:29:44.303 +10:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Items] ([ItemId], [ItemDescription], [ItemName], [ProviderServiceId])
+VALUES (@p0, @p1, @p2, @p3);
+2025-06-24 03:29:44.315 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2025-06-24 03:29:44.316 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 211.3002ms
+2025-06-24 03:29:44.317 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:29:44.318 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 200 null text/plain; charset=utf-8 228.8527ms
+2025-06-24 03:29:50.864 +10:00 [INF] Request starting HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - application/json 119
+2025-06-24 03:29:50.866 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:29:50.867 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:29:50.868 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:29:50.869 +10:00 [INF] Route matched with {action = "AddItem", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddItem(NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:29:50.884 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:29:50.887 +10:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2025-06-24 03:29:50.888 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Items] ([ItemId], [ItemDescription], [ItemName], [ProviderServiceId])
+VALUES (@p0, @p1, @p2, @p3);
+2025-06-24 03:29:50.891 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2025-06-24 03:29:50.891 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API) in 21.3212ms
+2025-06-24 03:29:50.892 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.AddItem (NDISS.Service.API)'
+2025-06-24 03:29:50.893 +10:00 [INF] Request finished HTTP/1.1 POST http://localhost:5041/api/Item/AddItem - 200 null text/plain; charset=utf-8 28.7204ms
+2025-06-24 03:29:52.662 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 03:29:52.664 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:29:52.665 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:29:52.669 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 03:29:52.670 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NDISServiceAPI.DTO.Item.ItemResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 03:29:52.671 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 5.008ms
+2025-06-24 03:29:52.672 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:29:52.673 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 11.2894ms
+2025-06-24 03:30:49.422 +10:00 [INF] Request starting HTTP/1.1 PUT http://localhost:5041/api/Item/Update/950c4eef-35d3-4172-a7f5-c91d5d596686 - application/json 132
+2025-06-24 03:30:49.431 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:30:49.431 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:30:49.432 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API)'
+2025-06-24 03:30:49.435 +10:00 [INF] Route matched with {action = "Update", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.String, NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:30:49.450 +10:00 [INF] Executed DbCommand (6ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:30:49.456 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:30:49.466 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:30:49.521 +10:00 [ERR] An error occurred while updating the item with ID 950c4eef-35d3-4172-a7f5-c91d5d596686.
+System.Collections.Generic.KeyNotFoundException: ProviderServiceId with name 'b587c9c1-7792-4b42-845c-2b9eef1886e' does not exist.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.Update(String itemId, CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 75
+   at NDISServiceAPI.Services.ItemService.ItemService.Update(String itemId, CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 56
+   at NDISServiceAPI.Controllers.ItemController.Update(String itemId, CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 86
+2025-06-24 03:30:49.543 +10:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2025-06-24 03:30:49.544 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API) in 107.1416ms
+2025-06-24 03:30:49.544 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API)'
+2025-06-24 03:30:49.545 +10:00 [INF] Request finished HTTP/1.1 PUT http://localhost:5041/api/Item/Update/950c4eef-35d3-4172-a7f5-c91d5d596686 - 500 null text/plain; charset=utf-8 127.6809ms
+2025-06-24 03:31:02.234 +10:00 [INF] Request starting HTTP/1.1 PUT http://localhost:5041/api/Item/Update/950c4eef-35d3-4172-a7f5-c91d5d596686 - application/json 133
+2025-06-24 03:31:02.239 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:31:02.241 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:31:02.244 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API)'
+2025-06-24 03:31:02.245 +10:00 [INF] Route matched with {action = "Update", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.String, NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:31:02.253 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:31:02.256 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:31:02.259 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:31:02.272 +10:00 [INF] Executed DbCommand (6ms) [Parameters=[@p3='?' (Size = 450), @p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Items] SET [ItemDescription] = @p0, [ItemName] = @p1, [ProviderServiceId] = @p2
+OUTPUT 1
+WHERE [ItemId] = @p3;
+2025-06-24 03:31:02.276 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2025-06-24 03:31:02.277 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API) in 26.9119ms
+2025-06-24 03:31:02.278 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API)'
+2025-06-24 03:31:02.278 +10:00 [INF] Request finished HTTP/1.1 PUT http://localhost:5041/api/Item/Update/950c4eef-35d3-4172-a7f5-c91d5d596686 - 200 null text/plain; charset=utf-8 44.9712ms
+2025-06-24 03:31:19.635 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 03:31:19.636 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:31:19.637 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:31:19.646 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 03:31:19.648 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NDISServiceAPI.DTO.Item.ItemResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 03:31:19.649 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 6.5544ms
+2025-06-24 03:31:19.649 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:31:19.650 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 15.6763ms
+2025-06-24 03:31:28.008 +10:00 [INF] Request starting HTTP/1.1 PUT http://localhost:5041/api/Item/Update/950c4eef-35d3-4172-a7f5-c91d5d596686 - application/json 132
+2025-06-24 03:31:28.012 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:31:28.014 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:31:28.016 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API)'
+2025-06-24 03:31:28.017 +10:00 [INF] Route matched with {action = "Update", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.String, NDISServiceAPI.DTO.Item.CreateItemRequestDto) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:31:28.023 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:31:28.026 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:31:28.029 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__request_ProviderServiceId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderServiceId], [p].[ProviderId], [p].[ServiceTypeId]
+FROM [ProviderServices] AS [p]
+WHERE [p].[ProviderServiceId] = @__request_ProviderServiceId_0
+2025-06-24 03:31:28.069 +10:00 [ERR] An error occurred while updating the item with ID 950c4eef-35d3-4172-a7f5-c91d5d596686.
+System.Collections.Generic.KeyNotFoundException: ProviderServiceId with name 'b587c9c1-7792-4b42-845c-2b9eef188e8' does not exist.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.Update(String itemId, CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 75
+   at NDISServiceAPI.Services.ItemService.ItemService.Update(String itemId, CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 56
+   at NDISServiceAPI.Controllers.ItemController.Update(String itemId, CreateItemRequestDto request) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 86
+2025-06-24 03:31:28.071 +10:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2025-06-24 03:31:28.071 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API) in 52.4989ms
+2025-06-24 03:31:28.073 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.Update (NDISS.Service.API)'
+2025-06-24 03:31:28.073 +10:00 [INF] Request finished HTTP/1.1 PUT http://localhost:5041/api/Item/Update/950c4eef-35d3-4172-a7f5-c91d5d596686 - 500 null text/plain; charset=utf-8 65.2217ms
+2025-06-24 03:32:27.210 +10:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5041/api/Item/Delete/950c4eef-35d3-4172-a7f5-c91d5d596686 - null null
+2025-06-24 03:32:27.215 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:32:27.215 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:32:27.216 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.Delete (NDISS.Service.API)'
+2025-06-24 03:32:27.219 +10:00 [INF] Route matched with {action = "Delete", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(System.String) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:32:27.226 +10:00 [INF] Executed DbCommand (4ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:32:27.228 +10:00 [INF] Executed DbCommand (1ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:32:27.239 +10:00 [INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+DELETE FROM [Items]
+OUTPUT 1
+WHERE [ItemId] = @p0;
+2025-06-24 03:32:27.246 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2025-06-24 03:32:27.246 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.Delete (NDISS.Service.API) in 26.8453ms
+2025-06-24 03:32:27.247 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.Delete (NDISS.Service.API)'
+2025-06-24 03:32:27.248 +10:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5041/api/Item/Delete/950c4eef-35d3-4172-a7f5-c91d5d596686 - 200 null text/plain; charset=utf-8 39.0156ms
+2025-06-24 03:32:30.766 +10:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5041/api/Item/Delete/950c4eef-35d3-4172-a7f5-c91d5d596 - null null
+2025-06-24 03:32:30.768 +10:00 [INF] CORS policy execution failed.
+2025-06-24 03:32:30.768 +10:00 [INF] Request origin http://localhost:5041 does not have permission to access the resource.
+2025-06-24 03:32:30.772 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.Delete (NDISS.Service.API)'
+2025-06-24 03:32:30.774 +10:00 [INF] Route matched with {action = "Delete", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(System.String) on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:32:30.778 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[@__itemId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+WHERE [i].[ItemId] = @__itemId_0
+2025-06-24 03:32:30.826 +10:00 [ERR] An error occurred while deleting the item with ID 950c4eef-35d3-4172-a7f5-c91d5d596.
+System.Collections.Generic.KeyNotFoundException: Item with ID '950c4eef-35d3-4172-a7f5-c91d5d596' not found.
+   at NDISServiceAPI.DataAcess.Repository.ItemRepository.ItemRepository.GetById(String itemId) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Repositories\ItemRepository\ItemRepository.cs:line 59
+   at NDISServiceAPI.Services.ItemService.ItemService.Delete(String itemId) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Services\ItemService\ItemService.cs:line 63
+   at NDISServiceAPI.Controllers.ItemController.Delete(String itemId) in C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API\Controllers\ItemController.cs:line 112
+2025-06-24 03:32:30.828 +10:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2025-06-24 03:32:30.828 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.Delete (NDISS.Service.API) in 52.6998ms
+2025-06-24 03:32:30.829 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.Delete (NDISS.Service.API)'
+2025-06-24 03:32:30.830 +10:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5041/api/Item/Delete/950c4eef-35d3-4172-a7f5-c91d5d596 - 500 null text/plain; charset=utf-8 63.4239ms
+2025-06-24 03:32:38.270 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 03:32:38.272 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:32:38.272 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:32:38.277 +10:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 03:32:38.280 +10:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NDISServiceAPI.DTO.Item.ItemResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-24 03:32:38.280 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 6.6874ms
+2025-06-24 03:32:38.281 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:32:38.282 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 11.7598ms
+2025-06-24 03:45:54.648 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-24 03:45:54.750 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-24 03:45:54.751 +10:00 [INF] Hosting environment: Development
+2025-06-24 03:45:54.751 +10:00 [INF] Content root path: C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API
+2025-06-24 03:45:55.195 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-24 03:45:55.345 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 156.797ms
+2025-06-24 03:45:55.359 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-24 03:45:55.359 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-24 03:45:55.362 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 13786 application/javascript; charset=utf-8 4.1375ms
+2025-06-24 03:45:55.391 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 32.8448ms
+2025-06-24 03:45:55.424 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-24 03:45:55.436 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 12.5639ms
+2025-06-24 03:45:58.747 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 03:45:58.758 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:45:58.771 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 03:45:59.584 +10:00 [INF] Executed DbCommand (43ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 03:45:59.638 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDISServiceAPI.Controllers.ApiResponse'.
+2025-06-24 03:45:59.648 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 875.18ms
+2025-06-24 03:45:59.649 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 03:45:59.655 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 907.2849ms
+2025-06-24 04:10:46.742 +10:00 [INF] Now listening on: http://localhost:5041
+2025-06-24 04:10:46.819 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-24 04:10:46.820 +10:00 [INF] Hosting environment: Development
+2025-06-24 04:10:46.820 +10:00 [INF] Content root path: C:\Users\kod27\Desktop\JUN-NDIS\NDISS.Service.API
+2025-06-24 04:10:47.582 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/index.html - null null
+2025-06-24 04:10:47.736 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/index.html - 200 null text/html;charset=utf-8 164.4326ms
+2025-06-24 04:10:47.748 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_vs/browserLink - null null
+2025-06-24 04:10:47.748 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-24 04:10:47.754 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_framework/aspnetcore-browser-refresh.js - 200 13786 application/javascript; charset=utf-8 6.479ms
+2025-06-24 04:10:47.778 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/_vs/browserLink - 200 null text/javascript; charset=UTF-8 30.8618ms
+2025-06-24 04:10:47.811 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - null null
+2025-06-24 04:10:47.820 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 8.5421ms
+2025-06-24 04:11:53.854 +10:00 [INF] Request starting HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - null null
+2025-06-24 04:11:53.865 +10:00 [INF] Executing endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 04:11:53.879 +10:00 [INF] Route matched with {action = "GetAllItems", controller = "Item"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllItems() on controller NDISServiceAPI.Controllers.ItemController (NDISS.Service.API).
+2025-06-24 04:11:54.688 +10:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ItemId], [i].[ItemDescription], [i].[ItemName], [i].[ProviderServiceId]
+FROM [Items] AS [i]
+2025-06-24 04:11:54.738 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDISS.Service.API.Common.ApiResponse`1[[System.Collections.Generic.IEnumerable`1[[NDISServiceAPI.DTO.Item.ItemResponseDto, NDISS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-24 04:11:54.746 +10:00 [INF] Executed action NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API) in 864.5565ms
+2025-06-24 04:11:54.747 +10:00 [INF] Executed endpoint 'NDISServiceAPI.Controllers.ItemController.GetAllItems (NDISS.Service.API)'
+2025-06-24 04:11:54.752 +10:00 [INF] Request finished HTTP/1.1 GET http://localhost:5041/api/Item/GetAllItems - 200 null application/json; charset=utf-8 900.6531ms
