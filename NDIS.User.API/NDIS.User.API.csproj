@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- <ItemGroup>
+    <Compile Include="Data\UserRebateDbContext.cs.disabled" />
+  </ItemGroup> -->
+
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
@@ -20,7 +24,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.Exchange.WebServices" Version="2.2.0" />
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    
   </ItemGroup>
 
   <ItemGroup>
@@ -29,8 +33,11 @@
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <ProjectReference Include="..\NDISS.UserRebate.API\NDISS.UserRebate.API.csproj" />
-  </ItemGroup>
+  </ItemGroup> -->
+<ItemGroup>
+  <Compile Remove="Data\UserRebateDbContext.cs.disabled" />
+</ItemGroup>
 
 </Project>

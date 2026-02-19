@@ -15,7 +15,7 @@ namespace NDISS.UserRebate.API.Domain
         public string UserId { get; set; }
         public float RebateRate { get; set; }
         public int Status { get; set; }
-        public string AccessToken { get; set; }
+        //public string AccessToken { get; set; }
         public DateTime VerifiedAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public DateTime ExpiredAt { get; set; }
