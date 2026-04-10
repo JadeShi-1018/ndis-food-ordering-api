@@ -39,8 +39,13 @@ namespace NDIS.User.API.UserControllers
             return ApiResponse<SignUpResponseDto>.Success(result, "User registered successfully");
         }
 
+    [HttpGet("version")]
+    public IActionResult Version()
+    {
+      return Ok("cicd-test-20260411-1");
+    }
 
-        [HttpPut("{userId}")]
+    [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUserInfo(string userId, [FromBody] UpdateUserRequestDto dto)
         {
             try
