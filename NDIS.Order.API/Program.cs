@@ -20,12 +20,26 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Redis
-builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+//// Redis
+//builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+//{
+//  var configuration = builder.Configuration.GetConnectionString("Redis");
+//  return ConnectionMultiplexer.Connect(configuration!);
+//});
+
+var redisConnection = builder.Configuration["Redis:ConnectionString"];
+
+if (!string.IsNullOrWhiteSpace(redisConnection))
 {
-  var configuration = builder.Configuration.GetConnectionString("Redis");
-  return ConnectionMultiplexer.Connect(configuration!);
-});
+  builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
+      ConnectionMultiplexer.Connect(redisConnection));
+
+  builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
+}
+else
+{
+  builder.Services.AddScoped<IIdempotencyService, NoOpIdempotencyService>();
+}
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -61,30 +75,48 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-var rabbitMqSettings = builder.Configuration.GetSection("RabbitMQ");
-builder.Services.AddMassTransit(x =>
-{
-  x.UsingRabbitMq((context, cfg) =>
-  {
-    cfg.Host(
-            rabbitMqSettings["Host"] ?? "localhost",
-            rabbitMqSettings["VirtualHost"] ?? "/",
-            h =>
-            {
-              h.Username(rabbitMqSettings["Username"] ?? "guest");
-              h.Password(rabbitMqSettings["Password"] ?? "guest");
-            });
-  });
-});
+//var rabbitMqSettings = builder.Configuration.GetSection("RabbitMQ");
+//builder.Services.AddMassTransit(x =>
+//{
+//  x.UsingRabbitMq((context, cfg) =>
+//  {
+//    cfg.Host(
+//            rabbitMqSettings["Host"] ?? "localhost",
+//            rabbitMqSettings["VirtualHost"] ?? "/",
+//            h =>
+//            {
+//              h.Username(rabbitMqSettings["Username"] ?? "guest");
+//              h.Password(rabbitMqSettings["Password"] ?? "guest");
+//            });
+//  });
+//});
+var rabbitHost = builder.Configuration["RabbitMQ:Host"];
 
+if (!string.IsNullOrWhiteSpace(rabbitHost))
+{
+  builder.Services.AddMassTransit(x =>
+  {
+    x.UsingRabbitMq((context, cfg) =>
+    {
+      cfg.Host(
+        rabbitHost,
+        builder.Configuration["RabbitMQ:VirtualHost"] ?? "/",
+        h =>
+        {
+          h.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
+          h.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
+        });
+    });
+  });
+}
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NDISOrderService")));
 builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
+//builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
 builder.Services.AddScoped<IOrderEventRepository, OrderEventRepository>();
-builder.Services.AddHostedService<OrderEventProcessor>();
+//builder.Services.AddHostedService<OrderEventProcessor>();
 
 builder.Services.AddAuthentication(options =>
 {
