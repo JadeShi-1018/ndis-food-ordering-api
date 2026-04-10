@@ -11,8 +11,13 @@ namespace NDIS.User.API.Domain.User
         public string ProviderStatus { get; set; }
 
 
-        //navigate properties
-        public User User { get; set; }
+    //navigate properties
+    // FK -> User
+    public string UserId { get; set; } = null!;
+    public User User { get; set; } = null!;
+
+    // 一对一 detail
+    public ProviderDetail? ProviderDetail { get; set; }
 
        
 

@@ -6,6 +6,7 @@ namespace NDISS.Service.API.Domain
     public class Category
     {
         [Key]
+        [Required]
         public string CategoryId { get; set; }
 
         [Required]
@@ -13,7 +14,8 @@ namespace NDISS.Service.API.Domain
 
         public string? CategoryDescription { get; set; }
 
-        // Foreign Key
+    // Foreign Key
+    [Required]
         public string ProviderServiceId { get; set; }
 
         [ForeignKey("ProviderServiceId")]

@@ -68,9 +68,9 @@ builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// RabbitMQ Setting
-builder.Services.Configure<RabbitMQSettings>(
-    builder.Configuration.GetSection("RabbitMQ"));
+//// RabbitMQ Setting
+//builder.Services.Configure<RabbitMQSettings>(
+//    builder.Configuration.GetSection("RabbitMQ"));
 
 
 // JWT authentication
@@ -109,6 +109,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
 var app = builder.Build();
 
 // Initialize database
@@ -118,10 +119,11 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
-        context.Database.EnsureCreated(); // Creates database if not exists
+        //context.Database.EnsureCreated(); // Creates database if not exists
         // Or use migrations:
-        // context.Database.Migrate();
-    }
+         context.Database.Migrate();
+         await NDIS.User.API.Data.UserSeeder.SeedAsync(app.Services);
+  }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
@@ -130,11 +132,11 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();

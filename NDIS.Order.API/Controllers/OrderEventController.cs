@@ -7,5 +7,6 @@ namespace NDIS.Order.API.Controllers
     [ApiController]
     public class OrderEventController : ControllerBase
     {
+
     }
 }

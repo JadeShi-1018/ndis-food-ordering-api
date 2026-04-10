@@ -1,18 +1,27 @@
-﻿namespace NDIS.Order.API.Domain.Entities
+﻿using NDIS.Order.API.Domain.Enums;
+
+namespace NDIS.Order.API.Domain.Entities
 {
-    public class OrderEvent
-    {
+  public class OrderEvent
+  {
+    public string OrderEventId { get; set; } = Guid.NewGuid().ToString();
 
-        public string OrderEventId { get; set; }
+    public string OrderId { get; set; } = null!;
 
-        public string OrderId { get; set; }
+    public OrderEventType EventType { get; set; }
 
-        public string EventType { get; set; }
+    public OrderEventStatus EventStatus { get; set; } = OrderEventStatus.Pending;
 
-        public string EventStatus { get; set; }
+    public string Payload { get; set; } = null!;
 
-        public DateTime EventTimeStamp { get; set; }
+    public int RetryCount { get; set; } = 0;
 
-        public Order Order { get; set; }
-    }
+    public string? ErrorMessage { get; set; }
+
+    public DateTime EventTimestamp { get; set; } = DateTime.UtcNow;
+
+    public DateTime? ProcessedAt { get; set; }
+
+    public Order Order { get; set; } = null!;
+  }
 }

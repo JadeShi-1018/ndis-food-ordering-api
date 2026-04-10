@@ -11,7 +11,7 @@ namespace NDIS.User.API.Domain.User
 
         //navigate property
         public ICollection<UserAddress> UserAddresses { get; set; } = new List<UserAddress>();
-        public ICollection<UserEvent> userEvents { get; set; } = new List<UserEvent>();
+        public ICollection<UserEvent> UserEvents { get; set; } = new List<UserEvent>();
         //public ICollection<UserRole> userRoles { get; set; } = new List<UserRole>();
 
         public Provider Provider { get; set; }
@@ -19,3 +19,4 @@ namespace NDIS.User.API.Domain.User
 
     }
 }
+

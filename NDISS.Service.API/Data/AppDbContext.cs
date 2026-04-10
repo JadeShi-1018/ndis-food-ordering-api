@@ -11,13 +11,13 @@ namespace NDISS.Service.API.Data
         }
 
         public DbSet<ProviderService> ProviderServices => Set<ProviderService>();
-        public DbSet<ProviderServiceLocation> ProviderServiceLocations => Set<ProviderServiceLocation>();
+        // public DbSet<ProviderServiceLocation> ProviderServiceLocations => Set<ProviderServiceLocation>();
         public DbSet<ServiceType> ServiceTypes => Set<ServiceType>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<Item> Items => Set<Item>();
         public DbSet<Menu> Menus => Set<Menu>();
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
-        public DbSet<Period> Periods => Set<Period>();
+        // public DbSet<Period> Periods => Set<Period>();
         public DbSet<WeekDay> WeekDays => Set<WeekDay>();
         public DbSet<WeeklyPlan> WeeklyPlans => Set<WeeklyPlan>();
         public DbSet<SinglePlan> SinglePlans => Set<SinglePlan>();
@@ -32,11 +32,14 @@ namespace NDISS.Service.API.Data
                 .HasForeignKey(mi => mi.MenuId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<MenuItem>()
-                .HasOne(mi => mi.Item)
-                .WithMany(i => i.MenuItems)
-                .HasForeignKey(mi => mi.ItemId)
-                .OnDelete(DeleteBehavior.Cascade);
+      modelBuilder.Entity<MenuItem>()
+          .HasOne(mi => mi.Item)
+          .WithMany(i => i.MenuItems)
+          .HasForeignKey(mi => mi.ItemId)
+          .OnDelete(DeleteBehavior.Cascade);
+      modelBuilder.Entity<Menu>()
+   .Property(m => m.Price)
+   .HasPrecision(18, 2);
 
             modelBuilder.Entity<SinglePlan>()
                 .HasOne(sp => sp.Menu)
@@ -49,6 +52,27 @@ namespace NDISS.Service.API.Data
                 .WithMany(wp => wp.SinglePlans)
                 .HasForeignKey(sp => sp.WeeklyPlanId)
                 .OnDelete(DeleteBehavior.Restrict);
-        }
+
+      modelBuilder.Entity<ProviderService>()
+    .HasOne(ps => ps.ServiceType)
+    .WithMany(st => st.ProviderServices)
+    .HasForeignKey(ps => ps.ServiceTypeId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+      modelBuilder.Entity<Category>()
+    .HasOne(c => c.ProviderService)
+    .WithMany(ps => ps.Categories)
+    .HasForeignKey(c => c.ProviderServiceId)
+    .OnDelete(DeleteBehavior.Cascade);
+
+      modelBuilder.Entity<Menu>()
+    .HasOne(m => m.Category)
+    .WithMany(c => c.Menus)
+    .HasForeignKey(m => m.CategoryId)
+    .OnDelete(DeleteBehavior.Cascade);
+
+      modelBuilder.Entity<Menu>()
+    .Property(m => m.Period);
+    }
     }
 }

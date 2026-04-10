@@ -10,8 +10,8 @@
         public string State { get; set; }
         public string PostCode { get; set; }
 
-        // navigate property
-       
-        public User User { get; set; }
+    // navigate property
+    public string UserId { get; set; } = null!;
+    public User User { get; set; }
     }
 }

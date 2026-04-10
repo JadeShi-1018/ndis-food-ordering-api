@@ -36,6 +36,8 @@ builder.Services.AddScoped<IProviderServiceService, ProviderServiceService>();
 builder.Services.AddScoped<IProviderServiceLocationService, ProviderServiceLocationService>();
 builder.Services.AddScoped<IWeeklyPlanService, WeeklyPlanService>();
 builder.Services.AddScoped<ISinglePlanService, SinglePlanService>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<IMenuService, MenuService>();
 
 //Cors Policy
 builder.Services.AddCors(options =>
@@ -61,7 +63,16 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+  var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+  await dbContext.Database.MigrateAsync();
+  await AppDbSeeder.SeedAsync(dbContext);
+}
 
 if (app.Environment.IsDevelopment())
 {

@@ -147,9 +147,65 @@ namespace NDIS.User.API.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ProviderId");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("NDIS.User.API.Domain.User.ProviderDetail", b =>
+                {
+                    b.Property<string>("ProviderDetailId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ABN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviderEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderPhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviderQualification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProviderDetailId");
+
+                    b.HasIndex("ProviderId")
+                        .IsUnique();
+
+                    b.ToTable("ProviderDetails");
                 });
 
             modelBuilder.Entity("NDIS.User.API.Domain.User.Role", b =>
@@ -371,11 +427,22 @@ namespace NDIS.User.API.Migrations
                 {
                     b.HasOne("NDIS.User.API.Domain.User.User", "User")
                         .WithOne("Provider")
-                        .HasForeignKey("NDIS.User.API.Domain.User.Provider", "ProviderId")
+                        .HasForeignKey("NDIS.User.API.Domain.User.Provider", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NDIS.User.API.Domain.User.ProviderDetail", b =>
+                {
+                    b.HasOne("NDIS.User.API.Domain.User.Provider", "Provider")
+                        .WithOne("ProviderDetail")
+                        .HasForeignKey("NDIS.User.API.Domain.User.ProviderDetail", "ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("NDIS.User.API.Domain.User.UserAddress", b =>
@@ -392,12 +459,17 @@ namespace NDIS.User.API.Migrations
             modelBuilder.Entity("NDIS.User.API.Domain.User.UserEvent", b =>
                 {
                     b.HasOne("NDIS.User.API.Domain.User.User", "User")
-                        .WithMany("userEvents")
+                        .WithMany("UserEvents")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NDIS.User.API.Domain.User.Provider", b =>
+                {
+                    b.Navigation("ProviderDetail");
                 });
 
             modelBuilder.Entity("NDIS.User.API.Domain.User.User", b =>
@@ -407,7 +479,7 @@ namespace NDIS.User.API.Migrations
 
                     b.Navigation("UserAddresses");
 
-                    b.Navigation("userEvents");
+                    b.Navigation("UserEvents");
                 });
 #pragma warning restore 612, 618
         }

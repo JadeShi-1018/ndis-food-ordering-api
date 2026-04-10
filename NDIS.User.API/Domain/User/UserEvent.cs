@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Text.Json;
 namespace NDIS.User.API.Domain.User
 {
     public class UserEvent
@@ -11,8 +12,8 @@ namespace NDIS.User.API.Domain.User
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
 
-        //navigate property
-        
-        public User User { get; set; }
+    //navigate property
+    public string UserId { get; set; } = null!;
+    public User User { get; set; }
     }
 }

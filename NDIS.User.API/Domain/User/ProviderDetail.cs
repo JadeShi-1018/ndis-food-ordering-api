@@ -14,7 +14,7 @@ namespace NDIS.User.API.Domain.User
         [Required]
         public string ProviderPhoneNumber { get; set; }
         [Required]
-        public int ABN { get; set; }
+        public string ABN { get; set; }
         [Required]
         public string AddressLine { get; set; }
         [Required]
@@ -25,7 +25,7 @@ namespace NDIS.User.API.Domain.User
         public string ProviderQualification { get; set; }
 
         //navigate properties
-        public int ProviderId { get; set; }
+        public string ProviderId { get; set; }
         public Provider Provider { get; set; }
 
 

@@ -20,8 +20,9 @@ namespace NDIS.User.API.DbContexts
         public DbSet<UserEvent> UserEvents { get; set; }
             public DbSet<UserAddress> UserAddresses { get; set; }
             public DbSet<Provider> Providers { get; set; }
+    public DbSet<ProviderDetail> ProviderDetails { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 base.OnModelCreating(modelBuilder);
 
@@ -30,20 +31,37 @@ namespace NDIS.User.API.DbContexts
             modelBuilder.Entity<Domain.User.User>()
                 .HasOne(u => u.Provider)
                 .WithOne(p => p.User)
-                .HasForeignKey<Provider>(p => p.ProviderId);
+                .HasForeignKey<Provider>(p => p.UserId);
 
-            // 1:N → User → UserAddresses
-            modelBuilder.Entity<UserAddress>()
-                .HasOne(ua => ua.User)
-                .WithMany(u => u.UserAddresses)
-                .OnDelete(DeleteBehavior.Cascade);
+      // 1:N → User → UserAddresses
+      modelBuilder.Entity<UserAddress>()
+          .HasOne(ua => ua.User)
+          .WithMany(u => u.UserAddresses)
+          .HasForeignKey(ua => ua.UserId)
+          .OnDelete(DeleteBehavior.Cascade);
+
 
             // 1:N → User → UserEvents
             modelBuilder.Entity<UserEvent>()
                 .HasOne(ue => ue.User)
-                .WithMany(u => u.userEvents)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(u => u.UserEvents)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey(ue => ue.UserId);
 
-        }
+      modelBuilder.Entity<Provider>()
+                .HasOne(p => p.ProviderDetail)
+                .WithOne(pd => pd.Provider)
+                .HasForeignKey<ProviderDetail>(pd => pd.ProviderId);
+
+      modelBuilder.Entity<Provider>()
+              .HasIndex(p => p.UserId)
+              .IsUnique();
+
+      modelBuilder.Entity<ProviderDetail>()
+    .HasIndex(pd => pd.ProviderId)
+    .IsUnique();
+
+
+    }
     }
 }

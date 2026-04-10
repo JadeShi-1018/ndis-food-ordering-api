@@ -7,15 +7,22 @@ namespace NDISS.Service.API.Domain
     {
         [Key]
         public string MenuId { get; set; }
+        [Required]
+        public string MenuName { get; set; }
+        public string? Description { get; set; }
 
-        // Foreign Key
-        public string PeriodId { get; set; }
+    // // Foreign Key
+    // public string PeriodId { get; set; }
+    [Required]
+        public MenuPeriod Period { get; set; }
 
+    [Required]
         public string CategoryId { get; set; }
 
-        [ForeignKey("PeriodId")]
-        public Period? Period { get; set; }
-
+    // [ForeignKey("PeriodId")]
+    // public Period? Period { get; set; }
+      [Required]
+    public decimal Price { get; set; }
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
 

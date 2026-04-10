@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Exchange.WebServices.Data;
+
 using NDIS.Shared.Common.Extensions;
 using NDIS.User.API.Common.Enums;
 using NDIS.User.API.Domain.User;
@@ -73,9 +73,10 @@ namespace NDIS.User.API.UserControllers
         public async Task<ActionResult<ApiResponse<SignInResponseDto>>> SignIn([FromBody] SignInRequestDto request)
         {
             var result = await _userService.SignInAsync(request);
-            return ApiResponse<SignInResponseDto>.Success(result, "User signed in successfully");
-        }
+            return Ok(ApiResponse<SignInResponseDto>.Success(result, "User signed in successfully"));
+    }
         [HttpGet("me")]
+        [Authorize]
         public async Task<ActionResult<ApiResponse<UserInfoDto>>> GetCurrentUserInfo()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);         

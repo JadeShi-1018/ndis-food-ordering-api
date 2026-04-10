@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NDISS.Service.API.Common;
@@ -35,10 +35,11 @@ namespace NDISS.Service.API.Services
                 if (!serviceTypeExists)
                     throw new ResourceNotFoundException($"ServiceType {dto.ServiceTypeId} not found.");
 
+                // var providerService = _mapper.Map<ProviderService>(dto);
                 var providerService = _mapper.Map<ProviderService>(dto);
-                providerService.ProviderServiceId = GenerateId();
+                providerService.ProviderServiceId = Guid.NewGuid().ToString();
 
-                await _repository.AddAsync(providerService);
+        await _repository.AddAsync(providerService);
                 await _repository.SaveAsync();
 
                 providerService.ServiceType = await _repository
@@ -54,6 +55,56 @@ namespace NDISS.Service.API.Services
             }
         }
 
-        private string GenerateId() => Guid.NewGuid().ToString();
+        public async Task<IEnumerable<ProviderServiceListDto>> GetAllProviderServicesAsync()
+        {
+            try
+            {
+                // 加载 ProviderService 以及关联的 ServiceType 和 Categories
+                var query = _repository
+                    .GetDbSet<ProviderService>()
+                    .Include(ps => ps.ServiceType)
+                    .Include(ps => ps.Categories)
+                    .Include(ps => ps.Items)
+                    .AsNoTracking();
+                   
+
+                var providerServices = await query.ToListAsync();
+
+                return _mapper.Map<IEnumerable<ProviderServiceListDto>>(providerServices);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving all ProviderServices.");
+                throw;
+            }
+        }
+
+    public async Task<ProviderServiceDetailDto?> GetProviderServiceByIdAsync(string providerServiceId)
+    {
+      try
+      {
+        var providerService = await _repository
+            .GetDbSet<ProviderService>()
+            .Include(ps => ps.ServiceType)
+            .Include(ps => ps.Categories)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(ps => ps.ProviderServiceId == providerServiceId);
+
+        if (providerService == null)
+        {
+          return null;
+        }
+
+        return _mapper.Map<ProviderServiceDetailDto>(providerService);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError(ex, "Error occurred while retrieving ProviderService with id {ProviderServiceId}", providerServiceId);
+        throw;
+      }
     }
+
+
+
+  }
 }

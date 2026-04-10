@@ -2,6 +2,7 @@
 using NDISS.Service.API.Domain;
 using NDISS.Service.API.DTOs;
 using NDISS.Service.API.DTOs.Category;
+using NDISS.Service.API.DTOs.Menu;
 using NDISS.Service.API.DTOs.ProviderService;
 using NDISS.Service.API.DTOs.ServiceType;
 using NDISS.Service.API.DTOs.SignlePlan;
@@ -45,12 +46,44 @@ namespace NDISS.Service.API.Mappers
             CreateMap<ProviderServiceBaseDto, ProviderService>()
                 .ForMember(dest => dest.ProviderServiceId, opt => opt.Ignore());
 
-            CreateMap<ProviderService, ProviderServiceResponseDto>()
+            CreateMap<ProviderServiceCreateDto, ProviderService>()
+                .ForMember(dest => dest.ProviderServiceId, opt => opt.Ignore());
+      CreateMap<ProviderService, ProviderServiceDetailDto>()
+            .ForMember(dest => dest.ServiceTypeName,
+                opt => opt.MapFrom(src => src.ServiceType != null ? src.ServiceType.ServiceTypeName : null))
+            .ForMember(dest => dest.Categories,
+                opt => opt.MapFrom(src => src.Categories));
+
+      CreateMap<Category, CategorySimpleDto>();
+
+      CreateMap<ProviderService, ProviderServiceResponseDto>();
+      CreateMap<ServiceType, ServiceTypeResponseDto>();
+      CreateMap<Category, CategoryResponseDto>();
+
+      CreateMap<ProviderService, ProviderServiceListDto>()
+    .ForMember(dest => dest.ServiceTypeName,
+        opt => opt.MapFrom(src => src.ServiceType.ServiceTypeName))
+    .ForMember(dest => dest.CategoryCount,
+        opt => opt.MapFrom(src => src.Categories.Count))
+    .ForMember(dest => dest.ItemCount,
+        opt => opt.MapFrom(src => src.Items.Count));
+
+
+
+
+      CreateMap<ProviderService, ProviderServiceResponseDto>()
                 .ForMember(dest => dest.ServiceType, opt => opt.MapFrom(src => src.ServiceType))
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories));
 
-            // WeeklyPlan
-            CreateMap<WeeklyPlanCreateDto, WeeklyPlan>()
+      //Menu
+      CreateMap<MenuCreateDto, Menu>()
+    .ForMember(dest => dest.MenuId, opt => opt.Ignore());
+
+      CreateMap<MenuUpdateDto, Menu>();
+
+      CreateMap<Menu, MenuResponseDto>();
+      // WeeklyPlan
+      CreateMap<WeeklyPlanCreateDto, WeeklyPlan>()
                 .ForMember(dest => dest.WeeklyPlanId, opt => opt.Ignore());
 
             CreateMap<WeeklyPlan, WeeklyPlanResponseDto>()
