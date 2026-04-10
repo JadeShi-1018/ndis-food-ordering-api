@@ -9,15 +9,18 @@ on:
       - '.github/workflows/deploy-user.yml'
   workflow_dispatch:
 
-env:
-  PROJECT_PATH: 'NDIS.User.API/NDIS.User.API.csproj'
-  PUBLISH_PATH: './publish-user'
-  DOTNET_VERSION: '8.0.x'
-  AZURE_WEBAPP_NAME: 'ndis-user-api-1018'
+permissions:
+  contents: read
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      PROJECT_PATH: NDIS.User.API/NDIS.User.API.csproj
+      PUBLISH_PATH: ${{ github.workspace }}/publish-user
+      DOTNET_VERSION: 8.0.x
+      AZURE_WEBAPP_NAME: ndis-user-api-1018
 
     steps:
       - name: Checkout
@@ -28,18 +31,23 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore
+      - name: Restore project
         run: dotnet restore ${{ env.PROJECT_PATH }}
 
-      - name: Build
-        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+      - name: Build project
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
 
-      - name: Publish
-        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ${{ env.PUBLISH_PATH }}
+      - name: Publish project
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --no-build -o ${{ env.PUBLISH_PATH }}
 
-      - name: Deploy to Azure Web App
+      - name: Verify published files
+        run: |
+          echo "Published files:"
+          ls -R ${{ env.PUBLISH_PATH }}
+
+      - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_USER }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.PUBLISH_PATH }}
