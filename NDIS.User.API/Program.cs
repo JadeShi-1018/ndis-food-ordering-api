@@ -119,10 +119,10 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
-        //context.Database.EnsureCreated(); // Creates database if not exists
-        // Or use migrations:
-         //context.Database.Migrate();
-         //await NDIS.User.API.Data.UserSeeder.SeedAsync(app.Services);
+    //context.Database.EnsureCreated(); // Creates database if not exists
+    // Or use migrations:
+    context.Database.Migrate();
+    await NDIS.User.API.Data.UserSeeder.SeedAsync(app.Services);
   }
     catch (Exception ex)
     {
