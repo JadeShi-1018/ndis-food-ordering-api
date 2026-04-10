@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'NDISS.Service.API/**'
+      - 'NDIS.Service.API/**'
       - '.github/workflows/deploy-service.yml'
   workflow_dispatch:
 
@@ -20,7 +20,7 @@ jobs:
       PROJECT_PATH: ./NDIS.Service.API/NDIS.Service.API.csproj
       PUBLISH_PATH: ${{ github.workspace }}/publish-service
       DOTNET_VERSION: 8.0.x
-      AZURE_WEBAPP_NAME: ndiss-service-api-1018
+      AZURE_WEBAPP_NAME: ndis-service-api-1018
 
     steps:
       - name: Checkout
