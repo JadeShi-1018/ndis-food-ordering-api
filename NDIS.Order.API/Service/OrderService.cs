@@ -23,10 +23,10 @@ namespace NDIS.Order.API.Services
     private readonly IServiceServiceClient _serviceServiceClient;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<OrderService> _logger;
-    private readonly IIdempotencyService _idempotencyService;
-    private readonly IOrderEventRepository _orderEventRepository;
+    //private readonly IIdempotencyService _idempotencyService;
+    //private readonly IOrderEventRepository _orderEventRepository;
 
-    public OrderService(IOrderRepository orderRepository, IMapper mapper, IUserServiceClient userServiceClient, IServiceServiceClient serviceServiceClient, IHttpContextAccessor httpContextAccessor, ILogger<OrderService> logger, IIdempotencyService idempotencyService, IOrderEventRepository orderEventRepository)
+    public OrderService(IOrderRepository orderRepository, IMapper mapper, IUserServiceClient userServiceClient, IServiceServiceClient serviceServiceClient, IHttpContextAccessor httpContextAccessor, ILogger<OrderService> logger)
     {
       _orderRepository = orderRepository;
       _mapper = mapper;
@@ -34,47 +34,47 @@ namespace NDIS.Order.API.Services
       _serviceServiceClient = serviceServiceClient;
       _httpContextAccessor = httpContextAccessor;
       _logger = logger;
-      _idempotencyService = idempotencyService;
-      _orderEventRepository = orderEventRepository;
+      //_idempotencyService = idempotencyService;
+      //_orderEventRepository = orderEventRepository;
    
     }
 
-    private OrderEvent BuildOrderCreatedEvent(OrderEntity order)
-    {
-      var payload = new OrderCreatedEvent
-      {
-        OrderId = order.OrderId,
-        UserId = order.UserId,
-        CustomerName = order.CustomerName,
-        ProviderId = order.ProviderId,
-        ProviderServiceId = order.ProviderServiceId,
-        ProviderServiceName = order.ProviderServiceName,
-        CategoryId = order.CategoryId,
-        CategoryName = order.CategoryName,
-        MenuId = order.MenuId,
-        MenuName = order.MenuName,
-        PeriodName = order.PeriodName,
-        Quantity = order.Quantity,
-        UnitPrice = order.UnitPrice,
-        OrderPrice = order.OrderPrice,
-        StartDate = order.StartDate,
-        EndDate = order.EndDate,
-        IdempotencyKey = order.IdempotencyKey,
-        CreatedAt = order.CreatedAt
+    //private OrderEvent BuildOrderCreatedEvent(OrderEntity order)
+    //{
+    //  var payload = new OrderCreatedEvent
+    //  {
+    //    OrderId = order.OrderId,
+    //    UserId = order.UserId,
+    //    CustomerName = order.CustomerName,
+    //    ProviderId = order.ProviderId,
+    //    ProviderServiceId = order.ProviderServiceId,
+    //    ProviderServiceName = order.ProviderServiceName,
+    //    CategoryId = order.CategoryId,
+    //    CategoryName = order.CategoryName,
+    //    MenuId = order.MenuId,
+    //    MenuName = order.MenuName,
+    //    PeriodName = order.PeriodName,
+    //    Quantity = order.Quantity,
+    //    UnitPrice = order.UnitPrice,
+    //    OrderPrice = order.OrderPrice,
+    //    StartDate = order.StartDate,
+    //    EndDate = order.EndDate,
+    //    IdempotencyKey = order.IdempotencyKey,
+    //    CreatedAt = order.CreatedAt
        
-      };
+    //  };
 
-      return new OrderEvent
-      {
-        OrderEventId = Guid.NewGuid().ToString(),
-        OrderId = order.OrderId,
-        EventType = OrderEventType.OrderCreated,
-        EventStatus = OrderEventStatus.Pending,
-        Payload = JsonSerializer.Serialize(payload),
-        RetryCount = 0,
-        EventTimestamp = DateTime.UtcNow
-      };
-    }
+    //  return new OrderEvent
+    //  {
+    //    OrderEventId = Guid.NewGuid().ToString(),
+    //    OrderId = order.OrderId,
+    //    EventType = OrderEventType.OrderCreated,
+    //    EventStatus = OrderEventStatus.Pending,
+    //    Payload = JsonSerializer.Serialize(payload),
+    //    RetryCount = 0,
+    //    EventTimestamp = DateTime.UtcNow
+    //  };
+    //}
 
 
 
@@ -105,26 +105,26 @@ namespace NDIS.Order.API.Services
 
       var redisKey = $"order:idempotency:{userId}:{idempotencyKey}";
 
-      var idemResult = await _idempotencyService.TryStartAsync(redisKey, TimeSpan.FromMinutes(10));
+      //var idemResult = await _idempotencyService.TryStartAsync(redisKey, TimeSpan.FromMinutes(10));
 
-      if (!idemResult.Acquired)
-      {
-        if (idemResult.IsProcessing)
-        {
-          throw new InvalidOperationException("This request is already being processed.");
-        }
+      //if (!idemResult.Acquired)
+      //{
+      //  if (idemResult.IsProcessing)
+      //  {
+      //    throw new InvalidOperationException("This request is already being processed.");
+      //  }
 
-        if (!string.IsNullOrWhiteSpace(idemResult.ExistingOrderId))
-        {
-          var existingOrder = await _orderRepository.GetOrderByIdAsync(idemResult.ExistingOrderId);
+      //  if (!string.IsNullOrWhiteSpace(idemResult.ExistingOrderId))
+      //  {
+      //    var existingOrder = await _orderRepository.GetOrderByIdAsync(idemResult.ExistingOrderId);
 
-          if (existingOrder != null)
-          {
-            return _mapper.Map<OrderResponseDto>(existingOrder);
-          }
-        }
-        throw new InvalidOperationException("Duplicate request detected.");
-      }
+      //    if (existingOrder != null)
+      //    {
+      //      return _mapper.Map<OrderResponseDto>(existingOrder);
+      //    }
+      //  }
+      //  throw new InvalidOperationException("Duplicate request detected.");
+      //}
       try
       {
 
@@ -193,18 +193,18 @@ namespace NDIS.Order.API.Services
           UpdatedAt = DateTime.UtcNow
         };
 
-        var orderEvent = BuildOrderCreatedEvent(order);
+        //var orderEvent = BuildOrderCreatedEvent(order);
 
         await _orderRepository.CreateOrderAsync(order);
 
 
 
 
-        await _orderEventRepository.AddAsync(orderEvent);
+        //await _orderEventRepository.AddAsync(orderEvent);
         await _orderRepository.SaveChangesAsync();
 
         // 7.mark idempotency success
-        await _idempotencyService.MarkSuccessAsync(redisKey, order.OrderId, TimeSpan.FromHours(24));
+        //await _idempotencyService.MarkSuccessAsync(redisKey, order.OrderId, TimeSpan.FromHours(24));
         return _mapper.Map<OrderResponseDto>(order);
       }
       catch (Exception ex)
@@ -212,13 +212,13 @@ namespace NDIS.Order.API.Services
         _logger.LogError(ex, "CreateOrder failed, releasing idempotency key");
 
         // when failling in all business service, don't need to wait for TTL ends
-        await _idempotencyService.ReleaseAsync(redisKey);
+        //await _idempotencyService.ReleaseAsync(redisKey);
 
         throw;
       }
 
-        
 
+        
       }
       
 
