@@ -84,7 +84,7 @@ namespace NDIS.User.API.Data
         var existingUser = await userManager.FindByEmailAsync(seed.Email);
         if (existingUser != null)
         {
-          // 确保已有 user 至少有 Provider role
+          // user has Provider role
           if (!await userManager.IsInRoleAsync(existingUser, "Provider"))
           {
             await userManager.AddToRoleAsync(existingUser, "Provider");

@@ -21,11 +21,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //// Redis
-//builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-//{
-//  var configuration = builder.Configuration.GetConnectionString("Redis");
-//  return ConnectionMultiplexer.Connect(configuration!);
-//});
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+  var configuration = builder.Configuration.GetConnectionString("Redis");
+  return ConnectionMultiplexer.Connect(configuration!);
+});
 
 var redisConnection = builder.Configuration["Redis:ConnectionString"];
 
@@ -114,9 +114,9 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NDISOrderService")));
 builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
 builder.Services.AddHttpContextAccessor();
-//builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
+builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
 builder.Services.AddScoped<IOrderEventRepository, OrderEventRepository>();
-//builder.Services.AddHostedService<OrderEventProcessor>();
+builder.Services.AddHostedService<OrderEventProcessor>();
 
 builder.Services.AddAuthentication(options =>
 {
