@@ -1,13 +1,10 @@
-﻿using NDIS.Contracts.Events;
-using NDIS.Payment.API.Dtos;
-using PaymentEntity = NDIS.Payment.API.Domain.Payment;
+﻿using NDIS.Payment.API.Dtos;
 
 namespace NDIS.Payment.API.Services
 {
   public interface IPaymentService
   {
-    Task CreatePaymentFromOrderAsync(OrderCreatedEvent message);
-    Task<PaymentResponseDto?> GetByOrderIdAsync(string orderId);
-    Task<bool> PayAsync(PayOrderRequestDto payOrderRequestDto);
+    Task<CreatePaymentResponseDto> CreatePaymentAsync(CreatePaymentRequestDto request);
+    Task<PayPaymentResponseDto> PayAsync(string paymentId, PayPaymentRequestDto request);
   }
 }

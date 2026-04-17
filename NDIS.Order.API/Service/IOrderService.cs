@@ -9,7 +9,7 @@ namespace NDIS.Order.API.Services
     Task<OrderResponseDto> CreateOrderAsync(CreateOrderRequestDto request, ClaimsPrincipal user);
     Task<OrderResponseDto?> GetOrderByIdAsync(string orderId);
     Task<List<OrderResponseDto>> GetOrdersByUserIdAsync(string userId);
-    
-    
+
+    Task<bool> UpdateOrderStatusAsync(string orderId, string orderStatus);
   }
 }

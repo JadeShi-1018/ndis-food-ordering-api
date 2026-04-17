@@ -185,6 +185,11 @@ builder.Services.AddHttpClient<IServiceServiceClient, ServiceServiceClient>(clie
 {
   client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ServiceApi"]!);
 });
+builder.Services.AddHttpClient<IPaymentServiceClient, PaymentServiceClient>(client =>
+{
+  client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:PaymentApi"]!);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

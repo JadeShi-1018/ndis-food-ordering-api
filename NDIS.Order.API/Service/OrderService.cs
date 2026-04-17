@@ -25,8 +25,9 @@ namespace NDIS.Order.API.Services
     private readonly ILogger<OrderService> _logger;
     //private readonly IIdempotencyService _idempotencyService;
     //private readonly IOrderEventRepository _orderEventRepository;
+    private readonly IPaymentServiceClient _paymentServiceClient;
 
-    public OrderService(IOrderRepository orderRepository, IMapper mapper, IUserServiceClient userServiceClient, IServiceServiceClient serviceServiceClient, IHttpContextAccessor httpContextAccessor, ILogger<OrderService> logger)
+    public OrderService(IOrderRepository orderRepository, IMapper mapper, IUserServiceClient userServiceClient, IServiceServiceClient serviceServiceClient, IHttpContextAccessor httpContextAccessor, ILogger<OrderService> logger, IPaymentServiceClient paymentServiceClient)
     {
       _orderRepository = orderRepository;
       _mapper = mapper;
@@ -34,9 +35,10 @@ namespace NDIS.Order.API.Services
       _serviceServiceClient = serviceServiceClient;
       _httpContextAccessor = httpContextAccessor;
       _logger = logger;
+      _paymentServiceClient = paymentServiceClient;
       //_idempotencyService = idempotencyService;
       //_orderEventRepository = orderEventRepository;
-   
+
     }
 
     //private OrderEvent BuildOrderCreatedEvent(OrderEntity order)
@@ -61,7 +63,7 @@ namespace NDIS.Order.API.Services
     //    EndDate = order.EndDate,
     //    IdempotencyKey = order.IdempotencyKey,
     //    CreatedAt = order.CreatedAt
-       
+
     //  };
 
     //  return new OrderEvent
@@ -196,15 +198,38 @@ namespace NDIS.Order.API.Services
         //var orderEvent = BuildOrderCreatedEvent(order);
 
         await _orderRepository.CreateOrderAsync(order);
-
-
-
-
-        //await _orderEventRepository.AddAsync(orderEvent);
         await _orderRepository.SaveChangesAsync();
 
-        // 7.mark idempotency success
-        //await _idempotencyService.MarkSuccessAsync(redisKey, order.OrderId, TimeSpan.FromHours(24));
+        // call Payment Service to create pending payment
+        var paymentRequest = new CreatePaymentRequestDto
+        {
+          OrderId = order.OrderId,
+          UserId = order.UserId,
+          Amount = order.OrderPrice,
+          IdempotencyKey = order.IdempotencyKey
+        };
+
+        try
+        {
+          var paymentResult = await _paymentServiceClient.CreatePaymentAsync(paymentRequest);
+
+          order.PaymentId = paymentResult.PaymentId;
+          order.UpdatedAt = DateTime.UtcNow;
+
+          await _orderRepository.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+          _logger.LogError(ex, "Payment creation failed for OrderId: {OrderId}", order.OrderId);
+
+          order.OrderStatus = OrderStatus.Failed;
+          order.UpdatedAt = DateTime.UtcNow;
+
+          await _orderRepository.SaveChangesAsync();
+
+          throw new Exception("Order created, but payment creation failed.");
+        }
+
         return _mapper.Map<OrderResponseDto>(order);
       }
       catch (Exception ex)
@@ -220,7 +245,19 @@ namespace NDIS.Order.API.Services
 
         
       }
-      
+
+    public async Task<bool> UpdateOrderStatusAsync(string orderId, string orderStatus)
+    {
+      var order = await _orderRepository.GetOrderByIdAsync(orderId);
+      if (order == null) return false;
+
+      order.OrderStatus = Enum.Parse<OrderStatus>(orderStatus);
+      order.UpdatedAt = DateTime.UtcNow;
+
+      await _orderRepository.SaveChangesAsync();
+      return true;
+    }
+
 
 
 

@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NDIS.Payment.API.Dtos;
 using NDIS.Payment.API.Services;
 
-namespace NDIS.Payment.API
+namespace NDIS.Payment.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PaymentController : ControllerBase
-    {
+  [ApiController]
+  [Route("api/payment")]
+  public class PaymentController : ControllerBase
+  {
     private readonly IPaymentService _paymentService;
 
     public PaymentController(IPaymentService paymentService)
@@ -16,30 +15,18 @@ namespace NDIS.Payment.API
       _paymentService = paymentService;
     }
 
-    [HttpGet("{orderId}")]
-    public async Task<IActionResult> GetByOrderId(string orderId)
+    [HttpPost("create")]
+    public async Task<IActionResult> CreatePayment(CreatePaymentRequestDto request)
     {
-      var payment = await _paymentService.GetByOrderIdAsync(orderId);
-
-      if (payment == null)
-      {
-        return NotFound();
-      }
-
-      return Ok(payment);
+      var result = await _paymentService.CreatePaymentAsync(request);
+      return Ok(result);
     }
 
-    [HttpPost("pay")]
-    public async Task<IActionResult> Pay([FromBody] PayOrderRequestDto request)
+    [HttpPost("pay/{paymentId}")]
+    public async Task<IActionResult> Pay(string paymentId, PayPaymentRequestDto request)
     {
-      var result = await _paymentService.PayAsync(request);
-
-      if (!result)
-      {
-        return BadRequest("Payment failed");
-      }
-
-      return Ok("Payment successful");
+      var result = await _paymentService.PayAsync(paymentId, request);
+      return Ok(result);
     }
   }
 }

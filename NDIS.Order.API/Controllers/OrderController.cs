@@ -75,5 +75,13 @@ namespace NDIS.Order.API.Controllers
         var orders = await _orderService.GetOrdersByUserIdAsync(userId);
         return Ok(orders);
       }
+
+    [HttpPut("{orderId}/status")]
+    public async Task<IActionResult> UpdateOrderStatus(string orderId, UpdateOrderStatusRequestDto request)
+    {
+      var result = await _orderService.UpdateOrderStatusAsync(orderId, request.OrderStatus);
+      if (!result) return NotFound();
+      return NoContent();
     }
+  }
   }

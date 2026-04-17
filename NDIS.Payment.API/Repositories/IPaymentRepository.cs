@@ -6,9 +6,12 @@ namespace NDIS.Payment.API.Repositories
 {
   public interface IPaymentRepository
   {
-    Task<PaymentEntity?> GetByOrderIdAsync(string orderId);
-    Task AddAsync(PaymentEntity payment);
-    Task AddPaymentEventAsync(PaymentEvent paymentEvent);
+  
     Task SaveChangesAsync();
+
+    Task AddAsync(PaymentEntity payment);
+    Task<PaymentEntity?> GetByIdempotencyKeyAsync(string idempotencyKey);
+    Task<PaymentEntity?> GetByIdAsync(string paymentId);
+
   }
 }

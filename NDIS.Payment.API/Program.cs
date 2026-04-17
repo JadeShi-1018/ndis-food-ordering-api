@@ -1,30 +1,18 @@
 using MassTransit;
 using MassTransit.Futures.Contracts;
 using Microsoft.EntityFrameworkCore;
-using NDIS.Payment.API.Consumers;
 using NDIS.Payment.API.Data;
 using NDIS.Payment.API.Repositories;
+using NDIS.Payment.API.Repository;
+using NDIS.Payment.API.ServiceClient;
 using NDIS.Payment.API.Services;
 using NDIS.Shared.Common.Middlewares;
 using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMassTransit(x =>
-{
-  x.AddConsumer<OrderCreatedConsumer>();
 
-  x.UsingRabbitMq((context, cfg) =>
-  {
-    cfg.Host("localhost", "/", h =>
-    {
-      h.Username("guest");
-      h.Password("guest");
-    });
 
-    cfg.ConfigureEndpoints(context);
-  });
-});
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
@@ -37,6 +25,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHttpClient<IOrderServiceClient, OrderServiceClient>(client =>
+{
+  client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:OrderApi"]!);
+});
 
 
 var app = builder.Build();
