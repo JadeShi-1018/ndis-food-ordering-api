@@ -1,0 +1,53 @@
+name: Deploy Payment API to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'NDIS.Payment.API/**'
+      - '.github/workflows/deploy-payment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_PATH: ./NDIS.Payment.API/NDIS.Payment.API.csproj
+      PUBLISH_PATH: ${{ github.workspace }}/publish-payment
+      DOTNET_VERSION: 8.0.x
+      AZURE_WEBAPP_NAME: ndis-payment-api-1018
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore project
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build project
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      - name: Publish project
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --no-build -o ${{ env.PUBLISH_PATH }}
+
+      - name: Verify published files
+        run: |
+          echo "Published files:"
+          ls -R ${{ env.PUBLISH_PATH }}
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PAYMENT }}
+          package: ${{ env.PUBLISH_PATH }}
