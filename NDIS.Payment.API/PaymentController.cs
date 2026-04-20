@@ -22,6 +22,7 @@ namespace NDIS.Payment.API.Controllers
       return Ok(result);
     }
 
+
     [HttpPost("pay/{paymentId}")]
     public async Task<IActionResult> Pay(string paymentId, PayPaymentRequestDto request)
     {

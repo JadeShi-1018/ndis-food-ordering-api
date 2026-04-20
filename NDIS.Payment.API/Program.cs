@@ -42,6 +42,7 @@ app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 app.MapGet("/", () => "Payment API is running");
 
 app.MapControllers();

@@ -200,7 +200,7 @@ var app = builder.Build();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapGet("/", () => "Order API is running");
 app.MapControllers();
 
 app.Run();
