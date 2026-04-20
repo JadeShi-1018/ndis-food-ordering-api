@@ -12,9 +12,14 @@ namespace NDIS.Payment.API.Data
     }
 
     public DbSet<PaymentEntity> Payments { get; set; }
-    
 
-   
-    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      base.OnModelCreating(modelBuilder);
+
+      modelBuilder.Entity<PaymentEntity>().Property(p => p.PaymentStatus).HasConversion<string>();
+    }
+
+
   }
 }

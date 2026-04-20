@@ -1,4 +1,6 @@
-﻿using NDIS.Payment.API.Enums;
+﻿using NDIS.Payment.API.Domain.StateMachines;
+using NDIS.Payment.API.Enums;
+using Stripe;
 using System.ComponentModel.DataAnnotations;
 
 namespace NDIS.Payment.API.Domain
@@ -10,6 +12,8 @@ namespace NDIS.Payment.API.Domain
 
     [Required]
     public string OrderId { get; set; } = null!;
+
+    public string? StripePaymentIntentId { get; set; }
 
     [Required]
     public string UserId { get; set; } = null!;
@@ -29,5 +33,16 @@ namespace NDIS.Payment.API.Domain
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; set; }
+
+    public void ChangeStatus(PaymentStatus newStatus)
+    {
+      if(!PaymentStatusStateMachine.CanTransition(this.PaymentStatus, newStatus))
+      {
+        throw new InvalidCastException($"Invalid status transaction: {this.PaymentStatus} -> {newStatus}");
+      }
+
+      this.PaymentStatus = newStatus;
+      this.UpdatedAt = DateTime.UtcNow;
+    }
   }
 }

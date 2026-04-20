@@ -12,8 +12,8 @@ using NDIS.Payment.API.Data;
 namespace NDIS.Payment.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260417195516_AddInitialiaztion")]
-    partial class AddInitialiaztion
+    [Migration("20260420112033_Initialization")]
+    partial class Initialization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,8 +47,12 @@ namespace NDIS.Payment.API.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripePaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

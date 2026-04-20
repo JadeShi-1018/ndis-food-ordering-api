@@ -1,9 +1,11 @@
 ﻿using NDIS.Payment.API.Domain;
+using NDIS.Payment.API.Domain.StateMachines;
 using NDIS.Payment.API.Dtos;
 using NDIS.Payment.API.Enums;
 using NDIS.Payment.API.Repositories;
 using NDIS.Payment.API.Repository;
 using NDIS.Payment.API.ServiceClient;
+using Stripe;
 using PaymentEntity = NDIS.Payment.API.Domain.Payment;
 
 namespace NDIS.Payment.API.Services
@@ -35,7 +37,7 @@ namespace NDIS.Payment.API.Services
         };
       }
 
-      // 创建 payment
+      // create payment
       var payment = new PaymentEntity
       {
         PaymentId = Guid.NewGuid().ToString(),
@@ -60,6 +62,9 @@ namespace NDIS.Payment.API.Services
     public async Task<PayPaymentResponseDto> PayAsync(string paymentId, PayPaymentRequestDto request)
     {
       var payment = await _paymentRepository.GetByIdAsync(paymentId);
+      Console.WriteLine($"Current Payment is {payment.PaymentId}");
+      Console.WriteLine($"Current Payment status is {payment.PaymentStatus}");
+
 
       if (payment == null)
       {
@@ -70,23 +75,85 @@ namespace NDIS.Payment.API.Services
       {
         throw new Exception("This payment is not in pending status.");
       }
+      try { 
 
-      payment.PaymentStatus = PaymentStatus.Success;
-      payment.PaymentMethod = request.PaymentMethod;
+      var options = new PaymentIntentCreateOptions
+      {
+        Amount = (long)(payment.Amount * 100),
+        Currency = "aud",
+        PaymentMethod = "pm_card_visa",
+        Confirm = true,
+        AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+        {
+          Enabled = true,
+          AllowRedirects = "never"
+        }
+      };
+
+      var service = new PaymentIntentService();
+      var intent = await service.CreateAsync(options);
+
+      //save Stripe Intent id for debug
+         payment.StripePaymentIntentId = intent.Id;
+
+      if (intent.Status == "succeeded")
+      {
+          payment.ChangeStatus( PaymentStatus.Succeeded);
+        payment.PaymentMethod = "Stripe";
+        payment.UpdatedAt = DateTime.UtcNow;
+
+        await _paymentRepository.SaveChangesAsync();
+
+        await _orderServiceClient.UpdateOrderStatusAsync(
+            payment.OrderId,
+            new UpdateOrderStatusRequestDto
+            {
+              OrderStatus = "Paid"
+            });
+
+        return new PayPaymentResponseDto
+        {
+          PaymentId = payment.PaymentId,
+          PaymentStatus = payment.PaymentStatus.ToString(),
+          Message = "Payment successful."
+        };
+      }
+
+        payment.ChangeStatus(PaymentStatus.Failed);
+        payment.PaymentMethod = "Stripe";
       payment.UpdatedAt = DateTime.UtcNow;
 
       await _paymentRepository.SaveChangesAsync();
-      await _orderServiceClient.UpdateOrderStatusAsync(payment.OrderId, new UpdateOrderStatusRequestDto
-      {
-        OrderStatus = "Paid"
-      });
 
-      return new PayPaymentResponseDto
-      {
-        PaymentId = payment.PaymentId,
-        PaymentStatus = payment.PaymentStatus.ToString(),
-        Message = "Payment successful."
-      };
+      await _orderServiceClient.UpdateOrderStatusAsync(
+          payment.OrderId,
+          new UpdateOrderStatusRequestDto
+          {
+            OrderStatus = "Failed"
+          });
+
+      throw new Exception($"Stripe payment did not succeed. Status: {intent.Status}");
     }
+    catch (StripeException ex)
+    {
+        _logger.LogError(ex, "Stripe payment failed for PaymentId: {PaymentId}", paymentId);
+
+        payment.PaymentStatus = PaymentStatus.Failed;
+        payment.PaymentMethod = "Stripe";
+        payment.UpdatedAt = DateTime.UtcNow;
+
+        await _paymentRepository.SaveChangesAsync();
+
+    await _orderServiceClient.UpdateOrderStatusAsync(
+        payment.OrderId,
+            new UpdateOrderStatusRequestDto
+            {
+                OrderStatus = "Failed"
+            });
+
+        throw new Exception($"Stripe payment failed: {ex.StripeError?.Message ?? ex.Message}");
+}
+}
+
   }
 }
