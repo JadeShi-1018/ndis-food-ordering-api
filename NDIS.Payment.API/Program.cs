@@ -35,15 +35,14 @@ builder.Services.AddHttpClient<IOrderServiceClient, OrderServiceClient>(client =
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.MapGet("/", () => "Payment API is running");
 
 app.MapControllers();
 
