@@ -12,8 +12,8 @@ using NDIS.Order.API.DataAccess;
 namespace NDIS.Order.API.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20260403164738_AddOrderImdempotencyUniqueIndex")]
-    partial class AddOrderImdempotencyUniqueIndex
+    [Migration("20260420161630_AzureInitialization")]
+    partial class AzureInitialization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -138,24 +138,38 @@ namespace NDIS.Order.API.Migrations
                     b.Property<string>("OrderEventId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("EventStatus")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("EventStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EventTimestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EventType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("EventType")
+                        .HasColumnType("int");
 
                     b.Property<string>("OrderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("int");
+
                     b.HasKey("OrderEventId");
+
+                    b.HasIndex("EventStatus");
+
+                    b.HasIndex("EventTimestamp");
 
                     b.HasIndex("OrderId");
 

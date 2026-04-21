@@ -52,7 +52,12 @@ namespace NDIS.Shared.Common.Middlewares
                     response = ApiResponse<object>.Fail(notFoundEx.Message, "404");
                     break;
 
-                case BusinessException businessEx:
+        case UnauthorizedAccessException unauthorizedEx:
+          statusCode = (int)HttpStatusCode.Unauthorized;
+          response = ApiResponse<object>.Fail(unauthorizedEx.Message, "401");
+          break;
+
+        case BusinessException businessEx:
                     statusCode = (int)HttpStatusCode.BadRequest;
                     response = ApiResponse<object>.Fail(businessEx.Message, businessEx.ErrorCode ?? "400");
                     break;

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NDIS.Order.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AzureInitialization : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace NDIS.Order.API.Migrations
                 columns: table => new
                 {
                     OrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DeliveryAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CustomerContactNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
@@ -24,7 +24,7 @@ namespace NDIS.Order.API.Migrations
                     ProviderServiceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProviderServiceName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ProviderPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdempotencyKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdempotencyKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CategoryId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MenuId = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -52,9 +52,13 @@ namespace NDIS.Order.API.Migrations
                 {
                     OrderEventId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EventType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    EventStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    EventTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    EventType = table.Column<int>(type: "int", nullable: false),
+                    EventStatus = table.Column<int>(type: "int", nullable: false),
+                    Payload = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RetryCount = table.Column<int>(type: "int", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    EventTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,9 +72,25 @@ namespace NDIS.Order.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderEvents_EventStatus",
+                table: "OrderEvents",
+                column: "EventStatus");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEvents_EventTimestamp",
+                table: "OrderEvents",
+                column: "EventTimestamp");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderEvents_OrderId",
                 table: "OrderEvents",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId_IdempotencyKey",
+                table: "Orders",
+                columns: new[] { "UserId", "IdempotencyKey" },
+                unique: true);
         }
 
         /// <inheritdoc />
