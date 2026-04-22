@@ -81,7 +81,7 @@ namespace NDIS.Service.API.Mappers
 
       CreateMap<MenuUpdateDto, Menu>();
 
-      CreateMap<Menu, MenuResponseDto>();
+      CreateMap<Menu, MenuResponseDto>().ForMember(dest => dest.PeriodName, opt => opt.MapFrom(src => src.Period.ToString())); ;
       // WeeklyPlan
       CreateMap<WeeklyPlanCreateDto, WeeklyPlan>()
                 .ForMember(dest => dest.WeeklyPlanId, opt => opt.Ignore());
