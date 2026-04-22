@@ -4,6 +4,8 @@ namespace NDIS.Service.API.DTOs.ProviderService
   {
     public string ProviderServiceId { get; set; }
 
+    public string ProviderServiceName { get; set; }
+
     public string ProviderId { get; set; }
 
     public string ServiceTypeId { get; set; }

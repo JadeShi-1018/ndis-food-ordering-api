@@ -59,7 +59,7 @@ namespace NDIS.Service.API.Services
         {
             try
             {
-                // 加载 ProviderService 以及关联的 ServiceType 和 Categories
+                //  ProviderService and linked ServiceType , Categories
                 var query = _repository
                     .GetDbSet<ProviderService>()
                     .Include(ps => ps.ServiceType)
