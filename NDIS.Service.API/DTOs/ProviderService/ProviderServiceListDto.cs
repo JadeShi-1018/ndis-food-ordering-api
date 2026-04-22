@@ -7,6 +7,7 @@ namespace NDIS.Service.API.DTOs.ProviderService
     public string ProviderServiceName { get; set; }
 
     public string ProviderId { get; set; }
+    public string? OpeningHours { get; set; }
 
     public string ServiceTypeId { get; set; }
 
