@@ -190,6 +190,21 @@ builder.Services.AddHttpClient<IPaymentServiceClient, PaymentServiceClient>(clie
   client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:PaymentApi"]!);
 });
 
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? Array.Empty<string>();
+
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy("AllowFrontend", policy =>
+  {
+    policy
+        .WithOrigins(allowedOrigins)
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+  });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -198,8 +213,12 @@ var app = builder.Build();
     app.UseSwaggerUI();
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
+
+
+
 app.MapGet("/", () => "Order API is running");
 app.MapControllers();
 
