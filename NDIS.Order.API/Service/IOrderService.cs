@@ -11,5 +11,7 @@ namespace NDIS.Order.API.Services
     Task<List<OrderResponseDto>> GetOrdersByUserIdAsync(string userId);
 
     Task<bool> UpdateOrderStatusAsync(string orderId, string orderStatus);
+
+    Task<List<OrderResponseDto>> GetMyOrdersAsync(ClaimsPrincipal user);
   }
 }

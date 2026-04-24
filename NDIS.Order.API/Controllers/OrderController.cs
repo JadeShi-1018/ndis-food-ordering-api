@@ -76,6 +76,15 @@ namespace NDIS.Order.API.Controllers
         return Ok(orders);
       }
 
+    [Authorize]
+    [HttpGet("my-orders")]
+    public async Task<IActionResult> GetMyOrders()
+    {
+      var result = await _orderService.GetMyOrdersAsync(User);
+      return Ok(result);
+    }
+
+
     [HttpPut("{orderId}/status")]
     public async Task<IActionResult> UpdateOrderStatus(string orderId, UpdateOrderStatusRequestDto request)
     {

@@ -323,5 +323,25 @@ namespace NDIS.Order.API.Services
       var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
       return _mapper.Map<List<OrderResponseDto>>(orders);
     }
+
+
+public async Task<List<OrderResponseDto>> GetMyOrdersAsync(ClaimsPrincipal user)
+  {
+    var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    if (string.IsNullOrEmpty(userId))
+    {
+      throw new UnauthorizedAccessException("Invalid token: userId not found.");
+    }
+
+    var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
+
+    
+    var ordered = orders
+        .OrderByDescending(o => o.CreatedAt)
+        .ToList();
+
+    return _mapper.Map<List<OrderResponseDto>>(ordered);
   }
+}
 }
