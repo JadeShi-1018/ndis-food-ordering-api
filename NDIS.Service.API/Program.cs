@@ -44,7 +44,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000")
+        policy.WithOrigins("http://localhost:3000", "https://nice-glacier-0b761a000.7.azurestaticapps.net/")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

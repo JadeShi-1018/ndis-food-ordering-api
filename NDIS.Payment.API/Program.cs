@@ -17,7 +17,8 @@ builder.Services.AddCors(options =>
   {
     policy
         .WithOrigins(
-            "http://localhost:3000"
+            "http://localhost:3000",
+            "https://nice-glacier-0b761a000.7.azurestaticapps.net/"
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
