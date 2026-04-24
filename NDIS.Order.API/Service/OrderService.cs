@@ -13,6 +13,8 @@ using NDIS.Contracts.Events;
 using NDIS.Order.API.Repository;
 using StackExchange.Redis;
 using MassTransit.SagaStateMachine;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 namespace NDIS.Order.API.Services
 {
   public class OrderService : IOrderService
@@ -39,6 +41,16 @@ namespace NDIS.Order.API.Services
       //_idempotencyService = idempotencyService;
       //_orderEventRepository = orderEventRepository;
 
+    }
+
+    private static bool IsDuplicateIdempotencyException(DbUpdateException ex)
+    {
+      if (ex.InnerException is SqlException sqlEx)
+      {
+        return sqlEx.Number == 2601 || sqlEx.Number == 2627;
+      }
+
+      return false;
     }
 
     //private OrderEvent BuildOrderCreatedEvent(OrderEntity order)
@@ -104,6 +116,18 @@ namespace NDIS.Order.API.Services
       var idempotencyKey = string.IsNullOrWhiteSpace(request.IdempotencyKey)
           ? Guid.NewGuid().ToString()
           : request.IdempotencyKey.Trim();
+
+      var existingOrder = await _orderRepository
+    .GetByUserIdAndIdempotencyKeyAsync(userId, idempotencyKey);
+
+      if (existingOrder != null)
+      {
+        _logger.LogInformation(
+            "Idempotent request hit. Returning existing order. UserId: {UserId}, IdempotencyKey: {IdempotencyKey}, OrderId: {OrderId}",
+            userId, idempotencyKey, existingOrder.OrderId);
+
+        return _mapper.Map<OrderResponseDto>(existingOrder);
+      }
 
       var redisKey = $"order:idempotency:{userId}:{idempotencyKey}";
 
@@ -196,9 +220,29 @@ namespace NDIS.Order.API.Services
         };
 
         //var orderEvent = BuildOrderCreatedEvent(order);
+        try
+        {
 
-        await _orderRepository.CreateOrderAsync(order);
-        await _orderRepository.SaveChangesAsync();
+          await _orderRepository.CreateOrderAsync(order);
+          await _orderRepository.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (IsDuplicateIdempotencyException(ex))
+        {
+          _logger.LogWarning(
+              ex,
+              "Duplicate idempotency detected on save. UserId: {UserId}, IdempotencyKey: {IdempotencyKey}",
+              userId, idempotencyKey);
+
+          var existingAfterConflict = await _orderRepository
+              .GetByUserIdAndIdempotencyKeyAsync(userId, idempotencyKey);
+
+          if (existingAfterConflict != null)
+          {
+            return _mapper.Map<OrderResponseDto>(existingAfterConflict);
+          }
+
+          throw;
+        }
 
         // call Payment Service to create pending payment
         var paymentRequest = new CreatePaymentRequestDto

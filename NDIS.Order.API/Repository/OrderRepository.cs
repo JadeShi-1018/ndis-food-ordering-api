@@ -25,7 +25,11 @@ namespace NDIS.Order.API.Repositories
           .Include(o => o.OrderEvents)
           .FirstOrDefaultAsync(o => o.OrderId == orderId);
     }
-
+    public async Task<OrderEntity?> GetByUserIdAndIdempotencyKeyAsync(string userId, string idempotencyKey)
+    {
+      return await _context.Orders
+          .FirstOrDefaultAsync(o => o.UserId == userId && o.IdempotencyKey == idempotencyKey);
+    }
     public async Task SaveChangesAsync()
     {
       await _context.SaveChangesAsync();

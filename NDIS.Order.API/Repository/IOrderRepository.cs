@@ -10,6 +10,8 @@ namespace NDIS.Order.API.Repositories
     Task<List<OrderEntity>> GetOrdersByUserIdAsync(string userId);
     Task<List<OrderEntity>> GetOrdersByProviderIdAsync(string providerId);
     Task<bool> UpdateOrderAsync(OrderEntity order);
+
+    Task<OrderEntity?> GetByUserIdAndIdempotencyKeyAsync(string userId, string idempotencyKey);
     Task SaveChangesAsync();
   }
 }
