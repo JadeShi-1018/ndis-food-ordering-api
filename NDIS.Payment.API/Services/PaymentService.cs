@@ -62,14 +62,16 @@ namespace NDIS.Payment.API.Services
     public async Task<PayPaymentResponseDto> PayAsync(string paymentId, PayPaymentRequestDto request)
     {
       var payment = await _paymentRepository.GetByIdAsync(paymentId);
-      Console.WriteLine($"Current Payment is {payment.PaymentId}");
-      Console.WriteLine($"Current Payment status is {payment.PaymentStatus}");
+      
 
 
       if (payment == null)
       {
         throw new Exception("Payment not found.");
       }
+
+      Console.WriteLine($"Current Payment is {payment.PaymentId}");
+      Console.WriteLine($"Current Payment status is {payment.PaymentStatus}");
 
       if (payment.PaymentStatus != PaymentStatus.Pending)
       {
