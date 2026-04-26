@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using NDIS.Shared.Common.Extensions;
 using NDIS.User.API.Common.Enums;
-using NDIS.User.API.Domain.User;
+
 using NDIS.User.API.DTOs;
+using NDIS.User.API.Services;
 using NDIS.User.API.UserService;
 using System.Security.Claims;
+using AppUser = NDIS.User.API.Domain.User.User;
 
 namespace NDIS.User.API.UserControllers
 {
@@ -17,12 +21,16 @@ namespace NDIS.User.API.UserControllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly ITokenService _tokenService;
 
 
-        public UserController(IUserService userService, ILogger<UserController> logger)
+        public UserController(IUserService userService, ILogger<UserController> logger, UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userService = userService;
             _logger = logger;
+      _userManager = userManager;
+      _tokenService = tokenService;
         }
 
         [HttpPost("admin-signup")]
@@ -38,6 +46,43 @@ namespace NDIS.User.API.UserControllers
             var result = await _userService.RegisterAsync(dto, RoleNames.User.ToString());
             return ApiResponse<SignUpResponseDto>.Success(result, "User registered successfully");
         }
+
+    [HttpPost("register")]
+    public async Task<ActionResult<ApiResponse<SignUpRequestDto>>> Register([FromBody] SignUpRequestDto signUpRequestDto)
+    {
+      if (signUpRequestDto.Password != signUpRequestDto.ConfirmPassword)
+        return BadRequest("Passwords do not match.");
+
+      var existingUser = await _userManager.FindByEmailAsync(signUpRequestDto.Email);
+      if (existingUser != null)
+        return BadRequest("Email already exists.");
+
+      var user = new AppUser
+      {
+        UserName = signUpRequestDto.Email,
+        Email = signUpRequestDto.Email,
+        PhoneNumber = signUpRequestDto.PhoneNumber,
+        EmailConfirmed = true,
+        CreatedAt = DateTime.UtcNow,
+        UpdatedAt = DateTime.UtcNow
+      };
+
+      var result = await _userManager.CreateAsync(user, signUpRequestDto.Password);
+
+      if (!result.Succeeded)
+        return BadRequest(result.Errors);
+
+      await _userManager.AddToRoleAsync(user, "User");
+
+      var token = await _tokenService.GenerateTokenAsync(user);
+
+      return Ok(new SignUpResponseDto
+      {
+        UserId = user.Id,
+        Email = user.Email!,
+        Token = token
+      });
+    }
 
 
 
