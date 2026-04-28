@@ -9,5 +9,6 @@ namespace NDIS.User.API.UserService
         Task<UserInfoDto> GetCurrentUserInfoAsync(string userId);
         Task<SignInResponseDto> SignInAsync(SignInRequestDto request);
         Task<SignUpResponseDto?> RegisterAsync(SignUpRequestDto signUpRequestDto, string roleName);
-    }
+    Task<ApiResponse<SignUpResponseDto>> RegisterAsync(SignUpRequestDto dto);
+  }
 }
