@@ -48,40 +48,16 @@ namespace NDIS.User.API.UserControllers
         }
 
     [HttpPost("register")]
-    public async Task<ActionResult<ApiResponse<SignUpRequestDto>>> Register([FromBody] SignUpRequestDto signUpRequestDto)
+    public async Task<ActionResult<ApiResponse<SignUpResponseDto>>> Register([FromBody] SignUpRequestDto signUpRequestDto)
     {
-      if (signUpRequestDto.Password != signUpRequestDto.ConfirmPassword)
-        return BadRequest("Passwords do not match.");
+      var response = await _userService.RegisterAsync(signUpRequestDto);
 
-      var existingUser = await _userManager.FindByEmailAsync(signUpRequestDto.Email);
-      if (existingUser != null)
-        return BadRequest("Email already exists.");
-
-      var user = new AppUser
+      if (!response.Succeed)
       {
-        UserName = signUpRequestDto.Email,
-        Email = signUpRequestDto.Email,
-        PhoneNumber = signUpRequestDto.PhoneNumber,
-        EmailConfirmed = true,
-        CreatedAt = DateTime.UtcNow,
-        UpdatedAt = DateTime.UtcNow
-      };
+        return BadRequest(response);
+      }
 
-      var result = await _userManager.CreateAsync(user, signUpRequestDto.Password);
-
-      if (!result.Succeeded)
-        return BadRequest(result.Errors);
-
-      await _userManager.AddToRoleAsync(user, "User");
-
-      var token = await _tokenService.GenerateTokenAsync(user);
-
-      return Ok(new SignUpResponseDto
-      {
-        UserId = user.Id,
-        Email = user.Email!,
-        Token = token
-      });
+      return Ok(response);
     }
 
 

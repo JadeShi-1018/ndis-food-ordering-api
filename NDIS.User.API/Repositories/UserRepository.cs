@@ -4,18 +4,35 @@ using NDIS.User.API.Common.Enums;
 using NDIS.User.API.Domain.User;
 using NDIS.User.API.DTOs;
 
+using AppUser = NDIS.User.API.Domain.User.User;
+
 namespace NDIS.User.API.UserReposotory
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserManager<Domain.User.User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
+       
 
-        public UserRepository(UserManager<Domain.User.User> userManager, RoleManager<Role> roleManager)
+        public UserRepository(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
+
+    public async Task<AppUser?> GetByEmailAsync(string email)
+    {
+      return await _userManager.FindByEmailAsync(email);
+    }
+
+    public async Task<IdentityResult> CreateAsync(AppUser user, string password)
+    {
+      return await _userManager.CreateAsync(user, password);
+    }
+
+    public async Task<IdentityResult> AddToRoleAsync(AppUser user, string role)
+    {
+      return await _userManager.AddToRoleAsync(user, role);
+
+    }
 
     }
 }
