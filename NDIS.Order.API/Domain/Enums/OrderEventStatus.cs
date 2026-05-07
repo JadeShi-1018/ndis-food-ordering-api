@@ -4,6 +4,7 @@
   {
     Pending = 1,
     Processed = 2,
-    Failed = 3
+    Failed = 3,
+    Processing = 4
   }
 }

@@ -41,6 +41,7 @@ namespace NDIS.Order.API.Services
 
     private OrderEvent BuildOrderCreatedEvent(OrderEntity order)
     {
+      var eventId = Guid.NewGuid().ToString();
       var payload = new OrderCreatedEvent
       {
         OrderId = order.OrderId,
@@ -60,13 +61,15 @@ namespace NDIS.Order.API.Services
         StartDate = order.StartDate,
         EndDate = order.EndDate,
         IdempotencyKey = order.IdempotencyKey,
-        CreatedAt = order.CreatedAt
+        CreatedAt = order.CreatedAt,
+        EventId = eventId,
+        OccurredAt = DateTime.UtcNow
 
       };
 
       return new OrderEvent
       {
-        OrderEventId = Guid.NewGuid().ToString(),
+        OrderEventId = eventId,
         OrderId = order.OrderId,
         EventType = OrderEventType.OrderCreated,
         EventStatus = OrderEventStatus.Pending,
@@ -125,6 +128,9 @@ namespace NDIS.Order.API.Services
         }
         throw new InvalidOperationException("Duplicate request detected.");
       }
+
+      OrderEntity order = null;
+      var dbSaved = false;
       try
       {
 
@@ -154,7 +160,7 @@ namespace NDIS.Order.API.Services
         var totalPrice = quantity * menuInfo.UnitPrice;
 
         // 6. OrderEntity
-        var order = new OrderEntity
+        order = new OrderEntity
         {
           OrderId = Guid.NewGuid().ToString(),
           UserId = userId,
@@ -202,9 +208,19 @@ namespace NDIS.Order.API.Services
 
         await _orderEventRepository.AddAsync(orderEvent);
         await _orderRepository.SaveChangesAsync();
+        dbSaved = true;
 
         // 7.mark idempotency success
-        await _idempotencyService.MarkSuccessAsync(redisKey, order.OrderId, TimeSpan.FromHours(24));
+        // 只有 Redis 当前 value 还是 PROCESSING:{idemResult.Token}
+        // 才会改成 SUCCESS:{order.OrderId}
+        var marked = await _idempotencyService.MarkSuccessAsync(redisKey, order.OrderId, TimeSpan.FromHours(24),idemResult.Token! );
+        if (!marked)
+        {
+          _logger.LogWarning(
+                "Failed to mark idempotency success. Redis key may have expired or been taken by another request. RedisKey={RedisKey}, OrderId={OrderId}",
+                redisKey,
+                order.OrderId);
+        }
         return _mapper.Map<OrderResponseDto>(order);
       }
       catch (Exception ex)
@@ -212,7 +228,15 @@ namespace NDIS.Order.API.Services
         _logger.LogError(ex, "CreateOrder failed, releasing idempotency key");
 
         // when failling in all business service, don't need to wait for TTL ends
-        await _idempotencyService.ReleaseAsync(redisKey);
+        // 只有在 DB 没有成功保存时，才释放 Redis processing key。
+        // 如果 DB 已经保存成功，就不要 release，因为订单已经存在了。
+        if (!dbSaved)
+        {
+          await _idempotencyService.ReleaseAsync(
+              redisKey,
+              idemResult.Token!);
+        }
+        
 
         throw;
       }

@@ -148,6 +148,12 @@ namespace NDIS.Order.API.Migrations
                     b.Property<int>("EventType")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("LockedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("NextRetryAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("OrderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");

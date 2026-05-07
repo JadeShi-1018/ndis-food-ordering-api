@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "NDIS.Order.API\\NDIS.Order.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "NDIS.Payment.API\\NDIS.Payment.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "NDIS.User.API\\NDIS.User.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "NDIS.Service.API\\NDIS.Service.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

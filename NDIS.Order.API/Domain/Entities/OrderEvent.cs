@@ -23,5 +23,8 @@ namespace NDIS.Order.API.Domain.Entities
     public DateTime? ProcessedAt { get; set; }
 
     public Order Order { get; set; } = null!;
+    public DateTime? NextRetryAt { get; set; }
+
+    public DateTime? LockedAt { get; set; }
   }
 }

@@ -10,8 +10,10 @@ namespace NDIS.Contracts.Events
     {
       public string OrderId { get; set; } = null!;
       public string UserId { get; set; } = null!;
+    public string EventId { get; set; } = default!;
+    public DateTime OccurredAt { get; set; }
 
-      public string CustomerName { get; set; } = null!;
+    public string CustomerName { get; set; } = null!;
 
       public string ProviderId { get; set; } = null!;
       public string ProviderServiceId { get; set; } = null!;

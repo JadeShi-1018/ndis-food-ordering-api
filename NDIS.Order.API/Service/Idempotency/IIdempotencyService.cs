@@ -6,7 +6,7 @@ namespace NDIS.Order.API.Service.Idempotency
   {
 
     Task<IdempotencyCheckResult> TryStartAsync(string key, TimeSpan expiry);
-    Task MarkSuccessAsync(string key, string orderId, TimeSpan expiry);
-    Task ReleaseAsync(string key);
+    Task<bool> MarkSuccessAsync(string key, string orderId, TimeSpan expiry,string token);
+    Task<bool> ReleaseAsync(string key, string token);
   }
 }

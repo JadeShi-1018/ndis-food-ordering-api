@@ -12,10 +12,16 @@ public class RedisIdempotencyService : IIdempotencyService
 
   public async Task<IdempotencyCheckResult> TryStartAsync(string key, TimeSpan expiry)
   {
+    // 每一次后端 request attempt 都生成一个新的 token
+    var token = Guid.NewGuid().ToString("N");
+
+    // Redis value 不再只是 PROCESSING，而是 PROCESSING:{token}
+    var processingValue = $"PROCESSING:{token}";
     // Redis: SET key PROCESSING NX EX 600
     var locked = await _redis.StringSetAsync(
         key,
-        "PROCESSING",
+       processingValue,
+    // Redis: SET key PROCESSING,
         expiry,
         When.NotExists);
 
@@ -23,7 +29,8 @@ public class RedisIdempotencyService : IIdempotencyService
     {
       return new IdempotencyCheckResult
       {
-        Acquired = true
+        Acquired = true,
+        Token = token
       };
     }
 
@@ -39,7 +46,7 @@ public class RedisIdempotencyService : IIdempotencyService
 
     var value = existingValue.ToString();
 
-    if (value == "PROCESSING")
+    if (value.StartsWith("PROCESSING"))
     {
       return new IdempotencyCheckResult
       {
@@ -63,13 +70,48 @@ public class RedisIdempotencyService : IIdempotencyService
     };
   }
 
-  public async Task ReleaseAsync(string key)
+  public async Task<bool> ReleaseAsync(string key, string token)
   {
-    await _redis.KeyDeleteAsync(key);
+    // only when the current Redis  value == PROCESSING: { token} and then you can delete the idempotency key
+
+    //  Lua script used to ensure actomic
+    var script = @"
+            if redis.call('GET', KEYS[1]) == ARGV[1] then
+                return redis.call('DEL', KEYS[1])
+            else
+                return 0
+            end";
+    var result = await _redis.ScriptEvaluateAsync(script,
+            new RedisKey[] { key },
+            new RedisValue[] { $"PROCESSING:{token}" });
+
+    return (int) result == 1;
   }
 
-  public async Task MarkSuccessAsync(string key, string orderId, TimeSpan expiry)
+  public async Task<bool> MarkSuccessAsync(string key, string orderId, TimeSpan expiry,string token)
   {
-    await _redis.StringSetAsync(key, $"SUCCESS:{orderId}", expiry);
+    // 只有 Redis 当前 value 仍然是 PROCESSING:{token}
+    // 才允许把它改成 SUCCESS:{orderId}
+    //
+    // 这个也必须原子化，避免旧请求覆盖新请求状态
+    var script = @"
+            if redis.call('GET', KEYS[1]) == ARGV[1] then
+                return redis.call('SET', KEYS[1], ARGV[2], 'EX', ARGV[3])
+            else
+                return nil
+            end";
+
+    var result = await _redis.ScriptEvaluateAsync(
+        script,
+        new RedisKey[] { key },
+        new RedisValue[]
+        {
+                $"PROCESSING:{token}",
+                $"SUCCESS:{orderId}",
+                (long)expiry.TotalSeconds
+        });
+
+    return !result.IsNull;
+
   }
 }

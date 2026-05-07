@@ -21,25 +21,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //// Redis
-builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
 {
-  var configuration = builder.Configuration.GetConnectionString("Redis");
-  return ConnectionMultiplexer.Connect(configuration!);
+  var redisConnection = builder.Configuration.GetConnectionString("Redis");
+
+  if (string.IsNullOrWhiteSpace(redisConnection))
+  {
+    throw new InvalidOperationException("Redis connection string is missing.");
+  }
+
+  return ConnectionMultiplexer.Connect(redisConnection);
 });
 
-var redisConnection = builder.Configuration["Redis:ConnectionString"];
+builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
 
-if (!string.IsNullOrWhiteSpace(redisConnection))
-{
-  builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
-      ConnectionMultiplexer.Connect(redisConnection));
-
-  builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
-}
-else
-{
-  builder.Services.AddScoped<IIdempotencyService, NoOpIdempotencyService>();
-}
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

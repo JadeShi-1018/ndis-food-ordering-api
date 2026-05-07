@@ -22,7 +22,15 @@ builder.Services.AddMassTransit(x =>
       h.Password("guest");
     });
 
-    cfg.ConfigureEndpoints(context);
+    cfg.ReceiveEndpoint("payment-order-created", e =>
+    {
+      e.UseMessageRetry(r =>
+      {
+        r.Interval(3, TimeSpan.FromSeconds(5));
+      });
+
+      e.ConfigureConsumer<OrderCreatedConsumer>(context);
+    });
   });
 });
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
