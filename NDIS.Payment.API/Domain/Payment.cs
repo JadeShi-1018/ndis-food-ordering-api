@@ -50,13 +50,37 @@ namespace NDIS.Payment.API.Domain
     [Required]
     public decimal PaymentPrice { get; set; }
 
+
+
+    [Required]
+    public string Currency { get; set; } = "aud";
+
+    [Required]
+    public long AmountInCents { get; set; }
+
     public string? PaymentMethod { get; set; }
 
     [Required]
     public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
 
+    // Used when calling Stripe to create PaymentIntent.
+    // Recommended value: payment-intent:{OrderId}
     [Required]
-    public string IdempotencyKey { get; set; } = null!;
+    public string PaymentIdempotencyKey { get; set; } = null!;
+    public string OrderIdempotencyKey { get; set; } = null!;
+
+    public string? StripePaymentIntentId { get; set; }
+
+    public string? StripeClientSecret { get; set; }
+
+    public DateTime? PaymentIntentCreatedAt { get; set; }
+
+    public DateTime? PaidAt { get; set; }
+
+    public string? FailureReason { get; set; }
+
+
+
 
     [Required]
     public DateTime OrderCreatedAt { get; set; }
@@ -66,7 +90,7 @@ namespace NDIS.Payment.API.Domain
 
     public DateTime? UpdatedAt { get; set; }
 
-    // Navigation properties
-    public ICollection<PaymentEvent> PaymentEvents { get; set; } = new List<PaymentEvent>();
+
+
   }
 }

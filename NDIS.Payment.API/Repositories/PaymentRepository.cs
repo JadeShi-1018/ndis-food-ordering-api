@@ -18,22 +18,26 @@ namespace NDIS.Payment.API.Repositories
     public async Task<PaymentEntity?> GetByOrderIdAsync(string orderId)
     {
       return await _context.Payments
-          .Include(x => x.PaymentEvents)
-          .FirstOrDefaultAsync(x => x.OrderId == orderId);
+          .FirstOrDefaultAsync(p => p.OrderId == orderId);
+    }
+
+    public async Task<PaymentEntity?> GetByStripePaymentIntentIdAsync(string stripePaymentIntentId)
+    {
+      return await _context.Payments
+          .FirstOrDefaultAsync(p => p.StripePaymentIntentId == stripePaymentIntentId);
     }
 
     public async Task AddAsync(PaymentEntity payment)
     {
       await _context.Payments.AddAsync(payment);
+      await _context.SaveChangesAsync();
     }
 
-    public async Task AddPaymentEventAsync(PaymentEvent paymentEvent)
+    public async Task UpdateAsync(PaymentEntity payment)
     {
-      await _context.PaymentEvents.AddAsync(paymentEvent);
-    }
+      payment.UpdatedAt = DateTime.UtcNow;
 
-    public async Task SaveChangesAsync()
-    {
+      _context.Payments.Update(payment);
       await _context.SaveChangesAsync();
     }
   }

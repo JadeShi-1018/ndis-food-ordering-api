@@ -1,11 +1,16 @@
 ﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using NDIS.Contracts.Events;
 using NDIS.Payment.API.Domain;
 using NDIS.Payment.API.Dtos;
 using NDIS.Payment.API.Enums;
 using NDIS.Payment.API.Repositories;
+using NDIS.Payment.API.Services.Outbox;
 using Stripe;
 using PaymentEntity = NDIS.Payment.API.Domain.Payment;
+//using NDIS.Payment.API.IntegrationEvents;
+using NDIS.Payment.API.Data;
+using System.Text.Json;
 
 namespace NDIS.Payment.API.Services
 {
@@ -14,165 +19,204 @@ namespace NDIS.Payment.API.Services
     private readonly IPaymentRepository _paymentRepository;
     private readonly ILogger<PaymentService> _logger;
     private readonly IPublishEndpoint _publishEndpoint;
-    
+    private readonly IStripePaymentService _stripePaymentService;
+    private readonly ApplicationDbContext _context;
+
 
     public PaymentService(
         IPaymentRepository paymentRepository,
         ILogger<PaymentService> logger,
-        IPublishEndpoint publishEndpoint)
+        IPublishEndpoint publishEndpoint,
+      IStripePaymentService stripePaymentService, ApplicationDbContext applicationDbContext)
     {
       _paymentRepository = paymentRepository;
       _logger = logger;
       _publishEndpoint = publishEndpoint;
+      _stripePaymentService = stripePaymentService;
+      _context = applicationDbContext;
     }
 
-    public async Task CreatePaymentFromOrderAsync(OrderCreatedEvent message)
+    public async Task<PaymentEntity> CreatePaymentForOrderAsync(OrderCreatedEvent message)
     {
       var existingPayment = await _paymentRepository.GetByOrderIdAsync(message.OrderId);
+
       if (existingPayment != null)
       {
-        _logger.LogWarning(
-            "Payment already exists for OrderId: {OrderId}. Skipping duplicate consumption.",
-            message.OrderId);
-        return;
+        _logger.LogInformation(
+            "Payment already exists for OrderId={OrderId}. PaymentId={PaymentId}",
+            message.OrderId,
+            existingPayment.PaymentId);
+
+        return existingPayment;
       }
+
+      var amountInCents = ToAmountInCents(message.OrderPrice);
+      var currency = "aud";
+      var paymentIdempotencyKey = $"payment-intent:{message.OrderId}";
+
+      var paymentIntent = await _stripePaymentService.CreatePaymentIntentAsync(
+          amountInCents,
+          currency,
+          message.OrderId,
+          paymentIdempotencyKey);
 
       var payment = new PaymentEntity
       {
-        PaymentId = Guid.NewGuid().ToString(),
         OrderId = message.OrderId,
         UserId = message.UserId,
         CustomerName = message.CustomerName,
+
         ProviderId = message.ProviderId,
         ProviderServiceId = message.ProviderServiceId,
         ProviderServiceName = message.ProviderServiceName,
+
         CategoryId = message.CategoryId,
         CategoryName = message.CategoryName,
+
         MenuId = message.MenuId,
         MenuName = message.MenuName,
         PeriodName = message.PeriodName,
+
         Quantity = message.Quantity,
         UnitPrice = message.UnitPrice,
         PaymentPrice = message.OrderPrice,
+
+        Currency = currency,
+        AmountInCents = amountInCents,
+
         PaymentStatus = PaymentStatus.Pending,
-        IdempotencyKey = message.IdempotencyKey,
+
+        OrderIdempotencyKey = message.IdempotencyKey,
+        PaymentIdempotencyKey = paymentIdempotencyKey,
+
+        StripePaymentIntentId = paymentIntent.Id,
+        StripeClientSecret = paymentIntent.ClientSecret,
+        PaymentIntentCreatedAt = DateTime.UtcNow,
+
         OrderCreatedAt = message.CreatedAt,
         CreatedAt = DateTime.UtcNow
       };
 
-      await _paymentRepository.AddAsync(payment);
-
-      var paymentEvent = new PaymentEvent
+      try
       {
-        PaymentEventId = Guid.NewGuid().ToString(),
-        PaymentId = payment.PaymentId,
-        EventType = "PaymentCreated",
-        EventStatus = "Completed",
-        EventTimestamp = DateTime.UtcNow
-      };
+        await _paymentRepository.AddAsync(payment);
+        return payment;
+      }
+      catch (DbUpdateException ex)
+      {
+        _logger.LogWarning(
+            ex,
+            "Possible duplicate payment insert for OrderId={OrderId}. Trying to load existing payment.",
+            message.OrderId);
 
-      await _paymentRepository.AddPaymentEventAsync(paymentEvent);
-      await _paymentRepository.SaveChangesAsync();
+        var savedPayment = await _paymentRepository.GetByOrderIdAsync(message.OrderId);
 
-      _logger.LogInformation(
-          "Payment created successfully. PaymentId: {PaymentId}, OrderId: {OrderId}",
-          payment.PaymentId,
-          payment.OrderId);
+        if (savedPayment != null)
+        {
+          return savedPayment;
+        }
+
+        throw;
+      }
     }
 
-    public async Task<PaymentResponseDto?> GetByOrderIdAsync(string orderId)
+    private static long ToAmountInCents(decimal amount)
+    {
+      return (long)Math.Round(amount * 100, MidpointRounding.AwayFromZero);
+    }
+
+    public async Task<PaymentByOrderResponseDto?> GetPaymentByOrderIdAsync(string orderId)
     {
       var payment = await _paymentRepository.GetByOrderIdAsync(orderId);
 
-      if (payment == null) return null;
+      if (payment == null)
+      {
+        return null;
+      }
 
-      return new PaymentResponseDto
+      return new PaymentByOrderResponseDto
       {
         PaymentId = payment.PaymentId,
         OrderId = payment.OrderId,
-        PaymentStatus = payment.PaymentStatus.ToString(),
+        UserId = payment.UserId,
+
         PaymentPrice = payment.PaymentPrice,
-        PaymentMethod = payment.PaymentMethod,
+        Currency = payment.Currency,
+        AmountInCents = payment.AmountInCents,
+        PaymentStatus = payment.PaymentStatus.ToString(),
+
+        StripePaymentIntentId = payment.StripePaymentIntentId,
+        StripeClientSecret = payment.StripeClientSecret,
+
+        CustomerName = payment.CustomerName,
+        ProviderServiceName = payment.ProviderServiceName,
+        MenuName = payment.MenuName,
+        PeriodName = payment.PeriodName,
+        Quantity = payment.Quantity,
+
         CreatedAt = payment.CreatedAt
       };
     }
 
-    public async Task<bool> PayAsync(PayOrderRequestDto request)
+    public async Task HandlePaymentSucceededAsync(
+    string stripeEventId,
+    string stripePaymentIntentId)
     {
-      var payment = await _paymentRepository.GetByOrderIdAsync(request.OrderId);
+      await using var transaction = await _context.Database.BeginTransactionAsync();
+
+      var alreadyProcessed = await _context.ProcessedWebhookEvents
+          .AnyAsync(x => x.Provider == "Stripe" && x.EventId == stripeEventId);
+
+      if (alreadyProcessed)
+      {
+        await transaction.CommitAsync();
+        return;
+      }
+
+      _context.ProcessedWebhookEvents.Add(new ProcessedWebhookEvent
+      {
+        Provider = "Stripe",
+        EventId = stripeEventId,
+        EventType = "payment_intent.succeeded",
+        ProcessedAt = DateTime.UtcNow
+      });
+
+      var payment = await _context.Payments
+          .FirstOrDefaultAsync(x => x.StripePaymentIntentId == stripePaymentIntentId);
 
       if (payment == null)
       {
-        _logger.LogWarning("Payment not found for OrderId: {OrderId}", request.OrderId);
-        return false;
+        throw new InvalidOperationException(
+            $"Payment not found for StripePaymentIntentId={stripePaymentIntentId}");
       }
 
-      if (payment.PaymentStatus == PaymentStatus.Success)
+      if (payment.PaymentStatus != PaymentStatus.Succeeded)
       {
-        _logger.LogWarning("Payment already succeeded for OrderId: {OrderId}", request.OrderId);
-        return true;
-      }
+        payment.PaymentStatus = PaymentStatus.Succeeded;
+        payment.PaidAt = DateTime.UtcNow;
+        payment.UpdatedAt = DateTime.UtcNow;
 
-      var paymentIntentService = new PaymentIntentService();
-
-      var options = new PaymentIntentCreateOptions
-      {
-        Amount = (long)(payment.PaymentPrice * 100m),
-        Currency = "aud",
-        Confirm = true,
-        PaymentMethod = "pm_card_visa",
-        PaymentMethodTypes = new List<string> { "card" },
-        Metadata = new Dictionary<string, string>
+        var integrationEvent = new PaymentSucceededEvent
         {
-            { "orderId", payment.OrderId },
-            { "paymentId", payment.PaymentId }
-        }
-      };
+          PaymentId = payment.PaymentId,
+          OrderId = payment.OrderId,
+          UserId = payment.UserId,
+          Amount = payment.PaymentPrice,
+          Currency = payment.Currency,
+          StripePaymentIntentId = payment.StripePaymentIntentId!
+        };
 
-      var intent = await paymentIntentService.CreateAsync(options);
-
-      if (intent.Status != "succeeded")
-      {
-        _logger.LogWarning(
-            "Stripe payment did not succeed. OrderId: {OrderId}, PaymentIntentId: {PaymentIntentId}, Status: {Status}",
-            payment.OrderId,
-            intent.Id,
-            intent.Status);
-
-        return false;
+        _context.OutboxMessages.Add(new OutboxMessage
+        {
+          EventType = integrationEvent.EventType,
+          Payload = JsonSerializer.Serialize(integrationEvent),
+          OccurredAt = DateTime.UtcNow
+        });
       }
 
-      payment.PaymentMethod = request.PaymentMethod;
-      payment.PaymentStatus = PaymentStatus.Success;
-      payment.UpdatedAt = DateTime.UtcNow;
-
-      var paymentEvent = new PaymentEvent
-      {
-        PaymentEventId = Guid.NewGuid().ToString(),
-        PaymentId = payment.PaymentId,
-        EventType = "PaymentSucceeded",
-        EventStatus = "Completed",
-        EventTimestamp = DateTime.UtcNow
-      };
-
-      await _paymentRepository.AddPaymentEventAsync(paymentEvent);
-      await _paymentRepository.SaveChangesAsync();
-
-      await _publishEndpoint.Publish(new PaymentSucceededEvent
-      {
-        OrderId = payment.OrderId,
-        PaymentId = payment.PaymentId,
-        Amount = payment.PaymentPrice,
-        PaidAt = DateTime.UtcNow
-      });
-
-      _logger.LogInformation(
-          "Stripe test payment succeeded. OrderId: {OrderId}, PaymentId: {PaymentId}, PaymentIntentId: {PaymentIntentId}",
-          payment.OrderId,
-          payment.PaymentId,
-          intent.Id);
-
-      return true;
+      await _context.SaveChangesAsync();
+      await transaction.CommitAsync();
     }
+
   }
 }

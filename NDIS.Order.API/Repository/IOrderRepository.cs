@@ -11,5 +11,6 @@ namespace NDIS.Order.API.Repositories
     Task<List<OrderEntity>> GetOrdersByProviderIdAsync(string providerId);
     Task<bool> UpdateOrderAsync(OrderEntity order);
     Task SaveChangesAsync();
+
   }
 }

@@ -5,6 +5,7 @@ using NDIS.Payment.API.Consumers;
 using NDIS.Payment.API.Data;
 using NDIS.Payment.API.Repositories;
 using NDIS.Payment.API.Services;
+using NDIS.Payment.API.Services.Outbox;
 using NDIS.Shared.Common.Middlewares;
 using Stripe;
 
@@ -35,7 +36,17 @@ builder.Services.AddMassTransit(x =>
 });
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+builder.Services.AddHostedService<OutboxProcessor>();
+builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
+
+var stripeSecretKey = builder.Configuration["Stripe:SecretKey"];
+
+if (string.IsNullOrWhiteSpace(stripeSecretKey))
+{
+  throw new InvalidOperationException("Stripe SecretKey is not configured.");
+}
+
+StripeConfiguration.ApiKey = stripeSecretKey;
 
 // Add services to the container.
 

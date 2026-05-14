@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit.Futures.Contracts;
+using Microsoft.EntityFrameworkCore;
 using NDIS.Payment.API.Domain;
+using NDIS.Payment.API.Services.Outbox;
 using PaymentEntity = NDIS.Payment.API.Domain.Payment;
 
 namespace NDIS.Payment.API.Data
@@ -12,7 +14,9 @@ namespace NDIS.Payment.API.Data
     }
 
     public DbSet<PaymentEntity> Payments { get; set; }
-    public DbSet<PaymentEvent> PaymentEvents { get; set; }
+    public DbSet<ProcessedWebhookEvent> ProcessedWebhookEvents { get; set; }
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,25 +41,17 @@ namespace NDIS.Payment.API.Data
         entity.HasIndex(x => x.OrderId)
               .IsUnique();
 
-        entity.HasMany(x => x.PaymentEvents)
-              .WithOne(x => x.Payment)
-              .HasForeignKey(x => x.PaymentId)
-              .OnDelete(DeleteBehavior.Cascade);
+        entity.HasIndex(p => p.StripePaymentIntentId);
+
+             
       });
 
-      modelBuilder.Entity<PaymentEvent>(entity =>
-      {
-        entity.HasKey(x => x.PaymentEventId);
+      modelBuilder.Entity<ProcessedWebhookEvent>()
+    .HasIndex(e => new { e.Provider, e.EventId })
+    .IsUnique();
+      modelBuilder.Entity<OutboxMessage>()
+    .HasIndex(o => o.ProcessedAt);
 
-        entity.Property(x => x.EventType)
-              .HasMaxLength(100);
-
-        entity.Property(x => x.EventStatus)
-              .HasMaxLength(50);
-
-        entity.Property(x => x.EventTimestamp)
-              .HasDefaultValueSql("GETUTCDATE()");
-      });
     }
   }
 }

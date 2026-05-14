@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using NDIS.Contracts.Events;
+using NDIS.Payment.API.Domain;
 using NDIS.Payment.API.Services;
 
 namespace NDIS.Payment.API.Consumers
@@ -27,7 +28,13 @@ namespace NDIS.Payment.API.Consumers
           message.UserId,
           message.IdempotencyKey);
 
-      await _paymentService.CreatePaymentFromOrderAsync(message);
+     var payment = await _paymentService.CreatePaymentForOrderAsync(message);
+      _logger.LogInformation(
+       "Payment initialized. OrderId: {OrderId}, PaymentId: {PaymentId}, StripePaymentIntentId: {StripePaymentIntentId}, Status: {PaymentStatus}",
+       payment.OrderId,
+      payment.PaymentId,
+       payment.StripePaymentIntentId,
+       payment.PaymentStatus);
     }
   }
 }

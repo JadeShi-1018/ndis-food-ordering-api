@@ -1,0 +1,325 @@
+2026-05-08 03:27:58.923 +10:00 [INF] Executed DbCommand (135ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 03:27:59.822 +10:00 [INF] Executed DbCommand (195ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 03:27:59.841 +10:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 03:27:59.854 +10:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 03:27:59.964 +10:00 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-08 03:28:00.164 +10:00 [INF] No migrations were applied. The database is already up to date.
+2026-05-08 03:28:01.757 +10:00 [INF] Executed DbCommand (107ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:28:02.226 +10:00 [INF] Executed DbCommand (101ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ProviderServices] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:28:03.111 +10:00 [INF] Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Categories] AS [c]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:28:03.220 +10:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:28:06.257 +10:00 [INF] Now listening on: https://localhost:7002
+2026-05-08 03:28:06.482 +10:00 [INF] Now listening on: http://localhost:5002
+2026-05-08 03:28:06.943 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-08 03:28:07.055 +10:00 [INF] Hosting environment: Development
+2026-05-08 03:28:07.172 +10:00 [INF] Content root path: D:\code\bootcamp\ndisau\NDIS-AU-API\NDIS.Service.API
+2026-05-08 03:28:11.233 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/index.html - null null
+2026-05-08 03:28:12.855 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/index.html - 200 null text/html;charset=utf-8 1644.9133ms
+2026-05-08 03:28:14.662 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-08 03:28:14.699 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - 200 13768 application/javascript; charset=utf-8 36.8525ms
+2026-05-08 03:28:17.866 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - null null
+2026-05-08 03:28:18.082 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 215.7214ms
+2026-05-08 03:35:41.043 +10:00 [INF] Request starting HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - null null
+2026-05-08 03:35:41.307 +10:00 [INF] Executing endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 03:35:41.453 +10:00 [INF] Route matched with {action = "GetMenuOrderInfo", controller = "Menu"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMenuOrderInfo(System.String, System.String, System.String) on controller NDIS.Service.API.Controllers.MenuController (NDIS.Service.API).
+2026-05-08 03:35:43.117 +10:00 [INF] Executed DbCommand (328ms) [Parameters=[@__id_0='?' (Size = 450), @__providerServiceId_1='?' (Size = 450), @__categoryId_2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderId], [p].[ProviderServiceId], [p].[ProviderServiceName], [p].[PhoneNumber], [c].[CategoryId], [c].[CategoryName], [m].[MenuId], [m].[MenuName], [m].[Description], [m].[Period], [m].[Price]
+FROM [Menus] AS [m]
+INNER JOIN [Categories] AS [c] ON [m].[CategoryId] = [c].[CategoryId]
+INNER JOIN [ProviderServices] AS [p] ON [c].[ProviderServiceId] = [p].[ProviderServiceId]
+WHERE [m].[MenuId] = @__id_0 AND [p].[ProviderServiceId] = @__providerServiceId_1 AND [c].[CategoryId] = @__categoryId_2
+2026-05-08 03:35:43.250 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDIS.Service.API.Common.ApiResponse`1[[NDIS.Service.API.DTOs.Menu.MenuOrderInfoResponseDto, NDIS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-05-08 03:35:43.380 +10:00 [INF] Executed action NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API) in 1888.4219ms
+2026-05-08 03:35:43.399 +10:00 [INF] Executed endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 03:35:43.417 +10:00 [INF] Request finished HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - 200 null application/json; charset=utf-8 2374.5756ms
+2026-05-08 03:43:08.717 +10:00 [INF] Executed DbCommand (254ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 03:43:09.085 +10:00 [INF] Executed DbCommand (71ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 03:43:09.106 +10:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 03:43:09.127 +10:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 03:43:11.097 +10:00 [INF] Executed DbCommand (1,677ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-08 03:43:11.445 +10:00 [INF] No migrations were applied. The database is already up to date.
+2026-05-08 03:43:13.453 +10:00 [INF] Executed DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:43:13.512 +10:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ProviderServices] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:43:13.579 +10:00 [INF] Executed DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Categories] AS [c]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:43:13.635 +10:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 03:43:15.576 +10:00 [INF] Now listening on: https://localhost:7002
+2026-05-08 03:43:15.593 +10:00 [INF] Now listening on: http://localhost:5002
+2026-05-08 03:43:16.412 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-08 03:43:16.909 +10:00 [INF] Hosting environment: Development
+2026-05-08 03:43:16.959 +10:00 [INF] Content root path: D:\code\bootcamp\ndisau\NDIS-AU-API\NDIS.Service.API
+2026-05-08 03:43:19.076 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/index.html - null null
+2026-05-08 03:43:20.225 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/index.html - 200 null text/html;charset=utf-8 1155.0201ms
+2026-05-08 03:43:22.117 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-08 03:43:22.196 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - 200 13768 application/javascript; charset=utf-8 79.0377ms
+2026-05-08 03:43:25.593 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - null null
+2026-05-08 03:43:26.572 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 983.3812ms
+2026-05-08 03:57:34.344 +10:00 [INF] Request starting HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - null null
+2026-05-08 03:57:34.534 +10:00 [INF] Executing endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 03:57:34.629 +10:00 [INF] Route matched with {action = "GetMenuOrderInfo", controller = "Menu"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMenuOrderInfo(System.String, System.String, System.String) on controller NDIS.Service.API.Controllers.MenuController (NDIS.Service.API).
+2026-05-08 03:57:36.326 +10:00 [INF] Executed DbCommand (129ms) [Parameters=[@__id_0='?' (Size = 450), @__providerServiceId_1='?' (Size = 450), @__categoryId_2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderId], [p].[ProviderServiceId], [p].[ProviderServiceName], [p].[PhoneNumber], [c].[CategoryId], [c].[CategoryName], [m].[MenuId], [m].[MenuName], [m].[Description], [m].[Period], [m].[Price]
+FROM [Menus] AS [m]
+INNER JOIN [Categories] AS [c] ON [m].[CategoryId] = [c].[CategoryId]
+INNER JOIN [ProviderServices] AS [p] ON [c].[ProviderServiceId] = [p].[ProviderServiceId]
+WHERE [m].[MenuId] = @__id_0 AND [p].[ProviderServiceId] = @__providerServiceId_1 AND [c].[CategoryId] = @__categoryId_2
+2026-05-08 03:57:36.393 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDIS.Service.API.Common.ApiResponse`1[[NDIS.Service.API.DTOs.Menu.MenuOrderInfoResponseDto, NDIS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-05-08 03:57:36.486 +10:00 [INF] Executed action NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API) in 1841.111ms
+2026-05-08 03:57:36.590 +10:00 [INF] Executed endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 03:57:36.624 +10:00 [INF] Request finished HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - 200 null application/json; charset=utf-8 2280.5068ms
+2026-05-08 04:00:41.285 +10:00 [INF] Executed DbCommand (513ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 04:00:42.006 +10:00 [INF] Executed DbCommand (231ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 04:00:42.363 +10:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 04:00:42.386 +10:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 04:00:42.720 +10:00 [INF] Executed DbCommand (43ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-08 04:00:42.906 +10:00 [INF] No migrations were applied. The database is already up to date.
+2026-05-08 04:00:44.476 +10:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 04:00:44.539 +10:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ProviderServices] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 04:00:44.590 +10:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Categories] AS [c]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 04:00:44.626 +10:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 04:00:47.018 +10:00 [INF] Now listening on: https://localhost:7002
+2026-05-08 04:00:47.706 +10:00 [INF] Now listening on: http://localhost:5002
+2026-05-08 04:00:48.390 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-08 04:00:48.395 +10:00 [INF] Hosting environment: Development
+2026-05-08 04:00:48.399 +10:00 [INF] Content root path: D:\code\bootcamp\ndisau\NDIS-AU-API\NDIS.Service.API
+2026-05-08 04:00:52.602 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/index.html - null null
+2026-05-08 04:00:53.350 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/index.html - 200 null text/html;charset=utf-8 766.6586ms
+2026-05-08 04:00:55.508 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-08 04:00:55.629 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - 200 13768 application/javascript; charset=utf-8 120.0811ms
+2026-05-08 04:01:12.565 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - null null
+2026-05-08 04:01:12.675 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 110.4237ms
+2026-05-08 04:02:27.982 +10:00 [INF] Request starting HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - null null
+2026-05-08 04:02:28.077 +10:00 [INF] Executing endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 04:02:28.151 +10:00 [INF] Route matched with {action = "GetMenuOrderInfo", controller = "Menu"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMenuOrderInfo(System.String, System.String, System.String) on controller NDIS.Service.API.Controllers.MenuController (NDIS.Service.API).
+2026-05-08 04:02:29.065 +10:00 [INF] Executed DbCommand (69ms) [Parameters=[@__id_0='?' (Size = 450), @__providerServiceId_1='?' (Size = 450), @__categoryId_2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderId], [p].[ProviderServiceId], [p].[ProviderServiceName], [p].[PhoneNumber], [c].[CategoryId], [c].[CategoryName], [m].[MenuId], [m].[MenuName], [m].[Description], [m].[Period], [m].[Price]
+FROM [Menus] AS [m]
+INNER JOIN [Categories] AS [c] ON [m].[CategoryId] = [c].[CategoryId]
+INNER JOIN [ProviderServices] AS [p] ON [c].[ProviderServiceId] = [p].[ProviderServiceId]
+WHERE [m].[MenuId] = @__id_0 AND [p].[ProviderServiceId] = @__providerServiceId_1 AND [c].[CategoryId] = @__categoryId_2
+2026-05-08 04:02:29.135 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDIS.Service.API.Common.ApiResponse`1[[NDIS.Service.API.DTOs.Menu.MenuOrderInfoResponseDto, NDIS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-05-08 04:02:29.198 +10:00 [INF] Executed action NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API) in 1029.6154ms
+2026-05-08 04:02:29.208 +10:00 [INF] Executed endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 04:02:29.255 +10:00 [INF] Request finished HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - 200 null application/json; charset=utf-8 1273.3159ms
+2026-05-08 05:13:40.313 +10:00 [INF] Executed DbCommand (172ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 05:13:40.781 +10:00 [INF] Executed DbCommand (164ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 05:13:40.860 +10:00 [INF] Executed DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 05:13:40.931 +10:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 05:13:41.271 +10:00 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-08 05:13:41.431 +10:00 [INF] No migrations were applied. The database is already up to date.
+2026-05-08 05:13:42.828 +10:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:13:45.308 +10:00 [INF] Executed DbCommand (84ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ProviderServices] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:13:45.718 +10:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Categories] AS [c]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:13:45.956 +10:00 [INF] Executed DbCommand (31ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:13:50.361 +10:00 [INF] Now listening on: https://localhost:7002
+2026-05-08 05:13:51.942 +10:00 [INF] Now listening on: http://localhost:5002
+2026-05-08 05:13:53.561 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-08 05:13:53.812 +10:00 [INF] Hosting environment: Development
+2026-05-08 05:13:54.194 +10:00 [INF] Content root path: D:\code\bootcamp\ndisau\NDIS-AU-API\NDIS.Service.API
+2026-05-08 05:14:04.551 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/index.html - null null
+2026-05-08 05:14:12.116 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/index.html - 200 null text/html;charset=utf-8 7618.4505ms
+2026-05-08 05:14:14.930 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-08 05:14:18.793 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - 200 13768 application/javascript; charset=utf-8 3862.7261ms
+2026-05-08 05:14:23.082 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - null null
+2026-05-08 05:14:23.772 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 690.1438ms
+2026-05-08 05:19:17.317 +10:00 [INF] Request starting HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - null null
+2026-05-08 05:19:17.752 +10:00 [INF] Executing endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 05:19:18.168 +10:00 [INF] Route matched with {action = "GetMenuOrderInfo", controller = "Menu"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMenuOrderInfo(System.String, System.String, System.String) on controller NDIS.Service.API.Controllers.MenuController (NDIS.Service.API).
+2026-05-08 05:19:19.883 +10:00 [INF] Executed DbCommand (124ms) [Parameters=[@__id_0='?' (Size = 450), @__providerServiceId_1='?' (Size = 450), @__categoryId_2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderId], [p].[ProviderServiceId], [p].[ProviderServiceName], [p].[PhoneNumber], [c].[CategoryId], [c].[CategoryName], [m].[MenuId], [m].[MenuName], [m].[Description], [m].[Period], [m].[Price]
+FROM [Menus] AS [m]
+INNER JOIN [Categories] AS [c] ON [m].[CategoryId] = [c].[CategoryId]
+INNER JOIN [ProviderServices] AS [p] ON [c].[ProviderServiceId] = [p].[ProviderServiceId]
+WHERE [m].[MenuId] = @__id_0 AND [p].[ProviderServiceId] = @__providerServiceId_1 AND [c].[CategoryId] = @__categoryId_2
+2026-05-08 05:19:19.987 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDIS.Service.API.Common.ApiResponse`1[[NDIS.Service.API.DTOs.Menu.MenuOrderInfoResponseDto, NDIS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-05-08 05:19:20.144 +10:00 [INF] Executed action NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API) in 1956.4912ms
+2026-05-08 05:19:20.346 +10:00 [INF] Executed endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 05:19:20.400 +10:00 [INF] Request finished HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - 200 null application/json; charset=utf-8 3090.2528ms
+2026-05-08 05:50:08.229 +10:00 [INF] Executed DbCommand (133ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 05:50:09.312 +10:00 [INF] Executed DbCommand (448ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 05:50:09.395 +10:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-08 05:50:09.426 +10:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-08 05:50:09.515 +10:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-08 05:50:09.602 +10:00 [INF] No migrations were applied. The database is already up to date.
+2026-05-08 05:50:14.497 +10:00 [INF] Executed DbCommand (67ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ServiceTypes] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:50:14.845 +10:00 [INF] Executed DbCommand (46ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ProviderServices] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:50:15.558 +10:00 [INF] Executed DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Categories] AS [c]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:50:15.637 +10:00 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Menus] AS [m]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-08 05:50:22.105 +10:00 [INF] Now listening on: https://localhost:7002
+2026-05-08 05:50:25.919 +10:00 [INF] Now listening on: http://localhost:5002
+2026-05-08 05:50:31.038 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/index.html - null null
+2026-05-08 05:50:32.510 +10:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-08 05:50:34.900 +10:00 [INF] Hosting environment: Development
+2026-05-08 05:50:35.227 +10:00 [INF] Content root path: D:\code\bootcamp\ndisau\NDIS-AU-API\NDIS.Service.API
+2026-05-08 05:50:36.703 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/index.html - 200 null text/html;charset=utf-8 5732.8616ms
+2026-05-08 05:50:38.832 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-08 05:50:38.973 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/_framework/aspnetcore-browser-refresh.js - 200 13768 application/javascript; charset=utf-8 147.3283ms
+2026-05-08 05:51:03.382 +10:00 [INF] Request starting HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - null null
+2026-05-08 05:51:03.529 +10:00 [INF] Request finished HTTP/2 GET https://localhost:7002/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 147.0085ms
+2026-05-08 05:52:32.997 +10:00 [INF] Request starting HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - null null
+2026-05-08 05:52:33.146 +10:00 [INF] Executing endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 05:52:33.320 +10:00 [INF] Route matched with {action = "GetMenuOrderInfo", controller = "Menu"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMenuOrderInfo(System.String, System.String, System.String) on controller NDIS.Service.API.Controllers.MenuController (NDIS.Service.API).
+2026-05-08 05:52:34.552 +10:00 [INF] Executed DbCommand (81ms) [Parameters=[@__id_0='?' (Size = 450), @__providerServiceId_1='?' (Size = 450), @__categoryId_2='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[ProviderId], [p].[ProviderServiceId], [p].[ProviderServiceName], [p].[PhoneNumber], [c].[CategoryId], [c].[CategoryName], [m].[MenuId], [m].[MenuName], [m].[Description], [m].[Period], [m].[Price]
+FROM [Menus] AS [m]
+INNER JOIN [Categories] AS [c] ON [m].[CategoryId] = [c].[CategoryId]
+INNER JOIN [ProviderServices] AS [p] ON [c].[ProviderServiceId] = [p].[ProviderServiceId]
+WHERE [m].[MenuId] = @__id_0 AND [p].[ProviderServiceId] = @__providerServiceId_1 AND [c].[CategoryId] = @__categoryId_2
+2026-05-08 05:52:34.732 +10:00 [INF] Executing OkObjectResult, writing value of type 'NDIS.Service.API.Common.ApiResponse`1[[NDIS.Service.API.DTOs.Menu.MenuOrderInfoResponseDto, NDIS.Service.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-05-08 05:52:34.872 +10:00 [INF] Executed action NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API) in 1487.5346ms
+2026-05-08 05:52:34.940 +10:00 [INF] Executed endpoint 'NDIS.Service.API.Controllers.MenuController.GetMenuOrderInfo (NDIS.Service.API)'
+2026-05-08 05:52:34.986 +10:00 [INF] Request finished HTTP/1.1 GET https://localhost:7002/api/ProviderService/d2bc805b-e75a-4d0f-b085-900ba925f8c6/Categories/58cf38b0-e2e9-4c0f-ba9d-e8b785a42281/Menu/33e214b4-5f6f-4cd6-8557-874810f5f30a/order-info - 200 null application/json; charset=utf-8 1989.3033ms

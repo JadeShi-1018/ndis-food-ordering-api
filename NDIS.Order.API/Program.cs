@@ -16,6 +16,8 @@ using NDIS.Order.API.Repository;
 using NDIS.Order.API.Services.Outbox;
 using MassTransit;
 
+using NDIS.Order.API.Consumer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -91,6 +93,7 @@ if (!string.IsNullOrWhiteSpace(rabbitHost))
 {
   builder.Services.AddMassTransit(x =>
   {
+    x.AddConsumer<PaymentSucceededEventConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
       cfg.Host(
@@ -101,6 +104,16 @@ if (!string.IsNullOrWhiteSpace(rabbitHost))
           h.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
           h.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
         });
+
+      cfg.ReceiveEndpoint("order-payment-succeeded", e =>
+      {
+        e.UseMessageRetry(r =>
+        {
+          r.Interval(3, TimeSpan.FromSeconds(5));
+        });
+
+        e.ConfigureConsumer<PaymentSucceededEventConsumer>(context);
+      });
     });
   });
 }

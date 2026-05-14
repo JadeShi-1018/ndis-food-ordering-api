@@ -2,17 +2,20 @@
 using NDIS.Order.API.Domain.Entities;
 using NDIS.Order.API.Repositories;
 using NDIS.Order.API.Dtos;
+using NDIS.Contracts.Events;
 using OrderEntity = NDIS.Order.API.Domain.Entities.Order;
+
 using System.Security.Claims;
 using NDIS.Order.API.ServiceClient;
 using NDIS.Order.API.Utilities;
 using NDIS.Order.API.Domain.Enums;
 using System.Text.Json;
 using NDIS.Order.API.Service.Idempotency;
-using NDIS.Contracts.Events;
+
 using NDIS.Order.API.Repository;
 using StackExchange.Redis;
 using MassTransit.SagaStateMachine;
+
 namespace NDIS.Order.API.Services
 {
   public class OrderService : IOrderService
@@ -266,5 +269,54 @@ namespace NDIS.Order.API.Services
       var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
       return _mapper.Map<List<OrderResponseDto>>(orders);
     }
-  }
+
+    public async Task MarkOrderAsPaidAsync(PaymentSucceededEvent message)
+    {
+      var order = await _orderRepository.GetOrderByIdAsync(message.OrderId);
+
+      if (order == null)
+      {
+        _logger.LogWarning(
+            "PaymentSucceededEvent received but order was not found. OrderId={OrderId}, PaymentId={PaymentId}, EventId={EventId}",
+            message.OrderId,
+            message.PaymentId,
+            message);
+
+        return;
+      }
+
+      if (order.OrderStatus == OrderStatus.Paid)
+      {
+        _logger.LogInformation(
+            "Order already paid. Skip duplicate PaymentSucceededEvent. OrderId={OrderId}, EventId={EventId}",
+            message.OrderId,
+            message.EventId);
+
+        return;
+      }
+
+      if (order.OrderStatus != OrderStatus.PendingPayment)
+      {
+        _logger.LogWarning(
+            "Unexpected order status when handling PaymentSucceededEvent. OrderId={OrderId}, CurrentStatus={OrderStatus}, EventId={EventId}",
+            order.OrderId,
+            order.OrderStatus,
+            message.EventId);
+
+        return;
+      }
+
+      order.OrderStatus = OrderStatus.Paid;
+      order.UpdatedAt = DateTime.UtcNow;
+
+      await _orderRepository.UpdateOrderAsync(order);
+
+      _logger.LogInformation(
+          "Order marked as paid. OrderId={OrderId}, PaymentId={PaymentId}, EventId={EventId}",
+          message.OrderId,
+          message.PaymentId,
+          message.EventId);
+    }
+  
+}
 }

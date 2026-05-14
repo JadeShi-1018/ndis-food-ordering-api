@@ -12,8 +12,8 @@ using NDIS.Payment.API.Data;
 namespace NDIS.Payment.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260408171331_Initialization")]
-    partial class Initialization
+    [Migration("20260507143917_Inotialization")]
+    partial class Inotialization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,9 @@ namespace NDIS.Payment.API.Migrations
                     b.Property<string>("PaymentId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<long>("AmountInCents")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("CategoryId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -43,12 +46,15 @@ namespace NDIS.Payment.API.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdempotencyKey")
-                        .IsRequired()
+                    b.Property<string>("FailureReason")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MenuId")
@@ -65,6 +71,16 @@ namespace NDIS.Payment.API.Migrations
                     b.Property<string>("OrderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentIdempotencyKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PaymentIntentCreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
@@ -95,6 +111,12 @@ namespace NDIS.Payment.API.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("StripeClientSecret")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripePaymentIntentId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -110,54 +132,37 @@ namespace NDIS.Payment.API.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
+                    b.HasIndex("StripePaymentIntentId");
+
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("NDIS.Payment.API.Domain.PaymentEvent", b =>
+            modelBuilder.Entity("NDIS.Payment.API.Domain.ProcessedWebhookEvent", b =>
                 {
-                    b.Property<string>("PaymentEventId")
+                    b.Property<string>("ProcessedWebhookEventId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("EventStatus")
+                    b.Property<string>("EventId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("EventTimestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventType")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PaymentId")
+                    b.Property<DateTime>("ProcessedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Provider")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PaymentEventId");
+                    b.HasKey("ProcessedWebhookEventId");
 
-                    b.HasIndex("PaymentId");
+                    b.HasIndex("Provider", "EventId")
+                        .IsUnique();
 
-                    b.ToTable("PaymentEvents");
-                });
-
-            modelBuilder.Entity("NDIS.Payment.API.Domain.PaymentEvent", b =>
-                {
-                    b.HasOne("NDIS.Payment.API.Domain.Payment", "Payment")
-                        .WithMany("PaymentEvents")
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
-                });
-
-            modelBuilder.Entity("NDIS.Payment.API.Domain.Payment", b =>
-                {
-                    b.Navigation("PaymentEvents");
+                    b.ToTable("ProcessedWebhookEvent");
                 });
 #pragma warning restore 612, 618
         }

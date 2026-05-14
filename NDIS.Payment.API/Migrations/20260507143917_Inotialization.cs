@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NDIS.Payment.API.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialization : Migration
+    public partial class Inotialization : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,9 +30,16 @@ namespace NDIS.Payment.API.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AmountInCents = table.Column<long>(type: "bigint", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PaymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdempotencyKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaymentIdempotencyKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StripePaymentIntentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    StripeClientSecret = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentIntentCreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FailureReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderCreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -43,35 +50,35 @@ namespace NDIS.Payment.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentEvents",
+                name: "ProcessedWebhookEvent",
                 columns: table => new
                 {
-                    PaymentEventId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PaymentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EventType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    EventStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    EventTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    ProcessedWebhookEventId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Provider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EventType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PaymentEvents", x => x.PaymentEventId);
-                    table.ForeignKey(
-                        name: "FK_PaymentEvents_Payments_PaymentId",
-                        column: x => x.PaymentId,
-                        principalTable: "Payments",
-                        principalColumn: "PaymentId",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_ProcessedWebhookEvent", x => x.ProcessedWebhookEventId);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentEvents_PaymentId",
-                table: "PaymentEvents",
-                column: "PaymentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_OrderId",
                 table: "Payments",
                 column: "OrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_StripePaymentIntentId",
+                table: "Payments",
+                column: "StripePaymentIntentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProcessedWebhookEvent_Provider_EventId",
+                table: "ProcessedWebhookEvent",
+                columns: new[] { "Provider", "EventId" },
                 unique: true);
         }
 
@@ -79,10 +86,10 @@ namespace NDIS.Payment.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PaymentEvents");
+                name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "Payments");
+                name: "ProcessedWebhookEvent");
         }
     }
 }

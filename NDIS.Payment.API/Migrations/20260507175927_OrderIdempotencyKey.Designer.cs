@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NDIS.Payment.API.Data;
 
@@ -11,9 +12,11 @@ using NDIS.Payment.API.Data;
 namespace NDIS.Payment.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260507175927_OrderIdempotencyKey")]
+    partial class OrderIdempotencyKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,39 +166,7 @@ namespace NDIS.Payment.API.Migrations
                     b.HasIndex("Provider", "EventId")
                         .IsUnique();
 
-                    b.ToTable("ProcessedWebhookEvents");
-                });
-
-            modelBuilder.Entity("NDIS.Payment.API.Services.Outbox.OutboxMessage", b =>
-                {
-                    b.Property<string>("OutboxMessageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Error")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EventType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("OccurredAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Payload")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ProcessedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RetryCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("OutboxMessageId");
-
-                    b.HasIndex("ProcessedAt");
-
-                    b.ToTable("OutboxMessages");
+                    b.ToTable("ProcessedWebhookEvent");
                 });
 #pragma warning restore 612, 618
         }
